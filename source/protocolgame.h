@@ -309,6 +309,10 @@ class ProtocolGame : public Protocol
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
 
+		void parseChangeMapAwareRange(NetworkMessage& msg);
+		void updateAwareRange(int width, int height);
+		void sendAwareRange();
+
 		#define addGameTask(f, ...) addGameTaskInternal(0, boost::bind(f, &g_game, __VA_ARGS__))
 		#define addGameTaskTimed(delay, f, ...) addGameTaskInternal(delay, boost::bind(f, &g_game, __VA_ARGS__))
 		template<class FunctionType>
@@ -319,5 +323,17 @@ class ProtocolGame : public Protocol
 
 		uint32_t m_eventConnect;
 		bool m_debugAssertSent, m_acceptPackets;
+
+		struct AwareRange {
+			int width = 17;
+			int height = 13;
+
+			int left() const { return width / 2; }
+			int right() const { return 1 + width / 2; }
+			int top() const { return height / 2; }
+			int bottom() const { return 1 + height / 2; }
+			int horizontal() const { return width + 1; }
+			int vertical() const { return height + 1; }
+		} awareRange;
 };
 #endif

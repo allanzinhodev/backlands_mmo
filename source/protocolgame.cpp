@@ -556,6 +556,10 @@ void ProtocolGame::parsePacket(NetworkMessage &msg)
 				parseExtendedOpcode(msg);
 				break;
 
+			case 0x42: // otclient change map aware range
+				parseChangeMapAwareRange(msg);
+				break;
+
 			case 0x64: // move with steps
 				parseAutoWalk(msg);
 				break;
@@ -1027,8 +1031,11 @@ bool ProtocolGame::canSee(uint16_t x, uint16_t y, uint16_t z) const
 
 	//negative offset means that the action taken place is on a lower floor than ourself
 	int32_t offsetz = myPos.z - z;
-	return ((x >= myPos.x - 8 + offsetz) && (x <= myPos.x + 9 + offsetz) &&
-		(y >= myPos.y - 6 + offsetz) && (y <= myPos.y + 7 + offsetz));
+	if((x >= myPos.x - awareRange.left() + offsetz) && (x <= myPos.x + awareRange.right() + offsetz) &&
+		(y >= myPos.y - awareRange.top() + offsetz) && (y <= myPos.y + awareRange.bottom() + offsetz))
+		return true;
+
+	return false;
 }
 
 //********************** Parse methods *******************************//
@@ -2327,23 +2334,23 @@ void ProtocolGame::sendMoveCreature(const Creature* creature, const Tile*, const
 				if(oldPos.y > newPos.y) // north, for old x
 				{
 					msg->put<char>(0x65);
-					GetMapDescription(oldPos.x - 8, newPos.y - 6, newPos.z, 18, 1, msg);
+					GetMapDescription(oldPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, awareRange.horizontal(), 1, msg);
 				}
 				else if(oldPos.y < newPos.y) // south, for old x
 				{
 					msg->put<char>(0x67);
-					GetMapDescription(oldPos.x - 8, newPos.y + 7, newPos.z, 18, 1, msg);
+					GetMapDescription(oldPos.x - awareRange.left(), newPos.y + awareRange.bottom(), newPos.z, awareRange.horizontal(), 1, msg);
 				}
 
 				if(oldPos.x < newPos.x) // east, [with new y]
 				{
 					msg->put<char>(0x66);
-					GetMapDescription(newPos.x + 9, newPos.y - 6, newPos.z, 1, 14, msg);
+					GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1, awareRange.vertical(), msg);
 				}
 				else if(oldPos.x > newPos.x) // west, [with new y]
 				{
 					msg->put<char>(0x68);
-					GetMapDescription(newPos.x - 8, newPos.y - 6, newPos.z, 1, 14, msg);
+					GetMapDescription(newPos.x - awareRange.left(), newPos.y - awareRange.top(), newPos.z, 1, awareRange.vertical(), msg);
 				}
 			}
 		}
@@ -2676,7 +2683,7 @@ void ProtocolGame::AddMapDescription(NetworkMessage_ptr msg, const Position& pos
 {
 	msg->put<char>(0x64);
 	msg->putPosition(player->getPosition());
-	GetMapDescription(pos.x - 8, pos.y - 6, pos.z, 18, 14, msg);
+	GetMapDescription(pos.x - awareRange.left(), pos.y - awareRange.top(), pos.z, awareRange.horizontal(), awareRange.vertical(), msg);
 }
 
 void ProtocolGame::AddTextMessage(NetworkMessage_ptr msg, MessageClasses mclass, const std::string& message)
@@ -2998,12 +3005,12 @@ void ProtocolGame::MoveUpCreature(NetworkMessage_ptr msg, const Creature* creatu
 	if(newPos.z == 7) //going to surface
 	{
 		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 5, 18, 14, 3, skip); //(floor 7 and 6 already set)
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 4, 18, 14, 4, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 3, 18, 14, 5, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 2, 18, 14, 6, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 1, 18, 14, 7, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, 0, 18, 14, 8, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 5, awareRange.horizontal(), awareRange.vertical(), 3, skip); //(floor 7 and 6 already set)
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 4, awareRange.horizontal(), awareRange.vertical(), 4, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 3, awareRange.horizontal(), awareRange.vertical(), 5, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 2, awareRange.horizontal(), awareRange.vertical(), 6, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 1, awareRange.horizontal(), awareRange.vertical(), 7, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), 0, awareRange.horizontal(), awareRange.vertical(), 8, skip);
 		if(skip >= 0)
 		{
 			msg->put<char>(skip);
@@ -3013,7 +3020,7 @@ void ProtocolGame::MoveUpCreature(NetworkMessage_ptr msg, const Creature* creatu
 	else if(newPos.z > 7) //underground, going one floor up (still underground)
 	{
 		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, oldPos.z - 3, 18, 14, 3, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), oldPos.z - 3, awareRange.horizontal(), awareRange.vertical(), 3, skip);
 		if(skip >= 0)
 		{
 			msg->put<char>(skip);
@@ -3024,11 +3031,11 @@ void ProtocolGame::MoveUpCreature(NetworkMessage_ptr msg, const Creature* creatu
 	//moving up a floor up makes us out of sync
 	//west
 	msg->put<char>(0x68);
-	GetMapDescription(oldPos.x - 8, oldPos.y + 1 - 6, newPos.z, 1, 14, msg);
+	GetMapDescription(oldPos.x - awareRange.left(), oldPos.y - (awareRange.top() - 1), newPos.z, 1, awareRange.vertical(), msg);
 
 	//north
 	msg->put<char>(0x65);
-	GetMapDescription(oldPos.x - 8, oldPos.y - 6, newPos.z, 18, 1, msg);
+	GetMapDescription(oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), newPos.z, awareRange.horizontal(), 1, msg);
 }
 
 void ProtocolGame::MoveDownCreature(NetworkMessage_ptr msg, const Creature* creature,
@@ -3041,9 +3048,9 @@ void ProtocolGame::MoveDownCreature(NetworkMessage_ptr msg, const Creature* crea
 	if(newPos.z == 8) //going from surface to underground
 	{
 		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, newPos.z, 18, 14, -1, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, newPos.z + 1, 18, 14, -2, skip);
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, newPos.z + 2, 18, 14, -3, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), newPos.z, awareRange.horizontal(), awareRange.vertical(), -1, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), newPos.z + 1, awareRange.horizontal(), awareRange.vertical(), -2, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), newPos.z + 2, awareRange.horizontal(), awareRange.vertical(), -3, skip);
 		if(skip >= 0)
 		{
 			msg->put<char>(skip);
@@ -3053,7 +3060,7 @@ void ProtocolGame::MoveDownCreature(NetworkMessage_ptr msg, const Creature* crea
 	else if(newPos.z > oldPos.z && newPos.z > 8 && newPos.z < 14) //going further down
 	{
 		int32_t skip = -1;
-		GetFloorDescription(msg, oldPos.x - 8, oldPos.y - 6, newPos.z + 2, 18, 14, -3, skip);
+		GetFloorDescription(msg, oldPos.x - awareRange.left(), oldPos.y - awareRange.top(), newPos.z + 2, awareRange.horizontal(), awareRange.vertical(), -3, skip);
 		if(skip >= 0)
 		{
 			msg->put<char>(skip);
@@ -3064,11 +3071,11 @@ void ProtocolGame::MoveDownCreature(NetworkMessage_ptr msg, const Creature* crea
 	//moving down a floor makes us out of sync
 	//east
 	msg->put<char>(0x66);
-	GetMapDescription(oldPos.x + 9, oldPos.y - 1 - 6, newPos.z, 1, 14, msg);
+	GetMapDescription(newPos.x + awareRange.right(), newPos.y - awareRange.top(), newPos.z, 1, awareRange.vertical(), msg);
 
 	//south
 	msg->put<char>(0x67);
-	GetMapDescription(oldPos.x - 8, oldPos.y + 7, newPos.z, 18, 1, msg);
+	GetMapDescription(newPos.x - awareRange.left(), newPos.y + awareRange.bottom() - 1, newPos.z, awareRange.horizontal(), 1, msg);
 }
 
 //inventory
@@ -3172,4 +3179,43 @@ msg->put<char>(0x32);
 msg->put<char>(opcode);
 msg->putString(buffer);
 }
+}
+
+void ProtocolGame::parseChangeMapAwareRange(NetworkMessage& msg)
+{
+	uint8_t width = msg.get<char>();
+	uint8_t height = msg.get<char>();
+
+	Dispatcher::getInstance().addTask(createTask(boost::bind(&ProtocolGame::updateAwareRange, this, width, height)));
+}
+
+void ProtocolGame::updateAwareRange(int width, int height)
+{
+	// If you want to change max awareRange, edit maxViewportX, maxViewportY, maxClientViewportX, maxClientViewportY in map.h
+	awareRange.width = std::min((int)(Map::maxViewportX * 2 - 1), std::min((int)(Map::maxClientViewportX * 2 + 1), std::max(15, width)));
+	awareRange.height = std::min((int)(Map::maxViewportY * 2 - 1), std::min((int)(Map::maxClientViewportY * 2 + 1), std::max(11, height)));
+	// numbers must be odd
+	if (awareRange.width % 2 != 1)
+		awareRange.width -= 1;
+	if (awareRange.height % 2 != 1)
+		awareRange.height -= 1;
+
+	sendAwareRange();
+	
+	NetworkMessage_ptr mapMsg = getOutputBuffer();
+	if (mapMsg) {
+		TRACK_MESSAGE(mapMsg);
+		AddMapDescription(mapMsg, player->getPosition());
+	}
+}
+
+void ProtocolGame::sendAwareRange()
+{
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if (msg) {
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0x42);
+		msg->put<char>(awareRange.width);
+		msg->put<char>(awareRange.height);
+	}
 }
