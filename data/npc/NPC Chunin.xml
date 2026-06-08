@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Iwashi Tatami" script="data/npc/scripts/NPC Exame Chunin.lua" floorchange="0" speed="0">
+    <health now="100" max="100"/>
+    <look type="666" head="96" body="99" legs="76" feet="115" addons="1"/>
+    <parameters>
+		<parameter key="message_greet" value="|PLAYERNAME|! Esta aqui para se {inscrever} para o exame Chunin?" />
+           </parameters>
+</npc>

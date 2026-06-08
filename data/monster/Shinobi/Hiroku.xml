@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>     
+<monster name="Hiroku" nameDescription="a Hiroku" race="blood" experience="13" speed="200">
+	<health now="60" max="60"/>
+	<look type="388" corpse="12984"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="2"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="1"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="10" attack="3" combatType="1"/>
+			<attack name="physical" interval="5000" chance="60" range="7" min="-12" max="-20">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="Gimme your money, now!"/>
+		<voice sentence="HEY" yell="1"/>
+	</voices>                        
+	<loot>
+	<item id="2148" countmax="3" chance="20000"/>
+	<item id="2399" chance="5000"/>
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

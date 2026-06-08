@@ -1,0 +1,11 @@
+Module
+  name: game_dog
+  description: Manage dog window
+  author: ianelli
+  website: www.shinobionline.com.br
+  sandboxed: true
+  scripts: [ dog ]
+  @onLoad: init()
+  @onUnload: terminate()
+  dependencies:
+    - game_interface

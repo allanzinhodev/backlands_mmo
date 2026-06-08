@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dorobou" nameDescription="a Dorobou" race="blood" experience="44" speed="200">
+	<health now="600" max="600"/>
+	<look type="417" corpse="12986"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="60"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="AHHHHHH" yell="1"/>
+		<voice sentence="AARRRGHHHHHH" yell="1"/>
+	</voices>
+	<loot>                                      
+	<item id="2148" countmax="20" chance="20000"/>
+	<item id="11463" chance="15000"/>  <!-- taijutsu bandage -->
+    <item id="12694" countmax="1" chance="3000"/> <!-- mercenary razor -->
+	</loot>
+	<script>
+		<event name="Hit"/>
+	</script>
+</monster>

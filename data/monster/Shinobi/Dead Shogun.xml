@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dead Shogun" nameDescription="a dead shogun" race="blood" experience="2220" speed="220" manacost="600">
+	<health now="4500" max="4500"/>
+	<look type="395" corpse="3255"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1000" skill="65" attack="120" combatType="1"/>
+	</attacks>
+	<defenses armor="10" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>         
+	<loot>
+	<item id="2148" countmax="13" chance="50000"/>     
+	<item id="3553" chance="5000"/>  <!-- mercenary razor -->
+	<item id="3973" chance="1000"/>  <!-- black shinobi pants-->   
+	<item id="4427" chance="500"/>  <!-- steel plated gloves--> 
+	<item id="3562" countmax="3" chance="1000"/> <!-- Black shinobi sandals-->
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

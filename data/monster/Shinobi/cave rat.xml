@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cave Rat" namedescription="a cave rat" race="blood" experience="5" speed="200" manacost="10">
+	<health now="15" max="15"/>
+	<look type="56" corpse="5964"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1500" skill="10" attack="5" combatType="1"/>
+	</attacks>
+	<defenses armor="0" defense="0"/>
+	<elements>
+		<element earthPercent="-20"/>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="Meeeeep!"/>
+		<voice sentence="Meep!"/>
+	</voices>
+	<loot>
+	<item id="5894" countmax="1" chance="10000"/>
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<monster name="Bear" namedescription="a bear" race="blood" experience="14" speed="176" manacost="20">
+	<health now="100" max="100"/>
+	<look type="664" corpse="5975"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="15"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="10" attack="5" combatType="1"/>
+	</attacks>
+	<defenses armor="0" defense="0"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="grrrr"/>
+		<voice sentence="groar"/>
+	</voices>
+	<loot>
+		<item id="5896" countmax="1" chance="10000"/><!-- bear paw -->
+		<item id="13254" countmax="1" chance="10000"/><!-- meat -->
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

@@ -1,0 +1,19 @@
+Formula&Damage&Skill = {
+Level 5 = 0.5, 1.0
+level 10 = 1.0, 1.5
+level 15 = 1.5, 2.0
+level 20 = 2.0, 2.5
+level 25 = 2.5, 3.0
+level 30 = 3.0, 3.5
+level 35 = 3.5, 4.0
+level 40 = 4.0, 4.5
+level 45 = 4.5, 5.0
+level 50 = 5.0, 5.5
+level 55 = 5.5, 6.0
+}
+
+Formula&Damage&Level = {
+level 5 a 20 = 0.2, 0.5
+level 25 a 40 = 0.3, 0.6
+level 45 a 50 = 0.4, 0.7
+}

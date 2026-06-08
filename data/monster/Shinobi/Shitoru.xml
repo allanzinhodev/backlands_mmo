@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shitoru" nameDescription="a Shitoru" race="blood" experience="1500" speed="600" manacost="600">
+	<health now="2100" max="2100"/>
+	<look type="511" corpse="12980"/>
+	<targetchange interval="1000" chance="25"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="5"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1500" skill="60" attack="80" combatType="1"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	<defense name="speed" interval="1000" chance="8" speedchange="450" duration="10000"></defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>              
+	<loot>
+	<item id="2152" countmax="2" chance="35000"/>
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

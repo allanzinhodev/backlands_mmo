@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<npc name="Master Shitsu" script="masterShitsu.lua" walkinterval="350000" floorchange="0" speed="0">
+
+	<health now="150" max="150"/>
+	<look type="509" head="17" body="54" legs="114" feet="0" addons="2"/>
+</npc>

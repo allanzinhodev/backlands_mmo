@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Nara Shikazu" script="Nara Shikazu.lua" walkinterval="100000" floorchange="0" speed="100">
+	<health now="100" max="100"/>
+	<look type="399" head="94" body="57" legs="95" feet="125"/>
+	</npc>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Inuzuka Citizen" script="Inuzuka Citizen.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="359" head="116" body="76" legs="114" feet="126" corpse="2212"/>
+	<parameters>
+	</parameters>
+</npc>

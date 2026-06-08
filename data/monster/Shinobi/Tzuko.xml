@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Tzuko" nameDescription="Tzuko" race="blood" experience="33" speed="200" manacost="200">
+	<health now="510" max="510"/>
+	<look type="391" corpse="12987"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1200" skill="32" attack="20"/>
+	</attacks>
+	<defenses defense="12"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="what are you doing here boy?!"/>
+	</voices>
+	<loot>
+			<item id="2148" countmax="15" chance="10000"/>
+			<item id="12574" countmax="1" chance="1200"/><!-- white pants -->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

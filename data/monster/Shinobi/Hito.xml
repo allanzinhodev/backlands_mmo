@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hito" nameDescription="a Hito" race="blood" experience="69" speed="300" manacost="200">
+	<health now="1250" max="1250"/>
+	<look type="408" corpse="12982"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="80" attack="60" combatType="1"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>         
+	<loot>
+	<item id="2148" countmax="30" chance="30000"/>
+	<item id="12296" chance="100"/>  <!-- aian nakuru -->      
+	<item id="12644" chance="10000"/>  <!-- steel plated gloves--> 
+	<item id="12581" chance="10000"/> <!-- Black shinobi sandals-->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

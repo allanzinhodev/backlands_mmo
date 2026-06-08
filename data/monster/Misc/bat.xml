@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Bat" namedescription="a bat" race="blood" experience="5" speed="200" manacost="250">
+	<health now="37" max="37"/>
+	<look type="122" corpse="6053"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="1"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="3"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="7"/>
+	</attacks>
+	<defenses defense="1"/>
+	<elements>
+		<element earthPercent="-20"/>
+		<element firePercent="+20"/>
+	</elements>
+	<loot>
+		<item id="2148" countmax="4" chance="6666"/><!-- gold coin -->
+		<item id="5894" countmax="1" chance="5000"/><!-- bat wing -->
+	</loot>
+		<script>
+<event name="Hit"/>
+	</script>
+</monster>

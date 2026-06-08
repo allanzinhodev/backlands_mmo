@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spells>
+=========Shinobi Legends ================
+      <instant name="Katon Goukakyuu no Jutsu" words="#YZuchiha1" lvl="0" mana="0" prem="0" aggressive="0" direction="0" blockwalls="1" exhaustion="1000" needlearn="0" event="script" value="Uchiha/Goukakyuu no Jutsu.lua">
+	   <vocation id="5"/>
+	</instant>
+	 <instant name="Katon Shiruko no Jutsu" words="#YZuchiha2" lvl="0" mana="0" prem="0" aggressive="0" direction="1" blockwalls="1" exhaustion="1000" needlearn="0" event="script" value="Uchiha/Shiruko no Jutsu.lua">
+	   <vocation id="5"/>
+	</instant>
+	 <instant name="Katon Ryuuka no Jutsu" words="#YZuchiha3" lvl="0" mana="0" prem="0" aggressive="0" direction="1" blockwalls="1" exhaustion="1000" needlearn="0" event="script" value="Uchiha/Ryuuka no Jutsu.lua">
+	   <vocation id="5"/>
+	</instant>
+	<instant name="Katon Karyuu Endan no Jutsu" words="#YZuchiha4" lvl="0" mana="0" prem="0" aggressive="0" blockwalls="1" direction="1" exhaustion="1000" needlearn="0" event="script" value="Uchiha/Karyuu Endan.lua">
+	   <vocation id="5"/>
+	</instant>
+====ABURAME====
+	 <instant name="Kikkaichu Bashira" words="#YZaburame1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" blockwalls="1" exhaustion="1000" needlearn="0" event="script" value="Aburame/Kikaichuu Bashira.lua">
+	   <vocation id="3"/>
+	</instant>
+	<instant name="Kikkaichu Mushikame" words="#YZaburame2" lvl="0" mana="0" prem="0" aggressive="0" direction="1" blockwalls="1" exhaustion="1000" needlearn="0" event="script" value="Aburame/Kikkaichuu Mushikame.lua">
+	   <vocation id="3"/>
+	</instant>
+=====Hyuuga=====
+	 <instant name="Hakke Hiasangi" words="#YZhyuuga1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Hiasangi.lua">
+	   <vocation id="4"/>
+	</instant>
+	 <instant name="Hakke Kuushou" words="#YZhyuuga2" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Kuushou.lua">
+	   <vocation id="4"/>
+	</instant>
+	 <instant name="Hakke Kaiten" words="#YZhyuuga3" lvl="0" mana="0" prem="0" aggressive="0" direction="0" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakkeshou Kaiten.lua">
+	   <vocation id="4"/>
+	</instant>
+	 <instant name="Hakke Sanjuunishou" words="#YZhyuuga4" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke SanjuuniShou.lua">
+	   <vocation id="4"/>
+	</instant>
+	<instant name="Hakke Hasengeki" words="#YZhyuuga5" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Hasengeki.lua">
+	   <vocation id="4"/>
+	</instant>
+	<instant name="Hakke Shiten Kuushou" words="#YZhyuuga6" lvl="0" mana="0" prem="0" aggressive="0" direction="0" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Shiten Kuushou.lua">
+	   <vocation id="4"/>
+	</instant>
+	<instant name="Hakke Rokujuuyonshou" words="#YZhyuuga7" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Rokujuuyon Shou.lua">
+	   <vocation id="4"/>
+	</instant>
+	<instant name="Hakke Hyakunijuuhachi Shou" words="#YZhyuuga8" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Hyuuga/Hakke Hyakunijuuhachi Shou.lua">
+	   <vocation id="4"/>
+	</instant>
+========MAITO=========	
+	<instant name="Konoha Senpuu" words="#YZmaito1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Maito/Konoha Senpuu.lua">
+	   <vocation id="1"/>
+	</instant>
+	<instant name="Dinamic Entry" words="#YZmaito2" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Maito/Dinamic Entry.lua">
+	   <vocation id="1"/>
+	</instant>
+	<instant name="Konoha Dai Senpuu" words="#YZmaito3" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Maito/Dai Senpuu.lua">
+	   <vocation id="1"/>
+	</instant>
+	<instant name="Gouriki Senpuu" words="#YZmaito4" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Maito/Gouriki Senpuu.lua">
+	   <vocation id="1"/>
+	</instant>
+=====AKIMICHI======
+	<instant name="Omoni" words="#YZAkimichi1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Akimichi/Omoni.lua">
+	   <vocation id="7"/>
+	</instant>
+	<instant name="Harite Chou" words="#YZAkimichi2" lvl="0" mana="0" prem="0" aggressive="0" direction="0" exhaustion="1000" needlearn="0" event="script" value="Akimichi/Harite Chou.lua">
+	   <vocation id="7"/>
+	</instant>
+	<instant name="Bubun Baika" words="#YZAkimichi3" lvl="0" mana="0" prem="0" aggressive="0" direction="0" exhaustion="1000" needlearn="0" event="script" value="Akimichi/Bubun Baika.lua">
+	   <vocation id="7"/>
+	</instant>
+	<instant name="Choudan Bakugeki" words="#YZAkimichi4" lvl="0" mana="0" prem="0" aggressive="0" direction="0" exhaustion="1000" needlearn="0" event="script" value="Akimichi/Choudan Bakugeki.lua">
+	   <vocation id="7"/>
+	</instant>
+=====INUZUKA====
+	<instant name="Tsuuga" words="#YZinuzuka1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Tsuuga.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Garouga" words="#YZinuzuka3" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Garouga.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Gatsuuga" words="#YZinuzuka2" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Gatsuuga.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Dynamic marking" words="#YZinuzuka4" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Dinamyc Marking.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Bite" words="#YZinuzuka5" lvl="0" mana="0" prem="0" aggressive="0" casterTargetOrDirection="1" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Bite.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Scratch" words="#YZinuzuka6" lvl="0" mana="0" prem="0" aggressive="0" casterTargetOrDirection="1" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Scratch.lua">
+	   <vocation id="2"/>
+	</instant>
+	<instant name="Moko Taiko" words="#YZinuzuka7" lvl="0" mana="0" prem="0" aggressive="0" casterTargetOrDirection="1" direction="1" exhaustion="1000" needlearn="0" event="script" value="Inuzuka/Moko Taiko.lua">
+	   <vocation id="2"/>
+	</instant>
+====Monsters===
+	<instant name="Goukakyuu12" words="#YZmonster1" enable="0" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="monster/Goukakyuu no Jutsu Monster.lua">
+	</instant>
+	 <instant name="Kikkaichu Bashira Monster" words="#YZmonster2" enable="0" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="monster/Kikaichuu Bashira Monster.lua">
+	</instant>
+	 <instant name="teste" words="#Yteste1" lvl="0" mana="0" prem="0" aggressive="0" direction="1" exhaustion="1000" needlearn="0" event="script" value="monster/teste.lua">
+	</instant>
+====Genjutsu====
+	<instant name="Nehan Shoja" words="#YZgenjutsu1" lvl="0" mana="0" prem="0" aggressive="0" exhaustion="1000" needlearn="0" event="script" value="Genjutsu/Nehan Shoja.lua">
+	</instant>
+</spells>

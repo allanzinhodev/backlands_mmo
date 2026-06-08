@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Koh Hyuuga" script="Koh Hyuuga.lua" walkinterval="100000" floorchange="0" speed="100">
+	<health now="100" max="100"/>
+	<look type="374" head="114" body="0" legs="114" feet="107"/>
+	</npc>

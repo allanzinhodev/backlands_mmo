@@ -1,0 +1,3 @@
+TODO: Revisar os itens duplicados no items.xml e no items.otb.
+Um relatório detalhado com os IDs colidentes (12296, 12691, 13227) foi gerado em:
+C:\Users\allan\.gemini\antigravity-ide\brain\a09902ef-3bcc-4401-8718-02ec0b19389c\todo_items_otb_review.md

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Madam Shijimi" script="data/npc/scripts/Shijimi.lua" walkinterval="5000" floorchange="0" speed="100">
+	<health now="100" max="100"/>
+	<look type="671"/>
+		<parameters>
+			<parameter key="message_greet" value="Ola |PLAYERNAME|."/>
+		</parameters>
+	</npc>

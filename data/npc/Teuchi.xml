@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Teuchi"  script="default.lua" walkinterval="5000" floorchange="0" speed="0">
+	<health now="100" max="100"/>
+	<look type="14"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Ola |PLAYERNAME|. Eu vendo deliciosos ramens.. ! {trade} "/>
+		<parameter key="shop_buyable" value="Ramem,11525,25;"/>
+	</parameters>
+	</npc>

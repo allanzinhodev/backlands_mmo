@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Teno" script="data/npc/scripts/Mission.lua" floorchange="0" speed="0">
+	<health now="100" max="100"/>
+	<look type="559" head="117" body="106" legs="0" feet="114"/>
+	<parameters>
+<parameter key="message_greet" value="Ola |PLAYERNAME|." />
+	</parameters>
+	</npc>

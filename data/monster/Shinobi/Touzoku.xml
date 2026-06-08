@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Touzoku" nameDescription="a Touzoku" race="blood" experience="33" speed="200" manacost="60">
+	<health now="400" max="400"/>
+	<look type="392" corpse="12987"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1200" skill="26" attack="20"/>
+	</attacks>
+	<defenses armor="5" defense="0">
+	<defense name="speed" interval="1000" chance="8" speedchange="300" duration="10000"></defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<loot>                                     
+			<item id="2148" countmax="15" chance="10000"/>
+			<item id="124643" countmax="1" chance="1200"/><!-- white pants -->
+			<item id="12693" countmax="1" chance="600"/><!-- Ninjutsu Sword -->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

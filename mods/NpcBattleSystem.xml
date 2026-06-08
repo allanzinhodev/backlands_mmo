@@ -1,0 +1,12 @@
+<?xml version = "1.0" encoding = "utf-8" ?>
+
+<mod name = "[NPCDuel]" author = "[OTScripts] OrochiElf" contact = "orochielf@hotmail.com" version = "1.0" enabled = "yes">
+
+	<event type = "preparedeath" name = "DeathDuel" event = "script" value = "OTScripts/npcbattle.lua"/>
+	<event type = "statschange" name = "AntiAttack" event = "script" value = "OTScripts/npcbattle.lua"/>
+	<event type = "attack" name = "DuelAttack" event = "script" value = "OTScripts/npcbattle.lua"/>
+
+	<event type = "statschange" name = "DeathPlayer" event = "script" value = "OTScripts/player.lua"/>
+
+	<monster name="Master Shitsu" file="OTScripts/masterShitsu.xml"/>
+</mod>

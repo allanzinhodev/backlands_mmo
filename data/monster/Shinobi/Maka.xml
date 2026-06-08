@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Maka" nameDescription="a Maka" race="blood" experience="17" speed="200" manacost="30">
+	<health now="70" max="70"/>
+	<look type="396" corpse="12983"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="3"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="5"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="5" attack="5" combatType="1"/>
+		<attack name="physical" interval="5000" chance="60" range="7" min="-20" max="-25">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<voices interval="5000" chance="10">
+		<voice sentence="I may be a woman, but i can still kick your ass."/>
+		<voice sentence="Ha ha, die, kid."/>
+	</voices>
+	<loot>                
+	<item id="2148" countmax="5" chance="20000"/>
+	<item id="2399" chance="1000"/>
+	<item id="12644" countmax="2" chance="7000"/>
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

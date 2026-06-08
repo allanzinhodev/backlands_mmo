@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Sanzuku" nameDescription="a Sanzuku" race="blood" experience="24" speed="230" manacost="200">
+	<health now="250" max="250"/>
+	<look type="549" corpse="12985"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="4"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="900" skill="26" attack="17"/>
+		<attack name="physical" interval="5000" chance="70" range="7" min="-30" max="-40">
+			<attribute key="shootEffect" value="POISONARROW"/>
+		</attack>
+	</attacks>
+	<defenses defense="12"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="HAHAHA!"/>
+	</voices>
+	<loot>
+			<item id="2148" countmax="15" chance="10000"/><!-- gold coin -->
+			<item id="12560" countmax="1" chance="1500"/><!-- ninja robe -->
+			<item id="12644" countmax="1" chance="1400"/><!-- black pants -->
+			<item id="13262" countmax="2" chance="1200"/><!-- orange -->
+			<item id="13035" countmax="1" chance="900"/><!-- fuuma shuriken -->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

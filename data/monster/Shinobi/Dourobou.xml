@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Dourobou" nameDescription="Dourobou" race="blood" experience="90" speed="190" manacost="200">
+	<health now="800" max="800"/>
+	<look type="417" corpse="12986"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1200" skill="30" attack="60"/>
+	</attacks>
+	<defenses defense="15"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="what are you doing here boy?!"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="30" chance="6666"/><!-- gold coin -->
+		<item id="12580" countmax="1" chance="900"/> <!-- blue Sandals -->
+		<item id="11463" countmax="1" chance="1400"/> <!-- ninja robe-->
+		<item id="12562" countmax="1" chance="1100"/>
+		<item id="12581" countmax="1" chance="1200"/>
+		<item id="13259" countmax="4" chance="1600"/>
+	</loot> 
+<script>
+<event name="Hit"/>
+</script>
+</monster>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Lumberjack" script="default.lua" speed="0" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="661" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. Quer comprar um machado ? "/>
+		<parameter key="shop_buyable" value="wood axe, 2441, 178;"/>
+	</parameters>
+</npc>

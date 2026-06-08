@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTX Protocol Map — Documentação de Opcodes 8.54</title>
+<meta name="description" content="Mapeamento completo dos opcodes de comunicação Cliente ↔ Servidor para The Forgotten Server (OTX) protocolo 8.54">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --bg-glass: rgba(26, 34, 54, 0.7);
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(99,102,241,0.3);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #6366f1;
+    --accent-blue-glow: rgba(99,102,241,0.15);
+    --accent-cyan: #22d3ee;
+    --accent-cyan-glow: rgba(34,211,238,0.1);
+    --accent-green: #34d399;
+    --accent-green-glow: rgba(52,211,153,0.1);
+    --accent-orange: #fb923c;
+    --accent-orange-glow: rgba(251,146,60,0.1);
+    --accent-red: #f87171;
+    --accent-purple: #a78bfa;
+    --accent-yellow: #fbbf24;
+    --client-color: #22d3ee;
+    --server-color: #a78bfa;
+    --login-color: #fbbf24;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Background gradient mesh */
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(99,102,241,0.08), transparent),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(34,211,238,0.06), transparent),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(167,139,250,0.04), transparent);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 48px 0 32px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan), var(--accent-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  header p { color: var(--text-secondary); font-size: 1.05rem; font-weight: 400; }
+  .version-badge {
+    display: inline-block; margin-top: 12px;
+    padding: 4px 14px; border-radius: 20px;
+    background: var(--accent-blue-glow); border: 1px solid var(--border-accent);
+    color: var(--accent-blue); font-size: 0.8rem; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── NAV ─── */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,26,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin: 0 -24px; padding-left: 24px; padding-right: 24px;
+  }
+  .nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .nav-logo {
+    font-weight: 700; font-size: 0.95rem;
+    color: var(--accent-blue);
+    margin-right: 16px; white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+  .nav-links a {
+    padding: 6px 14px; border-radius: 8px;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; transition: var(--transition);
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .nav-links a.active { color: var(--accent-blue); background: var(--accent-blue-glow); }
+
+  /* ─── SEARCH ─── */
+  .search-section { margin-bottom: 28px; }
+  .search-box {
+    position: relative; max-width: 600px; margin: 0 auto;
+  }
+  .search-box input {
+    width: 100%; padding: 14px 20px 14px 48px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-primary);
+    font-size: 0.95rem; font-family: 'Inter', sans-serif;
+    outline: none; transition: var(--transition);
+  }
+  .search-box input:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-blue-glow); }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box svg {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); width: 20px; height: 20px;
+  }
+  .search-stats {
+    text-align: center; margin-top: 10px;
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+
+  /* ─── STATS GRID ─── */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    text-align: center; transition: var(--transition);
+  }
+  .stat-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .stat-number { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+  .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-card.client .stat-number { color: var(--client-color); }
+  .stat-card.server .stat-number { color: var(--server-color); }
+  .stat-card.login .stat-number { color: var(--login-color); }
+  .stat-card.total .stat-number {
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* ─── FLOW DIAGRAM ─── */
+  .flow-section {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 32px;
+    margin-bottom: 36px;
+  }
+  .flow-section h2 {
+    font-size: 1.3rem; font-weight: 700; margin-bottom: 24px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .flow-diagram {
+    display: flex; align-items: stretch; gap: 0;
+    overflow-x: auto; padding-bottom: 8px;
+  }
+  .flow-step {
+    flex: 0 0 auto; min-width: 170px;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+  }
+  .flow-box {
+    padding: 14px 18px; border-radius: var(--radius-sm);
+    font-size: 0.82rem; font-weight: 600;
+    border: 1px solid var(--border); width: 100%;
+    transition: var(--transition);
+  }
+  .flow-box:hover { transform: scale(1.03); }
+  .flow-box.client-box { background: rgba(34,211,238,0.08); border-color: rgba(34,211,238,0.3); color: var(--accent-cyan); }
+  .flow-box.server-box { background: rgba(167,139,250,0.08); border-color: rgba(167,139,250,0.3); color: var(--accent-purple); }
+  .flow-box.both-box { background: rgba(52,211,153,0.08); border-color: rgba(52,211,153,0.3); color: var(--accent-green); }
+  .flow-detail { font-size: 0.7rem; color: var(--text-muted); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+  .flow-arrow {
+    display: flex; align-items: center; justify-content: center;
+    min-width: 48px; color: var(--text-muted); font-size: 1.2rem;
+  }
+
+  /* ─── SECTION ─── */
+  .protocol-section { margin-bottom: 36px; }
+  .section-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; cursor: pointer;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); transition: var(--transition);
+    user-select: none;
+  }
+  .section-header:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+  .section-header.open { border-radius: var(--radius) var(--radius) 0 0; border-bottom-color: transparent; }
+  .section-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .section-icon.cs { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
+  .section-icon.sc { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+  .section-icon.login { background: rgba(251,191,36,0.12); color: var(--accent-yellow); }
+  .section-title { flex: 1; }
+  .section-title h3 { font-size: 1rem; font-weight: 700; }
+  .section-title span { font-size: 0.78rem; color: var(--text-muted); }
+  .section-badge {
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 0.72rem; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .section-badge.cs-badge { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .section-badge.sc-badge { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+  .section-badge.login-badge { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+  .section-chevron {
+    transition: transform 0.3s ease; color: var(--text-muted); font-size: 1.2rem;
+  }
+  .section-header.open .section-chevron { transform: rotate(180deg); }
+
+  .section-body {
+    display: none; border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--bg-secondary);
+    overflow: hidden;
+  }
+  .section-body.show { display: block; }
+
+  /* ─── TABLE ─── */
+  .opcode-table { width: 100%; border-collapse: collapse; }
+  .opcode-table thead th {
+    padding: 12px 16px; text-align: left;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted);
+    background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 2;
+  }
+  .opcode-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition); cursor: pointer;
+  }
+  .opcode-table tbody tr:hover { background: rgba(99,102,241,0.04); }
+  .opcode-table tbody tr:last-child { border-bottom: none; }
+  .opcode-table tbody td { padding: 10px 16px; font-size: 0.85rem; vertical-align: top; }
+
+  .hex-code {
+    font-family: 'JetBrains Mono', monospace; font-weight: 600;
+    font-size: 0.82rem; padding: 2px 8px; border-radius: 6px;
+    display: inline-block;
+  }
+  .hex-code.cs-hex { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .hex-code.sc-hex { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+  .hex-code.login-hex { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+
+  .dec-code { font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.8rem; }
+
+  .opcode-name { font-weight: 600; color: var(--text-primary); }
+  .opcode-method {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+    color: var(--accent-green); display: block; margin-top: 2px;
+  }
+
+  .dir-badge {
+    font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
+    border-radius: 6px; white-space: nowrap;
+  }
+  .dir-badge.c2s { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .dir-badge.s2c { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+
+  /* ─── PACKET DETAIL ─── */
+  .packet-detail {
+    display: none; background: rgba(0,0,0,0.25);
+    border-top: 1px solid var(--border);
+  }
+  .packet-detail.show { display: table-row; }
+  .packet-detail td { padding: 0 !important; }
+  .packet-detail-inner {
+    padding: 16px 20px; display: flex; gap: 20px; flex-wrap: wrap;
+  }
+  .packet-struct {
+    flex: 1; min-width: 300px;
+  }
+  .packet-struct h4 {
+    font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .struct-list {
+    list-style: none; padding: 0;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
+  }
+  .struct-list li {
+    padding: 4px 10px; border-radius: 4px;
+    margin-bottom: 2px; display: flex; gap: 8px; align-items: center;
+  }
+  .struct-list li:nth-child(odd) { background: rgba(255,255,255,0.02); }
+  .type-tag {
+    font-size: 0.68rem; padding: 1px 6px; border-radius: 4px;
+    font-weight: 600; flex-shrink: 0;
+  }
+  .type-tag.u8 { background: rgba(34,211,238,0.15); color: var(--accent-cyan); }
+  .type-tag.u16 { background: rgba(99,102,241,0.15); color: var(--accent-blue); }
+  .type-tag.u32 { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+  .type-tag.str { background: rgba(52,211,153,0.15); color: var(--accent-green); }
+  .type-tag.pos { background: rgba(251,146,60,0.15); color: var(--accent-orange); }
+  .type-tag.item { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+  .type-tag.arr { background: rgba(251,191,36,0.15); color: var(--accent-yellow); }
+  .field-name { color: var(--text-secondary); }
+
+  .note-box {
+    flex: 0 0 280px;
+  }
+  .note-box h4 {
+    font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;
+  }
+  .note-box textarea {
+    width: 100%; height: 80px; padding: 10px;
+    background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+    border-radius: var(--radius-sm); color: var(--text-primary);
+    font-family: 'Inter', sans-serif; font-size: 0.82rem;
+    resize: vertical; outline: none; transition: var(--transition);
+  }
+  .note-box textarea:focus { border-color: var(--accent-blue); }
+  .note-box .note-saved {
+    font-size: 0.7rem; color: var(--accent-green);
+    margin-top: 4px; opacity: 0; transition: opacity 0.3s;
+  }
+  .note-box .note-saved.show { opacity: 1; }
+
+  /* ─── CATEGORY TAG ─── */
+  .cat-tag {
+    font-size: 0.68rem; padding: 2px 8px; border-radius: 10px;
+    font-weight: 500; white-space: nowrap;
+  }
+  .cat-movement { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .cat-combat { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+  .cat-trade { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+  .cat-channel { background: rgba(99,102,241,0.1); color: var(--accent-blue); }
+  .cat-container { background: rgba(251,146,60,0.1); color: var(--accent-orange); }
+  .cat-inventory { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+  .cat-creature { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+  .cat-map { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .cat-system { background: rgba(148,163,184,0.15); color: var(--text-secondary); }
+  .cat-party { background: rgba(251,146,60,0.1); color: var(--accent-orange); }
+  .cat-quest { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+  .cat-vip { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+  .cat-violation { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+  .cat-outfit { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+  .cat-ui { background: rgba(99,102,241,0.1); color: var(--accent-blue); }
+  .cat-effect { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .cat-shop { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+  .cat-extended { background: rgba(99,102,241,0.15); color: var(--accent-blue); }
+
+  /* ─── HIDDEN ROW ─── */
+  .hidden-row { display: none !important; }
+
+  /* ─── FILTER BUTTONS ─── */
+  .filter-bar {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    justify-content: center; margin-bottom: 24px;
+  }
+  .filter-btn {
+    padding: 6px 16px; border-radius: 20px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-secondary);
+    font-size: 0.78rem; font-weight: 500; cursor: pointer;
+    transition: var(--transition); font-family: 'Inter', sans-serif;
+  }
+  .filter-btn:hover { border-color: var(--border-accent); color: var(--text-primary); }
+  .filter-btn.active { background: var(--accent-blue-glow); border-color: var(--accent-blue); color: var(--accent-blue); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .opcode-table { font-size: 0.8rem; }
+    .opcode-table thead th, .opcode-table tbody td { padding: 8px 10px; }
+    .packet-detail-inner { flex-direction: column; }
+    .note-box { flex: 1 1 100%; }
+    .flow-diagram { flex-wrap: wrap; justify-content: center; }
+    .flow-arrow { min-width: 32px; }
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .protocol-section { animation: fadeIn 0.3s ease forwards; }
+
+  /* ─── HIGHLIGHT ─── */
+  mark {
+    background: rgba(251,191,36,0.3); color: var(--text-primary);
+    border-radius: 2px; padding: 0 2px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV BAR ═══════════ -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-logo">⚡ OTX Protocol</div>
+    <div class="nav-links">
+      <a href="#overview" class="active">Visão Geral</a>
+      <a href="#flow">Fluxo de Conexão</a>
+      <a href="#client-to-server">Client → Server</a>
+      <a href="#server-to-client">Server → Client</a>
+      <a href="#login-protocol">Login Protocol</a>
+      <a href="monsters.html" style="color:var(--accent-orange);">⚔️ Bestiário</a>
+      <a href="equipment.html" style="color:var(--accent-green);">🛡️ Arsenal</a>
+      <a href="spells.html" style="color:var(--accent-purple);">📜 Jutsus</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <h1>OTX Protocol Map</h1>
+  <p>Documentação completa da comunicação Cliente ↔ Servidor</p>
+  <div class="version-badge">Protocolo 8.54 • The Forgotten Server (OTX)</div>
+</header>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section id="overview">
+<div class="stats-grid">
+  <div class="stat-card total">
+    <div class="stat-number" id="stat-total">0</div>
+    <div class="stat-label">Total Opcodes</div>
+  </div>
+  <div class="stat-card client">
+    <div class="stat-number" id="stat-c2s">0</div>
+    <div class="stat-label">Client → Server</div>
+  </div>
+  <div class="stat-card server">
+    <div class="stat-number" id="stat-s2c">0</div>
+    <div class="stat-label">Server → Client</div>
+  </div>
+  <div class="stat-card login">
+    <div class="stat-number" id="stat-login">0</div>
+    <div class="stat-label">Login Protocol</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ SEARCH ═══════════ -->
+<div class="search-section">
+  <div class="search-box">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar por nome, opcode hex, método, categoria..." autocomplete="off">
+  </div>
+  <div class="search-stats" id="searchStats"></div>
+</div>
+
+<!-- ═══════════ FILTER BUTTONS ═══════════ -->
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn" data-filter="movement">🚶 Movimento</button>
+  <button class="filter-btn" data-filter="combat">⚔️ Combate</button>
+  <button class="filter-btn" data-filter="trade">💰 Trade</button>
+  <button class="filter-btn" data-filter="channel">💬 Chat</button>
+  <button class="filter-btn" data-filter="container">📦 Container</button>
+  <button class="filter-btn" data-filter="inventory">🎒 Inventário</button>
+  <button class="filter-btn" data-filter="creature">👹 Creature</button>
+  <button class="filter-btn" data-filter="map">🗺️ Mapa</button>
+  <button class="filter-btn" data-filter="party">🤝 Party</button>
+  <button class="filter-btn" data-filter="quest">📜 Quest</button>
+  <button class="filter-btn" data-filter="effect">✨ Efeitos</button>
+  <button class="filter-btn" data-filter="system">⚙️ Sistema</button>
+  <button class="filter-btn" data-filter="shop">🏪 Shop</button>
+  <button class="filter-btn" data-filter="vip">⭐ VIP</button>
+  <button class="filter-btn" data-filter="outfit">👔 Outfit</button>
+  <button class="filter-btn" data-filter="violation">🔨 Violation</button>
+  <button class="filter-btn" data-filter="ui">🖥️ UI</button>
+  <button class="filter-btn" data-filter="extended">🔌 Extended</button>
+</div>
+
+<!-- ═══════════ CONNECTION FLOW ═══════════ -->
+<section id="flow" class="flow-section">
+  <h2>🔄 Fluxo de Conexão</h2>
+  <div class="flow-diagram">
+    <div class="flow-step">
+      <div class="flow-box client-box">1. Client Conecta<br>ao Login Server</div>
+      <div class="flow-detail">TCP → porta login</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box client-box">2. Client Envia<br>Login Packet</div>
+      <div class="flow-detail">0x01 + RSA + XTEA</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box server-box">3. Server Responde<br>MOTD + Char List</div>
+      <div class="flow-detail">0x14 + 0x64</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box client-box">4. Client Conecta<br>ao Game Server</div>
+      <div class="flow-detail">TCP → porta game</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box server-box">5. Server Envia<br>Challenge</div>
+      <div class="flow-detail">0x1F</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box client-box">6. Client Envia<br>Game Login</div>
+      <div class="flow-detail">0x0A + RSA + XTEA</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box server-box">7. Server Envia<br>Init Game</div>
+      <div class="flow-detail">0x0A + mapa + stats</div>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-box both-box">8. Game Loop<br>Comunicação bilateral</div>
+      <div class="flow-detail">Ping / Actions / Updates</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ CLIENT → SERVER ═══════════ -->
+<section id="client-to-server" class="protocol-section">
+  <div class="section-header open" onclick="toggleSection(this)">
+    <div class="section-icon cs">📤</div>
+    <div class="section-title">
+      <h3>Client → Server <span>(Pacotes enviados pelo cliente)</span></h3>
+      <span>Opcodes processados por <code>parsePacket()</code> em protocolgame.cpp</span>
+    </div>
+    <span class="section-badge cs-badge" id="c2s-count"></span>
+    <span class="section-chevron">▼</span>
+  </div>
+  <div class="section-body show">
+    <table class="opcode-table" id="c2s-table">
+      <thead>
+        <tr>
+          <th style="width:70px">Hex</th>
+          <th style="width:50px">Dec</th>
+          <th style="width:50px">Dir</th>
+          <th>Nome / Método</th>
+          <th style="width:100px">Categoria</th>
+          <th style="width:160px">Estrutura</th>
+        </tr>
+      </thead>
+      <tbody id="c2s-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ SERVER → CLIENT ═══════════ -->
+<section id="server-to-client" class="protocol-section">
+  <div class="section-header open" onclick="toggleSection(this)">
+    <div class="section-icon sc">📥</div>
+    <div class="section-title">
+      <h3>Server → Client <span>(Pacotes enviados pelo servidor)</span></h3>
+      <span>Opcodes enviados pelos métodos <code>send*()</code> / <code>Add*()</code> em protocolgame.cpp</span>
+    </div>
+    <span class="section-badge sc-badge" id="s2c-count"></span>
+    <span class="section-chevron">▼</span>
+  </div>
+  <div class="section-body show">
+    <table class="opcode-table" id="s2c-table">
+      <thead>
+        <tr>
+          <th style="width:70px">Hex</th>
+          <th style="width:50px">Dec</th>
+          <th style="width:50px">Dir</th>
+          <th>Nome / Método</th>
+          <th style="width:100px">Categoria</th>
+          <th style="width:160px">Estrutura</th>
+        </tr>
+      </thead>
+      <tbody id="s2c-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════ LOGIN PROTOCOL ═══════════ -->
+<section id="login-protocol" class="protocol-section">
+  <div class="section-header open" onclick="toggleSection(this)">
+    <div class="section-icon login">🔑</div>
+    <div class="section-title">
+      <h3>Login Protocol <span>(Autenticação e lista de personagens)</span></h3>
+      <span>Processado por <code>protocollogin.cpp</code></span>
+    </div>
+    <span class="section-badge login-badge" id="login-count"></span>
+    <span class="section-chevron">▼</span>
+  </div>
+  <div class="section-body show">
+    <table class="opcode-table" id="login-table">
+      <thead>
+        <tr>
+          <th style="width:70px">Hex</th>
+          <th style="width:50px">Dec</th>
+          <th style="width:50px">Dir</th>
+          <th>Nome / Método</th>
+          <th style="width:100px">Categoria</th>
+          <th style="width:160px">Estrutura</th>
+        </tr>
+      </thead>
+      <tbody id="login-body"></tbody>
+    </table>
+  </div>
+</section>
+
+</div><!-- /container -->
+
+<footer>
+  <p>OTX Protocol Map — Gerado a partir de <code>protocolgame.cpp</code>, <code>protocollogin.cpp</code> e <code>protocol.lua</code></p>
+  <p style="margin-top:4px;">Protocolo 8.54 • The Forgotten Server (OTX) • Notas salvas no localStorage do navegador</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  OPCODE DATA — Mapeamento completo do servidor OTX 8.54
+// ══════════════════════════════════════════════════════════════
+
+const C2S = [
+  { hex:"0x14", dec:20, name:"Logout", method:"parseLogout", cat:"system", fields:[], desc:"Desconecta o jogador do servidor." },
+  { hex:"0x1E", dec:30, name:"Ping / Keep Alive", method:"parseReceivePing", cat:"system", fields:[], desc:"Resposta ao ping do servidor, mantém a conexão ativa." },
+  { hex:"0x32", dec:50, name:"Extended Opcode", method:"parseExtendedOpcode", cat:"extended", fields:[{t:"u8",n:"opcode"},{t:"str",n:"buffer"}], desc:"Opcode estendido do OTClient. Permite comunicação customizada via Lua scripts." },
+  { hex:"0x64", dec:100, name:"Auto Walk", method:"parseAutoWalk", cat:"movement", fields:[{t:"u8",n:"dirCount"},{t:"arr",n:"directions[dirCount]"}], desc:"Envia um caminho de autowalk com múltiplas direções. Cada byte de dir: 1=E,2=NE,3=N,4=NW,5=W,6=SW,7=S,8=SE." },
+  { hex:"0x65", dec:101, name:"Walk North", method:"parseMove(NORTH)", cat:"movement", fields:[], desc:"Move o jogador um tile para o norte." },
+  { hex:"0x66", dec:102, name:"Walk East", method:"parseMove(EAST)", cat:"movement", fields:[], desc:"Move o jogador um tile para o leste." },
+  { hex:"0x67", dec:103, name:"Walk South", method:"parseMove(SOUTH)", cat:"movement", fields:[], desc:"Move o jogador um tile para o sul." },
+  { hex:"0x68", dec:104, name:"Walk West", method:"parseMove(WEST)", cat:"movement", fields:[], desc:"Move o jogador um tile para o oeste." },
+  { hex:"0x69", dec:105, name:"Stop Auto Walk", method:"playerStopAutoWalk", cat:"movement", fields:[], desc:"Para o autowalk do jogador." },
+  { hex:"0x6A", dec:106, name:"Walk NorthEast", method:"parseMove(NE)", cat:"movement", fields:[], desc:"Move o jogador um tile na diagonal nordeste." },
+  { hex:"0x6B", dec:107, name:"Walk SouthEast", method:"parseMove(SE)", cat:"movement", fields:[], desc:"Move o jogador um tile na diagonal sudeste." },
+  { hex:"0x6C", dec:108, name:"Walk SouthWest", method:"parseMove(SW)", cat:"movement", fields:[], desc:"Move o jogador um tile na diagonal sudoeste." },
+  { hex:"0x6D", dec:109, name:"Walk NorthWest", method:"parseMove(NW)", cat:"movement", fields:[], desc:"Move o jogador um tile na diagonal noroeste." },
+  { hex:"0x6F", dec:111, name:"Turn North", method:"parseTurn(NORTH)", cat:"movement", fields:[], desc:"Gira o jogador para o norte sem mover." },
+  { hex:"0x70", dec:112, name:"Turn East", method:"parseTurn(EAST)", cat:"movement", fields:[], desc:"Gira o jogador para o leste sem mover." },
+  { hex:"0x71", dec:113, name:"Turn South", method:"parseTurn(SOUTH)", cat:"movement", fields:[], desc:"Gira o jogador para o sul sem mover." },
+  { hex:"0x72", dec:114, name:"Turn West", method:"parseTurn(WEST)", cat:"movement", fields:[], desc:"Gira o jogador para o oeste sem mover." },
+  { hex:"0x78", dec:120, name:"Move / Throw Item", method:"parseThrow", cat:"inventory", fields:[{t:"pos",n:"fromPos"},{t:"u16",n:"spriteId"},{t:"u8",n:"fromStackpos"},{t:"pos",n:"toPos"},{t:"u8",n:"count"}], desc:"Move um item de uma posição para outra (inventário, chão, container)." },
+  { hex:"0x79", dec:121, name:"Look in Shop", method:"parseLookInShop", cat:"shop", fields:[{t:"u16",n:"itemId"},{t:"u8",n:"count"}], desc:"Solicita a descrição de um item na janela do NPC shop." },
+  { hex:"0x7A", dec:122, name:"Buy from Shop", method:"parsePlayerPurchase", cat:"shop", fields:[{t:"u16",n:"itemId"},{t:"u8",n:"count"},{t:"u8",n:"amount"},{t:"u8",n:"ignoreCap"},{t:"u8",n:"inBackpacks"}], desc:"Compra um item do NPC shop." },
+  { hex:"0x7B", dec:123, name:"Sell to Shop", method:"parsePlayerSale", cat:"shop", fields:[{t:"u16",n:"itemId"},{t:"u8",n:"count"},{t:"u8",n:"amount"}], desc:"Vende um item para o NPC shop." },
+  { hex:"0x7C", dec:124, name:"Close Shop", method:"parseCloseShop", cat:"shop", fields:[], desc:"Fecha a janela do NPC shop." },
+  { hex:"0x7D", dec:125, name:"Request Trade", method:"parseRequestTrade", cat:"trade", fields:[{t:"pos",n:"pos"},{t:"u16",n:"spriteId"},{t:"u8",n:"stackpos"},{t:"u32",n:"playerId"}], desc:"Inicia uma troca com outro jogador." },
+  { hex:"0x7E", dec:126, name:"Look in Trade", method:"parseLookInTrade", cat:"trade", fields:[{t:"u8",n:"counterOffer"},{t:"u8",n:"index"}], desc:"Olha um item na janela de trade." },
+  { hex:"0x7F", dec:127, name:"Accept Trade", method:"parseAcceptTrade", cat:"trade", fields:[], desc:"Aceita a troca atual." },
+  { hex:"0x80", dec:128, name:"Close Trade", method:"parseCloseTrade", cat:"trade", fields:[], desc:"Cancela/fecha a troca atual." },
+  { hex:"0x82", dec:130, name:"Use Item", method:"parseUseItem", cat:"inventory", fields:[{t:"pos",n:"pos"},{t:"u16",n:"spriteId"},{t:"u8",n:"stackpos"},{t:"u8",n:"index"}], desc:"Usa um item (abrir container, usar runa, etc). isHotkey se pos.x==0xFFFF." },
+  { hex:"0x83", dec:131, name:"Use Item With", method:"parseUseItemEx", cat:"inventory", fields:[{t:"pos",n:"fromPos"},{t:"u16",n:"fromSpriteId"},{t:"u8",n:"fromStackpos"},{t:"pos",n:"toPos"},{t:"u16",n:"toSpriteId"},{t:"u8",n:"toStackpos"}], desc:"Usa um item em outro item ou posição (crosshair use)." },
+  { hex:"0x84", dec:132, name:"Use on Creature", method:"parseBattleWindow", cat:"combat", fields:[{t:"pos",n:"fromPos"},{t:"u16",n:"spriteId"},{t:"u8",n:"fromStackpos"},{t:"u32",n:"creatureId"}], desc:"Usa um item numa criatura (runa de ataque, etc)." },
+  { hex:"0x85", dec:133, name:"Rotate Item", method:"parseRotateItem", cat:"inventory", fields:[{t:"pos",n:"pos"},{t:"u16",n:"spriteId"},{t:"u8",n:"stackpos"}], desc:"Rotaciona um item (móveis, etc)." },
+  { hex:"0x87", dec:135, name:"Close Container", method:"parseCloseContainer", cat:"container", fields:[{t:"u8",n:"containerId"}], desc:"Fecha uma janela de container." },
+  { hex:"0x88", dec:136, name:"Up Container", method:"parseUpArrowContainer", cat:"container", fields:[{t:"u8",n:"containerId"}], desc:"Navega para o container pai (seta para cima)." },
+  { hex:"0x89", dec:137, name:"Edit Text", method:"parseTextWindow", cat:"ui", fields:[{t:"u32",n:"windowTextId"},{t:"str",n:"newText"}], desc:"Envia texto editado (writable items como livros)." },
+  { hex:"0x8A", dec:138, name:"Edit House List", method:"parseHouseWindow", cat:"ui", fields:[{t:"u8",n:"doorId"},{t:"u32",n:"id"},{t:"str",n:"text"}], desc:"Envia lista editada de uma house (guest list, etc)." },
+  { hex:"0x8C", dec:140, name:"Look At", method:"parseLookAt", cat:"system", fields:[{t:"pos",n:"pos"},{t:"u16",n:"spriteId"},{t:"u8",n:"stackpos"}], desc:"Olha um item/criatura para ver a descrição." },
+  { hex:"0x96", dec:150, name:"Say / Talk", method:"parseSay", cat:"channel", fields:[{t:"u8",n:"speakType"},{t:"str",n:"receiver (if private)"},{t:"u16",n:"channelId (if channel)"},{t:"str",n:"text"}], desc:"Envia uma mensagem. Tipo determina destino: Say, Whisper, Yell, Private, Channel." },
+  { hex:"0x97", dec:151, name:"Request Channels", method:"parseGetChannels", cat:"channel", fields:[], desc:"Solicita a lista de canais de chat disponíveis." },
+  { hex:"0x98", dec:152, name:"Open Channel", method:"parseOpenChannel", cat:"channel", fields:[{t:"u16",n:"channelId"}], desc:"Abre/entra em um canal de chat." },
+  { hex:"0x99", dec:153, name:"Close Channel", method:"parseCloseChannel", cat:"channel", fields:[{t:"u16",n:"channelId"}], desc:"Fecha/sai de um canal de chat." },
+  { hex:"0x9A", dec:154, name:"Open Private Channel", method:"parseOpenPriv", cat:"channel", fields:[{t:"str",n:"receiver"}], desc:"Abre um canal privado para conversa com outro jogador." },
+  { hex:"0x9B", dec:155, name:"Process Rule Violation", method:"parseProcessRuleViolation", cat:"violation", fields:[{t:"str",n:"reporter"}], desc:"GM processa um report de violação de regra." },
+  { hex:"0x9C", dec:156, name:"Close Rule Violation", method:"parseCloseRuleViolation", cat:"violation", fields:[{t:"str",n:"reporter"}], desc:"GM fecha um report de violação de regra." },
+  { hex:"0x9D", dec:157, name:"Cancel Rule Violation", method:"parseCancelRuleViolation", cat:"violation", fields:[], desc:"Jogador cancela seu report de violação." },
+  { hex:"0x9E", dec:158, name:"Close NPC Channel", method:"parseCloseNpc", cat:"channel", fields:[], desc:"Fecha o canal de conversa com NPC." },
+  { hex:"0xA0", dec:160, name:"Set Fight Modes", method:"parseFightModes", cat:"combat", fields:[{t:"u8",n:"fightMode (1=off,2=bal,3=def)"},{t:"u8",n:"chaseMode (0=stand,1=chase)"},{t:"u8",n:"secureMode (0=off,1=on)"}], desc:"Define os modos de combate do jogador." },
+  { hex:"0xA1", dec:161, name:"Attack", method:"parseAttack", cat:"combat", fields:[{t:"u32",n:"creatureId"},{t:"u32",n:"unknown1"},{t:"u32",n:"unknown2"}], desc:"Seta a criatura alvo para ataque." },
+  { hex:"0xA2", dec:162, name:"Follow", method:"parseFollow", cat:"combat", fields:[{t:"u32",n:"creatureId"}], desc:"Seta a criatura para seguir." },
+  { hex:"0xA3", dec:163, name:"Invite to Party", method:"parseInviteToParty", cat:"party", fields:[{t:"u32",n:"targetId"}], desc:"Convida um jogador para a party." },
+  { hex:"0xA4", dec:164, name:"Join Party", method:"parseJoinParty", cat:"party", fields:[{t:"u32",n:"targetId"}], desc:"Entra em uma party após receber convite." },
+  { hex:"0xA5", dec:165, name:"Revoke Party Invite", method:"parseRevokePartyInvite", cat:"party", fields:[{t:"u32",n:"targetId"}], desc:"Revoga o convite de um jogador para a party." },
+  { hex:"0xA6", dec:166, name:"Pass Leadership", method:"parsePassPartyLeadership", cat:"party", fields:[{t:"u32",n:"targetId"}], desc:"Passa a liderança da party para outro membro." },
+  { hex:"0xA7", dec:167, name:"Leave Party", method:"parseLeaveParty", cat:"party", fields:[], desc:"Sai da party atual." },
+  { hex:"0xA8", dec:168, name:"Share Experience", method:"parseSharePartyExperience", cat:"party", fields:[{t:"u8",n:"activate"},{t:"u8",n:"unknown"}], desc:"Ativa/desativa compartilhamento de experiência na party." },
+  { hex:"0xAA", dec:170, name:"Create Private Channel", method:"parseCreatePrivateChannel", cat:"channel", fields:[], desc:"Cria um canal de chat privado." },
+  { hex:"0xAB", dec:171, name:"Channel Invite", method:"parseChannelInvite", cat:"channel", fields:[{t:"str",n:"playerName"}], desc:"Convida um jogador para seu canal privado." },
+  { hex:"0xAC", dec:172, name:"Channel Exclude", method:"parseChannelExclude", cat:"channel", fields:[{t:"str",n:"playerName"}], desc:"Remove/bane um jogador do seu canal privado." },
+  { hex:"0xBE", dec:190, name:"Cancel Move", method:"parseCancelMove", cat:"movement", fields:[], desc:"Cancela ataque e seguir. Usado quando ESC é pressionado." },
+  { hex:"0xC9", dec:201, name:"Update Tile (Request)", method:"parseUpdateTile", cat:"map", fields:[{t:"pos",n:"pos"}], desc:"Solicita ao servidor re-enviar os dados de um tile." },
+  { hex:"0xCA", dec:202, name:"Update Container (Request)", method:"parseUpdateContainer", cat:"container", fields:[{t:"u8",n:"containerId"}], desc:"Solicita ao servidor re-enviar o conteúdo de um container (quando excede maxsize)." },
+  { hex:"0xD2", dec:210, name:"Request Outfit", method:"parseRequestOutfit", cat:"outfit", fields:[], desc:"Solicita a janela de troca de outfit." },
+  { hex:"0xD3", dec:211, name:"Set Outfit", method:"parseSetOutfit", cat:"outfit", fields:[{t:"u16",n:"lookType"},{t:"u8",n:"lookHead"},{t:"u8",n:"lookBody"},{t:"u8",n:"lookLegs"},{t:"u8",n:"lookFeet"},{t:"u8",n:"lookAddons"}], desc:"Define o novo outfit do jogador." },
+  { hex:"0xDC", dec:220, name:"Add VIP", method:"parseAddVip", cat:"vip", fields:[{t:"str",n:"playerName"}], desc:"Adiciona um jogador à lista VIP." },
+  { hex:"0xDD", dec:221, name:"Remove VIP", method:"parseRemoveVip", cat:"vip", fields:[{t:"u32",n:"guid"}], desc:"Remove um jogador da lista VIP pelo GUID." },
+  { hex:"0xE6", dec:230, name:"Bug Report", method:"parseBugReport", cat:"system", fields:[{t:"str",n:"comment"}], desc:"Envia um relatório de bug." },
+  { hex:"0xE7", dec:231, name:"Violation Window", method:"parseViolationWindow", cat:"violation", fields:[{t:"str",n:"target"},{t:"u8",n:"reason"},{t:"u8",n:"action"},{t:"str",n:"comment"},{t:"str",n:"statement"},{t:"u16",n:"statementId"},{t:"u8",n:"ipBanishment"}], desc:"GM envia punição através da janela de violação." },
+  { hex:"0xE8", dec:232, name:"Debug Assert", method:"parseDebugAssert", cat:"system", fields:[{t:"str",n:"assertLine"},{t:"str",n:"date"},{t:"str",n:"description"},{t:"str",n:"comment"}], desc:"Client envia informação de debug/crash." },
+  { hex:"0xF0", dec:240, name:"Quest Log", method:"parseQuests", cat:"quest", fields:[], desc:"Solicita a lista de quests do jogador." },
+  { hex:"0xF1", dec:241, name:"Quest Info", method:"parseQuestInfo", cat:"quest", fields:[{t:"u16",n:"questId"}], desc:"Solicita detalhes (missões) de uma quest específica." },
+  { hex:"0xF2", dec:242, name:"Violation Report", method:"parseViolationReport", cat:"violation", fields:[{t:"arr",n:"(skipped data)"}], desc:"Jogador envia report de violação (dados não processados pelo servidor)." }
+];
+
+const S2C = [
+  { hex:"0x0A", dec:10, name:"Init Game / Self Appear", method:"sendAddCreature(self)", cat:"system", fields:[{t:"u32",n:"playerId"},{t:"u16",n:"beatDuration (0x32)"},{t:"u8",n:"canReportBugs"},{t:"arr",n:"mapDescription"},{t:"arr",n:"inventory[10 slots]"},{t:"arr",n:"playerStats"},{t:"arr",n:"playerSkills"},{t:"arr",n:"worldLight"},{t:"arr",n:"creatureLight"},{t:"arr",n:"VIP list"}], desc:"Pacote inicial quando o jogador entra no mundo. Contém toda a informação necessária: mapa, inventário, stats, skills, luz, VIPs." },
+  { hex:"0x0B", dec:11, name:"GM Actions", method:"(inline sendAddCreature)", cat:"system", fields:[{t:"arr",n:"violationFlags[20]"}], desc:"Envia as flags de ações de GM (dentro do Init Game, se o jogador tem reasons > 1)." },
+  { hex:"0x14", dec:20, name:"Login Error / Disconnect", method:"disconnectClient", cat:"system", fields:[{t:"u8",n:"errorCode"},{t:"str",n:"message"}], desc:"Erro de login ou mensagem de desconexão. Fecha a conexão após enviar." },
+  { hex:"0x15", dec:21, name:"FYI Box", method:"sendFYIBox", cat:"ui", fields:[{t:"str",n:"message"}], desc:"Mostra uma caixa de informação (For Your Information) no client." },
+  { hex:"0x16", dec:22, name:"Login Wait", method:"(inline login)", cat:"system", fields:[{t:"str",n:"waitMessage"},{t:"u8",n:"waitTime"}], desc:"Informa posição na fila de espera quando o servidor está lotado." },
+  { hex:"0x1E", dec:30, name:"Ping", method:"sendPing", cat:"system", fields:[], desc:"Servidor envia ping para verificar se o client ainda está conectado." },
+  { hex:"0x1F", dec:31, name:"Challenge", method:"onConnect", cat:"system", fields:[{t:"u16",n:"random1"},{t:"u16",n:"zero"},{t:"u8",n:"random2"}], desc:"Desafio de conexão enviado quando o client conecta ao game server." },
+  { hex:"0x28", dec:40, name:"Death / Re-Login", method:"sendReLoginWindow", cat:"system", fields:[], desc:"Mostra a janela de re-login quando o jogador morre." },
+  { hex:"0x32", dec:50, name:"Extended Opcode", method:"sendExtendedOpcode", cat:"extended", fields:[{t:"u8",n:"opcode"},{t:"str",n:"buffer"}], desc:"Opcode estendido do OTClient. Usado para comunicação customizada via Lua." },
+  { hex:"0x64", dec:100, name:"Full Map Description", method:"AddMapDescription", cat:"map", fields:[{t:"pos",n:"playerPos"},{t:"arr",n:"mapData (18x14, multi-floor)"}], desc:"Envia a descrição completa do mapa ao redor do jogador (18x14 tiles, múltiplos andares)." },
+  { hex:"0x65", dec:101, name:"Map Top Row (North)", method:"(inline sendMoveCreature)", cat:"map", fields:[{t:"arr",n:"mapRow (18x1)"}], desc:"Nova faixa de tiles ao norte quando o jogador move para o norte." },
+  { hex:"0x66", dec:102, name:"Map Right Row (East)", method:"(inline sendMoveCreature)", cat:"map", fields:[{t:"arr",n:"mapColumn (1x14)"}], desc:"Nova faixa de tiles ao leste quando o jogador move para o leste." },
+  { hex:"0x67", dec:103, name:"Map Bottom Row (South)", method:"(inline sendMoveCreature)", cat:"map", fields:[{t:"arr",n:"mapRow (18x1)"}], desc:"Nova faixa de tiles ao sul quando o jogador move para o sul." },
+  { hex:"0x68", dec:104, name:"Map Left Row (West)", method:"(inline sendMoveCreature)", cat:"map", fields:[{t:"arr",n:"mapColumn (1x14)"}], desc:"Nova faixa de tiles ao oeste quando o jogador move para o oeste." },
+  { hex:"0x69", dec:105, name:"Update Tile", method:"sendUpdateTile", cat:"map", fields:[{t:"pos",n:"pos"},{t:"arr",n:"tileData | (0x01+0xFF if empty)"}], desc:"Atualiza os dados de um tile específico no mapa." },
+  { hex:"0x6A", dec:106, name:"Add Thing on Map", method:"AddTileItem / AddTileCreature", cat:"map", fields:[{t:"pos",n:"pos"},{t:"u8",n:"stackpos"},{t:"item",n:"itemData / creatureData"}], desc:"Adiciona um item ou criatura ao mapa numa posição específica." },
+  { hex:"0x6B", dec:107, name:"Update Thing on Map", method:"UpdateTileItem / sendCreatureTurn", cat:"map", fields:[{t:"pos",n:"pos"},{t:"u8",n:"stackpos"},{t:"item",n:"newItemData"}], desc:"Atualiza um item no mapa (ou gira uma criatura com 0x63 + creatureId + dir)." },
+  { hex:"0x6C", dec:108, name:"Remove Thing from Map", method:"RemoveTileItem", cat:"map", fields:[{t:"pos",n:"pos"},{t:"u8",n:"stackpos"}], desc:"Remove um item ou criatura do mapa." },
+  { hex:"0x6D", dec:109, name:"Move Creature", method:"sendMoveCreature", cat:"creature", fields:[{t:"pos",n:"oldPos"},{t:"u8",n:"oldStackpos"},{t:"pos",n:"newPos"}], desc:"Move uma criatura de uma posição para outra no mapa." },
+  { hex:"0x6E", dec:110, name:"Open Container", method:"sendContainer", cat:"container", fields:[{t:"u8",n:"containerId"},{t:"u16",n:"itemId"},{t:"str",n:"name"},{t:"u8",n:"capacity"},{t:"u8",n:"hasParent"},{t:"u8",n:"itemCount"},{t:"arr",n:"items[]"}], desc:"Abre uma janela de container com seu conteúdo." },
+  { hex:"0x6F", dec:111, name:"Close Container", method:"sendCloseContainer", cat:"container", fields:[{t:"u8",n:"containerId"}], desc:"Fecha uma janela de container." },
+  { hex:"0x70", dec:112, name:"Add to Container", method:"AddContainerItem", cat:"container", fields:[{t:"u8",n:"containerId"},{t:"item",n:"item"}], desc:"Adiciona um item a um container aberto." },
+  { hex:"0x71", dec:113, name:"Update in Container", method:"UpdateContainerItem", cat:"container", fields:[{t:"u8",n:"containerId"},{t:"u8",n:"slot"},{t:"item",n:"item"}], desc:"Atualiza um item num slot específico do container." },
+  { hex:"0x72", dec:114, name:"Remove from Container", method:"RemoveContainerItem", cat:"container", fields:[{t:"u8",n:"containerId"},{t:"u8",n:"slot"}], desc:"Remove um item de um slot específico do container." },
+  { hex:"0x78", dec:120, name:"Set Inventory Slot", method:"AddInventoryItem", cat:"inventory", fields:[{t:"u8",n:"slot"},{t:"item",n:"item"}], desc:"Define/atualiza um item num slot do inventário." },
+  { hex:"0x79", dec:121, name:"Clear Inventory Slot", method:"RemoveInventoryItem", cat:"inventory", fields:[{t:"u8",n:"slot"}], desc:"Remove o item de um slot do inventário." },
+  { hex:"0x7A", dec:122, name:"Open NPC Trade", method:"sendShop", cat:"shop", fields:[{t:"u8",n:"itemCount"},{t:"arr",n:"shopItems[] (clientId, subType, name, weight, buyPrice, sellPrice)"}], desc:"Abre a janela de trade do NPC com a lista de itens." },
+  { hex:"0x7B", dec:123, name:"Player Goods", method:"sendGoods", cat:"shop", fields:[{t:"u32",n:"money"},{t:"u8",n:"goodsCount"},{t:"arr",n:"goods[] (itemId, count)"}], desc:"Envia a quantidade de dinheiro e itens vendíveis que o jogador possui." },
+  { hex:"0x7C", dec:124, name:"Close NPC Trade", method:"sendCloseShop", cat:"shop", fields:[], desc:"Fecha a janela de trade do NPC." },
+  { hex:"0x7D", dec:125, name:"Own Trade", method:"sendTradeItemRequest(ack)", cat:"trade", fields:[{t:"str",n:"playerName"},{t:"u8",n:"itemCount"},{t:"arr",n:"items[]"}], desc:"Mostra os itens que o jogador ofereceu na trade." },
+  { hex:"0x7E", dec:126, name:"Counter Trade", method:"sendTradeItemRequest(!ack)", cat:"trade", fields:[{t:"str",n:"playerName"},{t:"u8",n:"itemCount"},{t:"arr",n:"items[]"}], desc:"Mostra os itens que o outro jogador ofereceu na trade." },
+  { hex:"0x7F", dec:127, name:"Close Trade", method:"sendCloseTrade", cat:"trade", fields:[], desc:"Fecha a janela de trade entre jogadores." },
+  { hex:"0x82", dec:130, name:"World Light (Ambient)", method:"AddWorldLight", cat:"effect", fields:[{t:"u8",n:"lightLevel"},{t:"u8",n:"lightColor"}], desc:"Define a luz ambiente do mundo (ciclo dia/noite)." },
+  { hex:"0x83", dec:131, name:"Magic Effect", method:"AddMagicEffect", cat:"effect", fields:[{t:"pos",n:"pos"},{t:"u8",n:"effectType (+1)"}], desc:"Exibe um efeito mágico numa posição. Type é enviado como type+1." },
+  { hex:"0x84", dec:132, name:"Animated Text", method:"AddAnimatedText", cat:"effect", fields:[{t:"pos",n:"pos"},{t:"u8",n:"color"},{t:"str",n:"text"}], desc:"Mostra texto animado flutuante (dano, heal, exp, etc)." },
+  { hex:"0x85", dec:133, name:"Distance Shoot", method:"AddDistanceShoot", cat:"effect", fields:[{t:"pos",n:"fromPos"},{t:"pos",n:"toPos"},{t:"u8",n:"shootType (+1)"}], desc:"Exibe um projétil voando entre duas posições. Type é enviado como type+1." },
+  { hex:"0x86", dec:134, name:"Creature Mark / Square", method:"sendCreatureSquare", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u8",n:"color"}], desc:"Marca uma criatura com um quadrado colorido." },
+  { hex:"0x8C", dec:140, name:"Creature Health", method:"AddCreatureHealth", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u8",n:"healthPercent"}], desc:"Atualiza a porcentagem de vida de uma criatura." },
+  { hex:"0x8D", dec:141, name:"Creature Light", method:"AddCreatureLight", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u8",n:"lightLevel"},{t:"u8",n:"lightColor"}], desc:"Define a luz emitida por uma criatura (tocha, magia, etc)." },
+  { hex:"0x8E", dec:142, name:"Creature Outfit", method:"sendCreatureOutfit", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u16",n:"lookType"},{t:"u8",n:"head/body/legs/feet/addons"}], desc:"Atualiza o outfit de uma criatura." },
+  { hex:"0x8F", dec:143, name:"Creature Speed", method:"sendChangeSpeed", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u16",n:"speed"}], desc:"Atualiza a velocidade de uma criatura." },
+  { hex:"0x90", dec:144, name:"Creature Skull", method:"sendCreatureSkull", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u8",n:"skullType"}], desc:"Atualiza o ícone de skull de uma criatura." },
+  { hex:"0x91", dec:145, name:"Creature Party Shield", method:"sendCreatureShield", cat:"creature", fields:[{t:"u32",n:"creatureId"},{t:"u8",n:"shieldType"}], desc:"Atualiza o ícone de party shield de uma criatura." },
+  { hex:"0x96", dec:150, name:"Edit Text Window", method:"sendTextWindow", cat:"ui", fields:[{t:"u32",n:"windowId"},{t:"u16",n:"itemId"},{t:"u16",n:"maxLen"},{t:"str",n:"text"},{t:"str",n:"writer"},{t:"str",n:"date"}], desc:"Abre uma janela de edição de texto (livros, scrolls, etc)." },
+  { hex:"0x97", dec:151, name:"Edit House List", method:"sendHouseWindow", cat:"ui", fields:[{t:"u8",n:"unknown (0)"},{t:"u32",n:"windowId"},{t:"str",n:"text"}], desc:"Abre a janela de edição de lista da house." },
+  { hex:"0xA0", dec:160, name:"Player Stats", method:"AddPlayerStats", cat:"system", fields:[{t:"u16",n:"health"},{t:"u16",n:"maxHealth"},{t:"u32",n:"freeCapacity (*100)"},{t:"u32",n:"experience"},{t:"u16",n:"level"},{t:"u8",n:"levelPercent"},{t:"u16",n:"mana"},{t:"u16",n:"maxMana"},{t:"u8",n:"magicLevel"},{t:"u8",n:"magicPercent"},{t:"u8",n:"soul"},{t:"u16",n:"staminaMinutes"}], desc:"Envia todas as estatísticas do jogador." },
+  { hex:"0xA1", dec:161, name:"Player Skills", method:"AddPlayerSkills", cat:"system", fields:[{t:"arr",n:"7x (u8 level, u8 percent) — Fist, Club, Sword, Axe, Dist, Shield, Fish"}], desc:"Envia todos os skills do jogador com nível e percentual." },
+  { hex:"0xA2", dec:162, name:"Player Icons / State", method:"sendIcons", cat:"system", fields:[{t:"u16",n:"iconsBitmask"}], desc:"Envia os ícones de condição do jogador (poisoned, burning, etc) como bitmask." },
+  { hex:"0xA3", dec:163, name:"Cancel Target", method:"sendCancelTarget", cat:"combat", fields:[{t:"u32",n:"zero"}], desc:"Cancela o alvo de ataque atual." },
+  { hex:"0xAA", dec:170, name:"Creature Speak / Talk", method:"AddCreatureSpeak", cat:"channel", fields:[{t:"u32",n:"statementId"},{t:"str",n:"name"},{t:"u16",n:"level"},{t:"u8",n:"speakType"},{t:"pos",n:"pos (if say/whisper/yell)"},{t:"u16",n:"channelId (if channel)"},{t:"u32",n:"time (if RVR)"},{t:"str",n:"text"}], desc:"Envia uma mensagem de fala. O conteúdo varia conforme o speakType." },
+  { hex:"0xAB", dec:171, name:"Channels Dialog", method:"sendChannelsDialog", cat:"channel", fields:[{t:"u8",n:"channelCount"},{t:"arr",n:"channels[] (u16 id, string name)"}], desc:"Mostra o diálogo de lista de canais disponíveis." },
+  { hex:"0xAC", dec:172, name:"Open Channel", method:"sendChannel", cat:"channel", fields:[{t:"u16",n:"channelId"},{t:"str",n:"channelName"}], desc:"Abre uma aba de canal de chat." },
+  { hex:"0xAD", dec:173, name:"Open Private Channel", method:"sendOpenPrivateChannel", cat:"channel", fields:[{t:"str",n:"receiver"}], desc:"Abre uma aba de canal privado." },
+  { hex:"0xAE", dec:174, name:"Rule Violation Channel", method:"sendRuleViolationsChannel", cat:"violation", fields:[{t:"u16",n:"channelId"},{t:"arr",n:"violations[]"}], desc:"Abre o canal de violações de regra com os reports ativos." },
+  { hex:"0xAF", dec:175, name:"Remove Report", method:"sendRemoveReport", cat:"violation", fields:[{t:"str",n:"name"}], desc:"Remove um report de violação do canal." },
+  { hex:"0xB0", dec:176, name:"Cancel Rule Violation", method:"sendRuleViolationCancel", cat:"violation", fields:[{t:"str",n:"name"}], desc:"Cancela um report de violação." },
+  { hex:"0xB1", dec:177, name:"Lock Rule Violation", method:"sendLockRuleViolation", cat:"violation", fields:[], desc:"Trava o report de violação (GM está processando)." },
+  { hex:"0xB2", dec:178, name:"Open Own Channel", method:"sendCreatePrivateChannel", cat:"channel", fields:[{t:"u16",n:"channelId"},{t:"str",n:"channelName"}], desc:"Cria e abre um canal de chat privado do jogador." },
+  { hex:"0xB3", dec:179, name:"Close Channel", method:"sendClosePrivate", cat:"channel", fields:[{t:"u16",n:"channelId"}], desc:"Fecha uma aba de canal de chat." },
+  { hex:"0xB4", dec:180, name:"Text Message", method:"AddTextMessage", cat:"ui", fields:[{t:"u8",n:"messageClass"},{t:"str",n:"message"}], desc:"Envia uma mensagem de texto do sistema (status, info, warning, etc)." },
+  { hex:"0xB5", dec:181, name:"Cancel Walk", method:"sendCancelWalk", cat:"movement", fields:[{t:"u8",n:"direction"}], desc:"Cancela o movimento do jogador e informa a direção que ele deve olhar." },
+  { hex:"0xBE", dec:190, name:"Floor Change Up", method:"MoveUpCreature", cat:"map", fields:[{t:"arr",n:"floorDescriptions"},{t:"arr",n:"westRow"},{t:"arr",n:"northRow"}], desc:"Envia novos dados do mapa quando o jogador sobe de andar." },
+  { hex:"0xBF", dec:191, name:"Floor Change Down", method:"MoveDownCreature", cat:"map", fields:[{t:"arr",n:"floorDescriptions"},{t:"arr",n:"eastRow"},{t:"arr",n:"southRow"}], desc:"Envia novos dados do mapa quando o jogador desce de andar." },
+  { hex:"0xC8", dec:200, name:"Outfit Window", method:"sendOutfitWindow", cat:"outfit", fields:[{t:"u16",n:"currentOutfit"},{t:"u8",n:"head/body/legs/feet/addons"},{t:"u8",n:"outfitCount"},{t:"arr",n:"outfits[] (u16 lookType, string name, u8 addons)"}], desc:"Abre a janela de escolha de outfit." },
+  { hex:"0xD2", dec:210, name:"VIP Add", method:"sendVIP", cat:"vip", fields:[{t:"u32",n:"guid"},{t:"str",n:"name"},{t:"u8",n:"isOnline"}], desc:"Adiciona um jogador à lista VIP do client." },
+  { hex:"0xD3", dec:211, name:"VIP Login", method:"sendVIPLogIn", cat:"vip", fields:[{t:"u32",n:"guid"}], desc:"Notifica que um jogador da VIP ficou online." },
+  { hex:"0xD4", dec:212, name:"VIP Logout", method:"sendVIPLogOut", cat:"vip", fields:[{t:"u32",n:"guid"}], desc:"Notifica que um jogador da VIP ficou offline." },
+  { hex:"0xDC", dec:220, name:"Tutorial Hint", method:"sendTutorial", cat:"ui", fields:[{t:"u8",n:"tutorialId"}], desc:"Mostra uma dica de tutorial no client." },
+  { hex:"0xDD", dec:221, name:"Minimap Flag", method:"sendAddMarker", cat:"ui", fields:[{t:"pos",n:"pos"},{t:"u8",n:"markType"},{t:"str",n:"description"}], desc:"Adiciona um marcador/flag no minimapa." },
+  { hex:"0xF0", dec:240, name:"Quest Log", method:"sendQuests", cat:"quest", fields:[{t:"u16",n:"questCount"},{t:"arr",n:"quests[] (u16 id, string name, u8 completed)"}], desc:"Envia a lista de quests do jogador." },
+  { hex:"0xF1", dec:241, name:"Quest Line", method:"sendQuestInfo", cat:"quest", fields:[{t:"u16",n:"questId"},{t:"u8",n:"missionCount"},{t:"arr",n:"missions[] (string name, string description)"}], desc:"Envia os detalhes das missões de uma quest." }
+];
+
+const LOGIN = [
+  { hex:"0x01", dec:1, name:"Login Packet", method:"(client sends)", cat:"system", dir:"C→S", fields:[{t:"u8",n:"protocolId (0x01)"},{t:"u16",n:"OS"},{t:"u16",n:"version"},{t:"u32",n:"datSignature"},{t:"u32",n:"sprSignature"},{t:"u32",n:"picSignature"},{t:"u8",n:"RSA block start (0x00)"},{t:"u32",n:"xteaKey[4]"},{t:"str",n:"accountName"},{t:"str",n:"password"}], desc:"Pacote de login enviado pelo client ao conectar no login server. Encriptado com RSA." },
+  { hex:"0x0A", dec:10, name:"Login Error", method:"disconnectClient", cat:"system", dir:"S→C", fields:[{t:"str",n:"errorMessage"}], desc:"Erro de autenticação (conta inválida, senha incorreta, ban, etc)." },
+  { hex:"0x14", dec:20, name:"MOTD (Message of the Day)", method:"(inline parseFirstPacket)", cat:"system", dir:"S→C", fields:[{t:"str",n:"motd (format: id\\nmessage)"}], desc:"Mensagem do dia enviada pelo servidor." },
+  { hex:"0x64", dec:100, name:"Character List", method:"(inline parseFirstPacket)", cat:"system", dir:"S→C", fields:[{t:"u8",n:"characterCount"},{t:"arr",n:"characters[] (string name, string worldName, u32 ip, u16 port)"},{t:"u16",n:"premiumDays"}], desc:"Lista de personagens da conta com informações de conexão ao game server." },
+  { hex:"0x0A (game)", dec:10, name:"Game Login Packet", method:"parseFirstPacket", cat:"system", dir:"C→S", fields:[{t:"u16",n:"OS"},{t:"u16",n:"version"},{t:"u8",n:"RSA block"},{t:"u32",n:"xteaKey[4]"},{t:"u8",n:"isGamemaster"},{t:"str",n:"accountName"},{t:"str",n:"characterName"},{t:"str",n:"password"}], desc:"Pacote de login enviado pelo client ao conectar no game server (após selecionar personagem)." }
+];
+
+// ══════════════════════════════════════════════════════════════
+//  RENDER FUNCTIONS
+// ══════════════════════════════════════════════════════════════
+
+function renderTypeTag(type) {
+  const cls = type === 'u8' ? 'u8' : type === 'u16' ? 'u16' : type === 'u32' ? 'u32' : type === 'str' ? 'str' : type === 'pos' ? 'pos' : type === 'item' ? 'item' : 'arr';
+  return `<span class="type-tag ${cls}">${type}</span>`;
+}
+
+function renderFields(fields) {
+  if (!fields.length) return '<span style="color:var(--text-muted);font-size:0.78rem">— sem dados —</span>';
+  return fields.slice(0, 3).map(f => `${renderTypeTag(f.t)} <span class="field-name">${f.n}</span>`).join('<br>') +
+    (fields.length > 3 ? `<br><span style="color:var(--text-muted);font-size:0.72rem">+${fields.length - 3} mais...</span>` : '');
+}
+
+function renderFieldsFull(fields) {
+  if (!fields.length) return '<li style="color:var(--text-muted)">Sem dados adicionais no pacote</li>';
+  return fields.map(f => `<li>${renderTypeTag(f.t)} <span class="field-name">${f.n}</span></li>`).join('');
+}
+
+function renderRow(item, type, index) {
+  const hexClass = type === 'c2s' ? 'cs-hex' : type === 's2c' ? 'sc-hex' : 'login-hex';
+  const dirBadge = type === 'c2s' ? '<span class="dir-badge c2s">C→S</span>' :
+                   type === 's2c' ? '<span class="dir-badge s2c">S→C</span>' :
+                   `<span class="dir-badge ${(item.dir||'').includes('C→S') ? 'c2s' : 's2c'}">${item.dir || 'S→C'}</span>`;
+  const catLabel = item.cat.charAt(0).toUpperCase() + item.cat.slice(1);
+
+  const noteKey = `note_${type}_${item.hex}`;
+  const savedNote = localStorage.getItem(noteKey) || '';
+
+  return `
+    <tr class="opcode-row" data-cat="${item.cat}" data-search="${item.hex} ${item.dec} ${item.name} ${item.method} ${item.cat} ${item.desc}".toLowerCase() onclick="toggleDetail('${type}-detail-${index}')">
+      <td><span class="hex-code ${hexClass}">${item.hex}</span></td>
+      <td><span class="dec-code">${item.dec}</span></td>
+      <td>${dirBadge}</td>
+      <td>
+        <span class="opcode-name">${item.name}</span>
+        <span class="opcode-method">${item.method}</span>
+      </td>
+      <td><span class="cat-tag cat-${item.cat}">${catLabel}</span></td>
+      <td>${renderFields(item.fields)}</td>
+    </tr>
+    <tr class="packet-detail" id="${type}-detail-${index}">
+      <td colspan="6">
+        <div class="packet-detail-inner">
+          <div class="packet-struct">
+            <h4>📦 Estrutura do Pacote</h4>
+            <ul class="struct-list">${renderFieldsFull(item.fields)}</ul>
+            <p style="margin-top:12px;font-size:0.82rem;color:var(--text-secondary);line-height:1.5">${item.desc}</p>
+          </div>
+          <div class="note-box">
+            <h4>📝 Suas Anotações</h4>
+            <textarea placeholder="Adicione notas sobre este opcode..." oninput="saveNote('${noteKey}', this)" onfocus="this.parentNode.querySelector('.note-saved').classList.remove('show')">${savedNote}</textarea>
+            <div class="note-saved">✓ Salvo</div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `;
+}
+
+function saveNote(key, textarea) {
+  localStorage.setItem(key, textarea.value);
+  clearTimeout(textarea._saveTimeout);
+  textarea._saveTimeout = setTimeout(() => {
+    const saved = textarea.parentNode.querySelector('.note-saved');
+    saved.classList.add('show');
+    setTimeout(() => saved.classList.remove('show'), 1500);
+  }, 500);
+}
+
+function toggleDetail(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('show');
+}
+
+function toggleSection(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('show');
+}
+
+// ══════════════════════════════════════════════════════════════
+//  INIT — BUILD TABLES
+// ══════════════════════════════════════════════════════════════
+
+function init() {
+  const c2sBody = document.getElementById('c2s-body');
+  const s2cBody = document.getElementById('s2c-body');
+  const loginBody = document.getElementById('login-body');
+
+  c2sBody.innerHTML = C2S.map((item, i) => renderRow(item, 'c2s', i)).join('');
+  s2cBody.innerHTML = S2C.map((item, i) => renderRow(item, 's2c', i)).join('');
+  loginBody.innerHTML = LOGIN.map((item, i) => renderRow(item, 'login', i)).join('');
+
+  // Stats
+  document.getElementById('stat-c2s').textContent = C2S.length;
+  document.getElementById('stat-s2c').textContent = S2C.length;
+  document.getElementById('stat-login').textContent = LOGIN.length;
+  document.getElementById('stat-total').textContent = C2S.length + S2C.length + LOGIN.length;
+  document.getElementById('c2s-count').textContent = C2S.length + ' opcodes';
+  document.getElementById('s2c-count').textContent = S2C.length + ' opcodes';
+  document.getElementById('login-count').textContent = LOGIN.length + ' opcodes';
+
+  // Search
+  document.getElementById('searchInput').addEventListener('input', doSearch);
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterByCategory(btn.dataset.filter);
+    });
+  });
+
+  // Nav scroll highlight
+  const sections = ['overview','flow','client-to-server','server-to-client','login-protocol'];
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= 120) current = id;
+    });
+    navLinks.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+}
+
+function doSearch() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  let visible = 0, total = 0;
+
+  document.querySelectorAll('.opcode-row').forEach(row => {
+    total++;
+    const text = row.dataset.search || '';
+    const match = !query || text.includes(query);
+    row.classList.toggle('hidden-row', !match);
+    // also hide its detail row
+    const nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains('packet-detail')) {
+      if (!match) { nextRow.classList.remove('show'); nextRow.classList.add('hidden-row'); }
+      else { nextRow.classList.remove('hidden-row'); }
+    }
+    if (match) visible++;
+  });
+
+  const stats = document.getElementById('searchStats');
+  if (query) {
+    stats.textContent = `Mostrando ${visible} de ${total} opcodes`;
+  } else {
+    stats.textContent = '';
+  }
+}
+
+function filterByCategory(cat) {
+  document.querySelectorAll('.opcode-row').forEach(row => {
+    const match = cat === 'all' || row.dataset.cat === cat;
+    row.classList.toggle('hidden-row', !match);
+    const nextRow = row.nextElementSibling;
+    if (nextRow && nextRow.classList.contains('packet-detail')) {
+      if (!match) { nextRow.classList.remove('show'); nextRow.classList.add('hidden-row'); }
+      else { nextRow.classList.remove('hidden-row'); }
+    }
+  });
+
+  // Update search stats
+  const visible = document.querySelectorAll('.opcode-row:not(.hidden-row)').length;
+  const total = document.querySelectorAll('.opcode-row').length;
+  const stats = document.getElementById('searchStats');
+  if (cat !== 'all') {
+    stats.textContent = `Filtro: ${cat} — ${visible} de ${total} opcodes`;
+  } else {
+    stats.textContent = '';
+  }
+
+  // Clear search input
+  document.getElementById('searchInput').value = '';
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

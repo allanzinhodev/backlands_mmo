@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Inuzuka Iraku" script="Inuzuka Iraku.lua"  walkinterval="100000" floorchange="0" speed="100">
+		<health now="100" max="100"/>
+		<look type="465" head="17" body="22" legs="114" feet="0" addons="2"/>
+		<parameters>
+				<parameter key="message_greet" value="Hello |PLAYERNAME|"/>
+		</parameters>
+</npc>

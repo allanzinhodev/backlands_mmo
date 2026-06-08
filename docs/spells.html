@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jutsus — Técnicas do Mundo Shinobi</title>
+<meta name="description" content="Documentação completa de todos os Jutsus e Spells do mundo Shinobi, separados por clã e vocação.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(99,102,241,0.3);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #6366f1;
+    --accent-blue-glow: rgba(99,102,241,0.15);
+    --accent-cyan: #22d3ee;
+    --accent-green: #34d399;
+    --accent-green-glow: rgba(52,211,153,0.1);
+    --accent-orange: #fb923c;
+    --accent-orange-glow: rgba(251,146,60,0.1);
+    --accent-red: #f87171;
+    --accent-red-glow: rgba(248,113,113,0.1);
+    --accent-purple: #a78bfa;
+    --accent-purple-glow: rgba(167,139,250,0.1);
+    --accent-yellow: #fbbf24;
+    --accent-yellow-glow: rgba(251,191,36,0.1);
+    --accent-pink: #f472b6;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary); color: var(--text-primary);
+    line-height: 1.6; min-height: 100vh;
+  }
+  body::before {
+    content: ''; position: fixed; top:0; left:0; right:0; bottom:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(167,139,250,0.06), transparent),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(52,211,153,0.06), transparent),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(34,211,238,0.04), transparent);
+    pointer-events: none; z-index: 0;
+  }
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ─── NAV ─── */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,26,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border); padding: 12px 0;
+    margin: 0 -24px; padding-left: 24px; padding-right: 24px;
+  }
+  .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .nav-logo { font-weight: 700; font-size: 0.95rem; color: var(--accent-purple); margin-right: 16px; font-family: 'JetBrains Mono', monospace; }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+  .nav-links a { padding: 6px 14px; border-radius: 8px; color: var(--text-secondary); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: var(--transition); white-space: nowrap; }
+  .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .nav-links a.active { color: var(--accent-purple); background: var(--accent-purple-glow); }
+
+  /* ─── HEADER ─── */
+  header { padding: 48px 0 32px; text-align: center; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  header h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: -0.02em; margin-bottom: 8px; }
+  header p { color: var(--text-secondary); font-size: 1.05rem; }
+  .version-badge { display: inline-block; margin-top: 12px; padding: 4px 14px; border-radius: 20px; background: var(--accent-purple-glow); border: 1px solid rgba(167,139,250,0.3); color: var(--accent-purple); font-size: 0.8rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  /* ─── SEARCH ─── */
+  .search-section { margin-bottom: 28px; }
+  .search-box { position: relative; max-width: 600px; margin: 0 auto; }
+  .search-box input { width: 100%; padding: 14px 20px 14px 48px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-primary); font-size: 0.95rem; font-family: 'Inter', sans-serif; outline: none; transition: var(--transition); }
+  .search-box input:focus { border-color: var(--accent-purple); box-shadow: 0 0 0 3px var(--accent-purple-glow); }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box svg { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 20px; height: 20px; }
+  .search-stats { text-align: center; margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); }
+
+  /* ─── SECTION ─── */
+  .spell-section { margin-bottom: 36px; }
+  .section-header { display: flex; align-items: center; gap: 12px; padding: 16px 20px; cursor: pointer; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); transition: var(--transition); user-select: none; }
+  .section-header:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+  .section-header.open { border-radius: var(--radius) var(--radius) 0 0; border-bottom-color: transparent; }
+  .section-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
+  .section-title { flex: 1; }
+  .section-title h3 { font-size: 1rem; font-weight: 700; }
+  .section-title span { font-size: 0.78rem; color: var(--text-muted); }
+  .section-badge { padding: 3px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+  .section-chevron { transition: transform 0.3s ease; color: var(--text-muted); font-size: 1.2rem; }
+  .section-header.open .section-chevron { transform: rotate(180deg); }
+  .section-body { display: none; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius) var(--radius); background: var(--bg-secondary); overflow: hidden; }
+  .section-body.show { display: block; }
+
+  /* Section colors */
+  .si-uchiha { background: rgba(248,113,113,0.12); color: var(--accent-red); }
+  .si-hyuuga { background: rgba(251,251,251,0.12); color: #fff; }
+  .si-aburame { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
+  .si-inuzuka { background: rgba(251,146,60,0.12); color: var(--accent-orange); }
+  .si-maito { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+  .si-akimichi { background: rgba(251,191,36,0.12); color: var(--accent-yellow); }
+  .si-genjutsu { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+
+  .sb-uchiha { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+  .sb-hyuuga { background: rgba(251,251,251,0.1); color: #fff; }
+  .sb-aburame { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .sb-inuzuka { background: rgba(251,146,60,0.1); color: var(--accent-orange); }
+  .sb-maito { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+  .sb-akimichi { background: rgba(251,191,36,0.1); color: var(--accent-yellow); }
+  .sb-genjutsu { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+
+  /* ─── SPELL CARDS ─── */
+  .spell-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; padding: 20px; }
+  .spell-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: var(--transition); animation: cardIn 0.4s ease forwards; opacity: 0; display: flex; flex-direction: column; }
+  .spell-card:hover { border-color: var(--border-accent); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  .spell-card-header { padding: 16px 18px 12px; border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+  .spell-name { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); }
+  .spell-words { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--accent-purple); background: var(--accent-purple-glow); padding: 4px 10px; border-radius: 6px; display: inline-block; align-self: flex-start; border: 1px dashed rgba(167,139,250,0.3); }
+
+  .spell-props { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; background: rgba(0,0,0,0.1); }
+  .spell-prop { padding: 10px 14px; text-align: center; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .spell-prop:nth-child(even) { border-right: none; }
+  .spell-prop:nth-last-child(-n+2) { border-bottom: none; }
+  .prop-val { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+  .prop-lbl { font-size: 0.62rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; font-weight: 500; }
+  
+  .prop-val.script { color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; word-break: break-all; }
+
+  /* ─── FOOTER ─── */
+  footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); margin-top: 48px; color: var(--text-muted); font-size: 0.8rem; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6rem; }
+    .spell-grid { grid-template-columns: 1fr; }
+  }
+
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  .no-results { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 1rem; }
+  .no-results .emoji { font-size: 2.5rem; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-logo">📜 Jutsus</div>
+    <div class="nav-links">
+      <a href="#uchiha">Uchiha</a>
+      <a href="#hyuuga">Hyuuga</a>
+      <a href="#aburame">Aburame</a>
+      <a href="#inuzuka">Inuzuka</a>
+      <a href="#maito">Maito</a>
+      <a href="#akimichi">Akimichi</a>
+      <a href="#genjutsu">Genjutsu</a>
+      <a href="monsters.html" style="color:var(--accent-red);">⚔️ Bestiário</a>
+      <a href="equipment.html" style="color:var(--accent-green);">🛡️ Arsenal</a>
+      <a href="protocol_map.html" style="color:var(--accent-blue);">⚡ Protocol Map</a>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<header>
+  <h1>Pergaminhos de Jutsus</h1>
+  <p>Lista completa de magias, comandos e scripts por clã</p>
+  <div class="version-badge">26 Jutsus • Mundo Shinobi NTO</div>
+</header>
+
+<div class="search-section">
+  <div class="search-box">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar jutsu por nome, palavras mágicas ou clã..." autocomplete="off">
+  </div>
+  <div class="search-stats" id="searchStats"></div>
+</div>
+
+<div id="content"></div>
+
+</div>
+
+<footer>
+  <p>Jutsus do Mundo Shinobi — Dados extraídos de <code>data/spells/spells.xml</code></p>
+  <p style="margin-top:4px;">Mundo NTO • Ninja Tales Online</p>
+</footer>
+
+<script>
+const SPELLS = [
+  // ── UCHIHA (voc 5) ──
+  { name: "Katon Goukakyuu no Jutsu", words: "#YZuchiha1", clan: "uchiha", script: "Uchiha/Goukakyuu no Jutsu.lua" },
+  { name: "Katon Shiruko no Jutsu", words: "#YZuchiha2", clan: "uchiha", script: "Uchiha/Shiruko no Jutsu.lua" },
+  { name: "Katon Ryuuka no Jutsu", words: "#YZuchiha3", clan: "uchiha", script: "Uchiha/Ryuuka no Jutsu.lua" },
+  { name: "Katon Karyuu Endan no Jutsu", words: "#YZuchiha4", clan: "uchiha", script: "Uchiha/Karyuu Endan.lua" },
+
+  // ── ABURAME (voc 3) ──
+  { name: "Kikkaichu Bashira", words: "#YZaburame1", clan: "aburame", script: "Aburame/Kikaichuu Bashira.lua" },
+  { name: "Kikkaichu Mushikame", words: "#YZaburame2", clan: "aburame", script: "Aburame/Kikkaichuu Mushikame.lua" },
+
+  // ── HYUUGA (voc 4) ──
+  { name: "Hakke Hiasangi", words: "#YZhyuuga1", clan: "hyuuga", script: "Hyuuga/Hakke Hiasangi.lua" },
+  { name: "Hakke Kuushou", words: "#YZhyuuga2", clan: "hyuuga", script: "Hyuuga/Hakke Kuushou.lua" },
+  { name: "Hakke Kaiten", words: "#YZhyuuga3", clan: "hyuuga", script: "Hyuuga/Hakkeshou Kaiten.lua" },
+  { name: "Hakke Sanjuunishou", words: "#YZhyuuga4", clan: "hyuuga", script: "Hyuuga/Hakke SanjuuniShou.lua" },
+  { name: "Hakke Hasengeki", words: "#YZhyuuga5", clan: "hyuuga", script: "Hyuuga/Hakke Hasengeki.lua" },
+  { name: "Hakke Shiten Kuushou", words: "#YZhyuuga6", clan: "hyuuga", script: "Hyuuga/Hakke Shiten Kuushou.lua" },
+  { name: "Hakke Rokujuuyonshou", words: "#YZhyuuga7", clan: "hyuuga", script: "Hyuuga/Hakke Rokujuuyon Shou.lua" },
+  { name: "Hakke Hyakunijuuhachi Shou", words: "#YZhyuuga8", clan: "hyuuga", script: "Hyuuga/Hakke Hyakunijuuhachi Shou.lua" },
+
+  // ── MAITO (voc 1) ──
+  { name: "Konoha Senpuu", words: "#YZmaito1", clan: "maito", script: "Maito/Konoha Senpuu.lua" },
+  { name: "Dynamic Entry", words: "#YZmaito2", clan: "maito", script: "Maito/Dinamic Entry.lua" },
+  { name: "Konoha Dai Senpuu", words: "#YZmaito3", clan: "maito", script: "Maito/Dai Senpuu.lua" },
+  { name: "Gouriki Senpuu", words: "#YZmaito4", clan: "maito", script: "Maito/Gouriki Senpuu.lua" },
+
+  // ── AKIMICHI (voc 7) ──
+  { name: "Omoni", words: "#YZAkimichi1", clan: "akimichi", script: "Akimichi/Omoni.lua" },
+  { name: "Harite Chou", words: "#YZAkimichi2", clan: "akimichi", script: "Akimichi/Harite Chou.lua" },
+  { name: "Bubun Baika", words: "#YZAkimichi3", clan: "akimichi", script: "Akimichi/Bubun Baika.lua" },
+  { name: "Choudan Bakugeki", words: "#YZAkimichi4", clan: "akimichi", script: "Akimichi/Choudan Bakugeki.lua" },
+
+  // ── INUZUKA (voc 2) ──
+  { name: "Tsuuga", words: "#YZinuzuka1", clan: "inuzuka", script: "Inuzuka/Tsuuga.lua" },
+  { name: "Garouga", words: "#YZinuzuka3", clan: "inuzuka", script: "Inuzuka/Garouga.lua" },
+  { name: "Gatsuuga", words: "#YZinuzuka2", clan: "inuzuka", script: "Inuzuka/Gatsuuga.lua" },
+  { name: "Dynamic marking", words: "#YZinuzuka4", clan: "inuzuka", script: "Inuzuka/Dinamyc Marking.lua" },
+  { name: "Bite", words: "#YZinuzuka5", clan: "inuzuka", script: "Inuzuka/Bite.lua" },
+  { name: "Scratch", words: "#YZinuzuka6", clan: "inuzuka", script: "Inuzuka/Scratch.lua" },
+  { name: "Moko Taiko", words: "#YZinuzuka7", clan: "inuzuka", script: "Inuzuka/Moko Taiko.lua" },
+
+  // ── GENJUTSU (geral) ──
+  { name: "Nehan Shoja", words: "#YZgenjutsu1", clan: "genjutsu", script: "Genjutsu/Nehan Shoja.lua" },
+];
+
+const SECTIONS = [
+  { key: "uchiha", title: "Clã Uchiha", desc: "Mestres do Estilo Fogo e Sharingan", icon: "🔥", iconCls: "si-uchiha", badgeCls: "sb-uchiha", anchor: "uchiha" },
+  { key: "hyuuga", title: "Clã Hyuuga", desc: "Mestres do Byakugan e Punho Suave", icon: "👁️", iconCls: "si-hyuuga", badgeCls: "sb-hyuuga", anchor: "hyuuga" },
+  { key: "aburame", title: "Clã Aburame", desc: "Controladores de insetos Kikaichuu", icon: "🪲", iconCls: "si-aburame", badgeCls: "sb-aburame", anchor: "aburame" },
+  { key: "inuzuka", title: "Clã Inuzuka", desc: "Estilo da Fera e cães ninjas", icon: "🐺", iconCls: "si-inuzuka", badgeCls: "sb-inuzuka", anchor: "inuzuka" },
+  { key: "maito", title: "Mestres de Taijutsu", desc: "Foco extremo em combate corpo a corpo", icon: "👊", iconCls: "si-maito", badgeCls: "sb-maito", anchor: "maito" },
+  { key: "akimichi", title: "Clã Akimichi", desc: "Técnicas de expansão corporal", icon: "💥", iconCls: "si-akimichi", badgeCls: "sb-akimichi", anchor: "akimichi" },
+  { key: "genjutsu", title: "Genjutsu", desc: "Técnicas ilusórias universais", icon: "🌀", iconCls: "si-genjutsu", badgeCls: "sb-genjutsu", anchor: "genjutsu" }
+];
+
+function renderAll(filter='') {
+  const container = document.getElementById('content');
+  container.innerHTML = '';
+  const fLow = filter.toLowerCase();
+  let total = 0;
+
+  SECTIONS.forEach(sec => {
+    let items = SPELLS.filter(s => s.clan === sec.key);
+    if (filter) items = items.filter(s => s.name.toLowerCase().includes(fLow) || s.words.toLowerCase().includes(fLow) || s.clan.toLowerCase().includes(fLow));
+    if (!items.length) return;
+    total += items.length;
+
+    const div = document.createElement('div');
+    div.className = 'spell-section';
+    div.id = sec.anchor;
+    div.innerHTML = `
+      <div class="section-header open" onclick="toggleSection(this)">
+        <div class="section-icon ${sec.iconCls}">${sec.icon}</div>
+        <div class="section-title"><h3>${sec.title}</h3><span>${sec.desc}</span></div>
+        <span class="section-badge ${sec.badgeCls}">${items.length} jutsu${items.length>1?'s':''}</span>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body show">
+        <div class="spell-grid">${items.map((s,i) => renderCard(s, i)).join('')}</div>
+      </div>`;
+    container.appendChild(div);
+  });
+
+  if (!total && filter) {
+    container.innerHTML = `<div class="no-results"><div class="emoji">🔍</div><p>Nenhum jutsu encontrado para "<strong>${filter}</strong>"</p></div>`;
+  }
+  document.getElementById('searchStats').textContent = filter ? `${total} jutsu${total!==1?'s':''} encontrado${total!==1?'s':''}` : '';
+}
+
+function renderCard(s, delay) {
+  return `
+    <div class="spell-card" style="animation-delay:${delay*0.04}s">
+      <div class="spell-card-header">
+        <div class="spell-name">${s.name}</div>
+        <div class="spell-words">"${s.words}"</div>
+      </div>
+      <div class="spell-props">
+        <div class="spell-prop"><div class="prop-val script">${s.script}</div><div class="prop-lbl">Arquivo do Script</div></div>
+        <div class="spell-prop"><div class="prop-val" style="text-transform:capitalize">${s.clan}</div><div class="prop-lbl">Vocação / Clã</div></div>
+      </div>
+    </div>`;
+}
+
+function toggleSection(el) { el.classList.toggle('open'); el.nextElementSibling.classList.toggle('show'); }
+
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  const v = this.value.trim();
+  searchTimeout = setTimeout(() => renderAll(v), 150);
+});
+
+document.querySelectorAll('.nav-links a:not([href$=".html"])').forEach(link => {
+  link.addEventListener('click', function() {
+    document.querySelectorAll('.nav-links a:not([href$=".html"])').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+renderAll();
+</script>
+</body>
+</html>

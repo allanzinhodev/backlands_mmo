@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<houses>
+  <house name="Konoha Central Flat #1" houseid="88" entryx="2595" entryy="1819" entryz="7" rent="10000" townid="1" size="20"/>
+  <house name="Konoha Central Flat #2" houseid="89" entryx="2603" entryy="1815" entryz="7" rent="10000" townid="1" size="27"/>
+  <house name="Konoha Central Flat #3" houseid="90" entryx="2605" entryy="1826" entryz="7" rent="5000" townid="1" size="14"/>
+  <house name="Konoha Flat #4" houseid="91" entryx="2612" entryy="1815" entryz="7" rent="8000" townid="1" size="20"/>
+  <house name="Konoha Flat #5" houseid="92" entryx="2616" entryy="1815" entryz="7" rent="8000" townid="1" size="20"/>
+  <house name="Konoha Flat #6" houseid="93" entryx="2608" entryy="1824" entryz="6" rent="15000" townid="1" size="23"/>
+  <house name="Konoha Flats #7" houseid="94" entryx="2614" entryy="1824" entryz="7" rent="5000" townid="1" size="7"/>
+  <house name="Konoha Flats #8" houseid="95" entryx="2607" entryy="1824" entryz="6" rent="15000" townid="1" size="28"/>
+  <house name="Konoha Flats #9" houseid="96" entryx="2436" entryy="1733" entryz="7" rent="1000" townid="1" size="9"/>
+  <house name="Konoha Flats #10" houseid="97" entryx="2432" entryy="1725" entryz="7" rent="5000" townid="1" size="26"/>
+  <house name="Konoha Flats #11" houseid="98" entryx="2436" entryy="1731" entryz="6" rent="3500" townid="1" size="24"/>
+  <house name="Konoha Flats #12" houseid="99" entryx="2426" entryy="1734" entryz="7" rent="1500" townid="1" size="18"/>
+  <house name="Konoha Flats #13" houseid="100" entryx="2430" entryy="1741" entryz="7" rent="1000" townid="1" size="12"/>
+  <house name="Konoha Flats #14" houseid="101" entryx="2441" entryy="1739" entryz="7" rent="1000" townid="1" size="10"/>
+  <house name="Konoha Flats #15" houseid="102" entryx="0" entryy="0" entryz="0" rent="1000" townid="1" size="10"/>
+</houses>

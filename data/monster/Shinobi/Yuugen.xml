@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Yuugen" nameDescription="a Yuugen" race="blood" experience="115" speed="400" manacost="600">
+	<health now="2300" max="2300"/>
+	<look type="509" corpse="3252"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="5"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1500" skill="95" attack="90" combatType="1"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	<defense name="speed" interval="1000" chance="8" speedchange="500" duration="10000"></defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<loot>
+	<item id="2152" countmax="2" chance="35000"/>
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

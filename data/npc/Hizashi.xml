@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Hizashi" script="default.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="569" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. Eu vendo armas ninja como: Kunais e Shurikens.. ! "/>
+		<parameter key="shop_buyable" value="Kunai,12685,20;Shuriken,2399,22;Kunai Explosiva,13227,25;Poison Bomb, 13036, 45;Explosive Tag, 11473, 35;"/>
+	</parameters>
+</npc>

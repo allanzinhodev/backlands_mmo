@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<outfits>
+	<outfit id="1" quest="40850">
+		<list gender="0" lookType="646" name="Maito"/>
+		<list gender="1" lookType="646" name="Maito"/>
+	</outfit>
+
+	<outfit id="2" quest="40851">
+		<list gender="0" lookType="545" name="Inuzuka"/>
+		<list gender="1" lookType="545" name="Inuzuka"/>
+	</outfit>
+
+	<outfit id="3" quest="40852">
+		<list gender="0" lookType="541" name="Aburame"/>
+		<list gender="1" lookType="541" name="Aburame"/>
+	</outfit>
+
+	<outfit id="4" quest="40853">
+		<list gender="0" lookType="543" name="Hyuga"/>
+		<list gender="1" lookType="543" name="Hyuuga"/>
+	</outfit>
+
+	<outfit id="5" quest="40854">
+		<list gender="0" lookType="547" name="Uchiha"/>
+		<list gender="1" lookType="547" name="Uchiha"/>
+	</outfit>
+
+	<outfit id="6" quest="40855">
+		<list gender="0" lookType="539" name="Nara"/>
+		<list gender="1" lookType="539" name="Nara"/>
+	</outfit>
+
+	<outfit id="7" quest="40756">
+		<list gender="0" lookType="643" name="Akimichi"/>
+		<list gender="1" lookType="643" name="Akimichi"/>
+	</outfit>
+	
+	<outfit id="8" quest="40950">
+		<list gender="0" lookType="467" name="Maito"/>
+		<list gender="1" lookType="467" name="Maito"/>
+	</outfit>
+	
+	<outfit id="9" quest="40951">
+		<list gender="0" lookType="359" name="Inuzuka"/>
+		<list gender="1" lookType="359" name="Inuzuka"/>
+	</outfit>
+	
+	<outfit id="10" quest="40952">
+		<list gender="0" lookType="370" name="Aburame"/>
+		<list gender="1" lookType="370" name="Aburame"/>
+	</outfit>
+
+	<outfit id="11" quest="40953">
+		<list gender="0" lookType="374" name="Hyuuga"/>
+		<list gender="1" lookType="374" name="Hyuuga"/>
+	</outfit>
+	
+	<outfit id="12" quest="40954">
+		<list gender="0" lookType="383" name="Uchiha"/>
+		<list gender="1" lookType="383" name="Uchiha"/>
+	</outfit>
+
+	<outfit id="13" quest="40955">
+		<list gender="0" lookType="399" name="Nara"/>
+		<list gender="1" lookType="399" name="Nara"/>
+	</outfit>
+	
+	<outfit id="14" quest="40956">
+		<list gender="0" lookType="418" name="Akimichi"/>
+		<list gender="1" lookType="418" name="Akimichi"/>
+	</outfit>
+	
+	<outfit id="34" access="3" premium="yes">
+		<list gender="0-3" lookType="75" name="Gamemaster"/>
+	</outfit>
+
+	<outfit id="35" access="4" premium="yes">
+		<list gender="0-3" lookType="266" name="Community Manager"/>
+	</outfit>
+
+	<outfit id="36" access="5" premium="yes">
+		<list gender="0-3" lookType="302" name="God"/>
+	</outfit>
+</outfits>

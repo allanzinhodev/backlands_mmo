@@ -1,0 +1,533 @@
+InventoryItem < Item
+
+JutsusSlot < InventoryItem
+  id: slot10
+  image-source: /images/game/slots/menubox
+  &position: {x=65535, y=6, z=0} 
+  
+SkillPercentPanel < ProgressBar
+  id: percent
+  background-color: green
+  height: 8
+  border-width: 2
+
+Skill < Label
+  font: verdana-11px-monochrome
+  text-offset: 42 3
+  focusable: true
+  height: 36
+  image-size: 32 32
+  image-offset: 2 2
+  
+Miniature < Label
+  font: verdana-11px-monochrome
+  text-offset: 42 3
+  focusable: true
+  height: 20
+  image-size: 18 18
+  image-offset: 2 2
+  
+SkillUp < Button
+  size: 12 12
+  icon-clip: 0 32 16 16
+  font: terminus-14px-bold
+  color: #61de21
+  text: +
+  text-offset: 1 0
+  border-width: 2
+  enabled: false
+  visible: true
+
+  $pressed:
+    icon-clip: 0 0 16 16
+
+  $hover !pressed:
+    icon-clip: 0 16 16 16
+
+MiniWindow
+  id: skillWindow
+  !text: tr('Ninja Info')
+  size: 380 550
+  icon: /images/topbuttons/skills       
+  @onClose: modules.game_skills.onMiniWindowClose()
+  &save: true
+
+  MiniWindowContents
+    padding-left: 5
+    padding-right: 5
+    
+    Panel
+      id: portraitPanel
+      size: 64 64
+      border-width: 2
+      image-source: /images/game/portraits/akamaru
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin: 25 5 15 5
+      
+    Label
+      id: name
+      font: terminus-14px-bold
+      anchors.top: parent.top
+      anchors.left: parent.left
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: clan
+      anchors.top: portraitPanel.top
+      anchors.left: portraitPanel.right
+      margin-left: 50
+      text-auto-resize: true 
+      
+    Miniature
+      id: clanMiniature  
+      image-source: /images/game/skills/maito
+      anchors.top: clan.top
+      anchors.right: clan.left
+      margin-right: 5
+      margin-top: -2
+
+    Label
+      id: rank
+      anchors.top: clan.top
+      anchors.left: clan.left
+      margin-top: 25
+      text-auto-resize: true 
+      
+    Miniature
+      id: rankMiniature  
+      image-source: /images/game/skills/gennin
+      anchors.top: rank.top
+      anchors.right: rank.left
+      margin-right: 5
+      margin-top: -2
+      
+    Label
+      id: village
+      anchors.top: rank.top
+      anchors.left: rank.left
+      margin-top: 25
+      
+    Miniature
+      id: villageMiniature  
+      image-source: /images/game/skills/konoha
+      anchors.top: village.top
+      anchors.right: village.left
+      margin-right: 5
+      margin-top: -2
+      
+    Label
+      id: levelLabel
+      !text: tr("Level: ")
+      font: verdana-11px-antialised
+      anchors.left: portraitPanel.left
+      anchors.top: portraitPanel.bottom
+      margin-top: 10
+      
+    Label
+      id: level
+      anchors.left: levelLabel.right
+      anchors.top: levelLabel.top
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: experienceLabel
+      !text: tr("Exp.: ")
+      font: verdana-11px-antialised
+      anchors.left: levelLabel.left
+      anchors.top: levelLabel.bottom
+      margin-top: 5
+      
+    Label
+      id: experience
+      anchors.left: experienceLabel.right
+      anchors.top: experienceLabel.top
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: atkSpeedLabel
+      !text: tr("Atk. Speed: ")
+      anchors.left: experienceLabel.left
+      anchors.top: experienceLabel.bottom
+      margin-top: 5
+      
+    Label
+      id: atkSpeed
+      anchors.left: atkSpeedLabel.right
+      anchors.top: atkSpeedLabel.top
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: movSpeedLabel
+      !text: tr("Mov. Speed: ")
+      anchors.left: atkSpeedLabel.left
+      anchors.top: atkSpeed.bottom
+      margin-top: 5
+      
+    Label
+      id: movSpeed
+      anchors.left: movSpeedLabel.right
+      anchors.top: movSpeedLabel.top
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: bountyLabel
+      !text: tr("Bounty: ")
+      anchors.left: movSpeedLabel.left
+      anchors.top: movSpeedLabel.bottom
+      margin-top: 5
+      
+    Label
+      id: bounty
+      !text: "0"
+      anchors.left: bountyLabel.right
+      anchors.top: bountyLabel.top
+      margin-left: 5
+      text-auto-resize: true 
+      
+    Label
+      id: reputationLabel
+      !text: tr("Reputation: ")
+      anchors.left: bountyLabel.left
+      anchors.top: bountyLabel.bottom
+      margin-top: 5
+      
+    Label
+      id: reputation
+      !text: "0"
+      anchors.left: reputationLabel.right
+      anchors.top: reputationLabel.top
+      margin-left: 5
+      text-auto-resize: true
+      
+    Label
+      id: jutsusLabel
+      !text: tr("Character Menu")
+      color: #82949c
+      font: terminus-14px-bold
+      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.top: parent.top
+      margin-top: 5
+      margin-left: 100
+      
+    JutsusSlot
+      anchors.top: jutsusLabel.bottom
+      anchors.horizontalCenter: jutsusLabel.horizontalCenter
+      margin-top: 10
+    
+    Label
+      id: missions
+      !text: tr("Missions")
+      color: #82949c
+      font: terminus-14px-bold
+      anchors.horizontalCenter: jutsusLabel.horizontalCenter
+      anchors.top: jutsusLabel.bottom
+      margin-top: 50
+      
+    Label
+      id: rankdLabel
+      !text: tr("D-Rank")
+      color: #9de24f
+      anchors.right: missions.left
+      anchors.top: missions.bottom
+      margin-top: 15
+      
+    Label
+      id: rankd
+      !text: tr("0")
+      anchors.horizontalCenter: rankdLabel.horizontalCenter
+      anchors.top: rankdLabel.bottom
+      margin-top: 5
+      text-auto-resize: true 
+      
+    Label
+      id: rankcLabel
+      !text: tr("C-Rank")
+      color: #ffff00
+      anchors.left: missions.right
+      anchors.top: rankdLabel.top
+      
+    Label
+      id: rankc
+      !text: tr("0")
+      anchors.horizontalCenter: rankcLabel.horizontalCenter
+      anchors.top: rankcLabel.bottom
+      margin-top: 5
+      text-auto-resize: true 
+      
+    Label
+      id: rankbLabel
+      !text: tr("B-Rank")
+      color: #088da5
+      anchors.right: missions.left
+      anchors.top: rankdLabel.bottom
+      margin-top: 30
+      
+    Label
+      id: rankb
+      !text: tr("0")
+      anchors.horizontalCenter: rankbLabel.horizontalCenter
+      anchors.top: rankbLabel.bottom
+      margin-top: 5
+      text-auto-resize: true 
+      
+    Label
+      id: rankaLabel
+      !text: tr("A-Rank")
+      color: #f7b82b
+      anchors.left: missions.right
+      anchors.top: rankbLabel.top
+      
+    Label
+      id: ranka
+      !text: tr("0")
+      anchors.horizontalCenter: rankaLabel.horizontalCenter
+      anchors.top: rankaLabel.bottom
+      margin-top: 5
+      text-auto-resize: true 
+      
+    Label
+      id: ranksLabel
+      !text: tr("S-Rank")
+      color: #ff0000
+      anchors.horizontalCenter: missions.horizontalCenter
+      anchors.top: rankaLabel.bottom
+      margin-top: 30
+      
+    Label
+      id: ranks
+      !text: tr("0")
+      anchors.horizontalCenter: ranksLabel.horizontalCenter
+      anchors.top: ranksLabel.bottom
+      margin-top: 5
+      text-auto-resize: true 
+      
+    Skill
+      id: taijutsuImage
+      image-source: /images/game/skills/taijutsu
+      anchors.top: reputation.bottom
+      anchors.horizontalCenter: parent.horizontalCenter
+      margin-top: 5
+      
+    Label
+      id: taijutsuLabel
+      !text: tr("Taijutsu")
+      anchors.top: taijutsuImage.bottom
+      anchors.horizontalCenter: taijutsuImage.horizontalCenter 
+      margin-top: 5
+      height: 17
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+      
+    Label
+      id: taijutsuValue
+      !text: tr("0")
+      anchors.horizontalCenter: taijutsuLabel.horizontalCenter 
+      anchors.top: taijutsuLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: ninjutsuImage
+      image-source: /images/game/skills/ninjutsu
+      anchors.top: reputation.bottom
+      anchors.left: parent.left
+      margin-top: 50
+      margin-left: 50
+      
+    Label
+      id: ninjutsuLabel
+      !text: tr("Ninjutsu")
+      anchors.top: ninjutsuImage.bottom
+      anchors.horizontalCenter: ninjutsuImage.horizontalCenter 
+      margin-top: 5
+      height: 17
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+      
+    Label
+      id: ninjutsuValue
+      !text: tr("0")
+      anchors.horizontalCenter: ninjutsuLabel.horizontalCenter 
+      anchors.top: ninjutsuLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: genjutsuImage
+      image-source: /images/game/skills/genjutsu
+      anchors.top: reputation.bottom
+      anchors.right: parent.right
+      margin-top: 50
+      margin-right: 50
+      
+    Label
+      id: genjutsuLabel
+      !text: tr("Genjutsu")
+      anchors.top: genjutsuImage.bottom
+      anchors.horizontalCenter: genjutsuImage.horizontalCenter 
+      margin-top: 5
+      height: 17
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+      
+    Label
+      id: genjutsuValue
+      !text: tr("0")
+      anchors.horizontalCenter: genjutsuLabel.horizontalCenter 
+      anchors.top: genjutsuLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: meleeWeaponsImage
+      image-source: /images/game/skills/meleeweapons
+      anchors.top: ninjutsuValue.bottom
+      anchors.left: ninjutsuValue.left
+      margin-top: 10
+      margin-left: 40
+      
+    Label
+      id: meleeWeaponsLabel
+      !text: tr("Melee Weapons")
+      anchors.top: meleeWeaponsImage.bottom
+      anchors.horizontalCenter: meleeWeaponsImage.horizontalCenter 
+      margin-top: 5
+      height: 17
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+      
+    Label
+      id: meleeWeaponsValue
+      !text: tr("0")
+      anchors.horizontalCenter: meleeWeaponsLabel.horizontalCenter 
+      anchors.top: meleeWeaponsLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: distanceWeaponsImage
+      image-source: /images/game/skills/distanceweapons
+      anchors.top: genjutsuValue.bottom
+      anchors.right: genjutsuValue.right
+      margin-top: 10
+      margin-right: 40
+      
+    Label
+      id: distanceWeaponsLabel
+      !text: tr("Distance Weapons")
+      anchors.top: distanceWeaponsImage.bottom
+      anchors.horizontalCenter: distanceWeaponsImage.horizontalCenter 
+      margin-top: 5
+      height: 17
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+      
+    Label
+      id: distanceWeaponsValue
+      !text: tr("0")
+      anchors.horizontalCenter: distanceWeaponsLabel.horizontalCenter 
+      anchors.top: distanceWeaponsLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: chakraLevelImage
+      image-source: /images/game/skills/chakralevel
+      anchors.top: distanceWeaponsLabel.bottom
+      anchors.horizontalCenter: taijutsuValue.horizontalCenter
+      margin-top: 35
+      
+    Label
+      id: chakraLevelLabel
+      !text: tr("Chakra Control")
+      anchors.top: chakraLevelImage.bottom
+      anchors.horizontalCenter: chakraLevelImage.horizontalCenter 
+      margin-top: 5
+      height: 15
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+
+    Label
+      id: chakraLevelValue
+      !text: tr("0")
+      anchors.horizontalCenter: chakraLevelLabel.horizontalCenter 
+      anchors.top: chakraLevelLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+
+    Skill
+      id: resistanceImage
+      image-source: /images/game/skills/resistance
+      anchors.top: distanceWeaponsLabel.bottom
+      anchors.horizontalCenter: ninjutsuValue.horizontalCenter
+      margin-top: 15
+      margin-right: 30
+      
+    Label
+      id: resistanceLabel
+      !text: tr("Resistance")
+      anchors.top: resistanceImage.bottom
+      anchors.horizontalCenter: resistanceImage.horizontalCenter 
+      margin-top: 5
+      height: 15
+      SkillPercentPanel
+        width: 70
+        anchors.top: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter 
+
+    Label
+      id: resistanceValue
+      !text: tr("0")
+      anchors.horizontalCenter: resistanceLabel.horizontalCenter 
+      anchors.top: resistanceLabel.bottom
+      margin-top: 10
+      text-auto-resize: true
+      
+    Skill
+      id: agilityImage
+      image-source: /images/game/skills/agility
+      anchors.top: distanceWeaponsLabel.bottom
+      anchors.horizontalCenter: genjutsuValue.horizontalCenter
+      margin-top: 15
+      margin-left: 30
+      
+    Label
+      id: agilityLabel
+      !text: tr("Agility")
+      anchors.top: agilityImage.bottom
+      anchors.horizontalCenter: agilityImage.horizontalCenter 
+      margin-top: 5
+      height: 15
+
+    Label
+      id: agilityValue
+      !text: tr("0")
+      anchors.horizontalCenter: agilityLabel.horizontalCenter 
+      anchors.top: agilityLabel.bottom
+      margin-top: 5
+      text-auto-resize: true
+      
+    SkillUp
+      id: agilityButton
+      anchors.horizontalCenter: agilityValue.horizontalCenter 
+      anchors.top: agilityValue.bottom
+      margin-top: 5
+      @onClick: onButtonClick(self:getId())

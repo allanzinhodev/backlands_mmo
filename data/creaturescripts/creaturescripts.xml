@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creaturescripts>
+	<event type="login" name="PlayerLogin" event="script" value="login.lua"/>
+	<event type="logout" name="PlayerLogout" event="script" value="login.lua"/>
+
+	<event type="joinchannel" name="GuildMotd" event="script" value="guildmotd.lua"/>
+	<event type="receivemail" name="Mail" event="script" value="mail.lua"/>
+	<event type="reportbug" name="SaveReportBug" script="reportbug.lua"/>
+	<event type="advance" name="AdvanceSave" event="script" value="advancesave.lua"/>
+	<event type="login" name="firstItem" event="script" value="firstitem.lua"/>
+	<event type="combat" name="noMove" event="script" value="nomove.lua"/>
+	<event type="statschange" name="Hit" event="script" value="hit.lua"/>
+	<event type="think" name="Idle" event="script" value="idle.lua"/>
+	<event type="think" name="SkullCheck" event="script" value="skullcheck.lua"/>
+	<event type="advance" name="skillAdvance" event="script" value="skillAdvanced.lua"/>
+	<event type="extendedopcode" name="ExtendedOpcode" event="script" value="extendedopcode.lua"/>
+	<event type="login" name="Stamina" event="script" value="stamina.lua"/>
+	<event type="preparedeath" name="Death" event="script" value="death.lua"/>
+	<event type="look" name="GraduationSystem" event="script" value="GraduationSystem.lua"/>
+	<event type="login" name="Vocation_Outfit" event="script" value="Vocation_Outfit.lua"/>
+	<event type="advance" name="pointsup" event="script" value="pointsup.lua"/>
+	<event type="advance" name="CapKikkais" event="script" value="CapKikais.lua"/>
+	<event type="advance" name="hachimonAdvance" event="script" value="hachimonAdvance.lua"/>
+	<!--Temporariamente Desabilitado
+	<event type="combat" name="partyAndGuildProtection" event="script" value="partyAndGuildProtection.lua"/>
+	-->
+	<event type="kill" name="petKill" event="script" value="petkill.lua"/>
+	<event type="death" name="petDeath" event="script" value="petdeath.lua"/>
+	<event type="statschange" name="petStats" event="script" value="petstats.lua"/>
+	<event type="direction" name="direction" event="script" value="Direction.lua"/>
+	<event type="kill" name="task" event="script" value="task.lua"/>
+	<event type="statschange" name="rest" event="script" value="rest.lua"/>
+	<event type="login" name="MutePlayer" event="script" value="mute.lua"/>
+	<!-- <event type="creaturemove" name="creatureMove" event="script" value="creatureMove.lua"/> -->
+	<event type="preparedeath" name="kagemaneDeath" event="script" value="kagemaneDeath.lua"/>
+
+<!--Exane Chunnin-->
+	<event type="login" name="Exame Chunin Login Fase 2 Login" event="script" value="Exame Chunin Fase 2.lua"/>
+	<event type="preparedeath" name="Exame Chunin Fase 2 Death" event="script" value="Exame Chunin Fase 2.lua"/>
+	<event type="login" name="Exame Chunin Login" event="script" value="Exame Chunin.lua"/>
+	<event type="logout" name="Exame Chunin Logout" event="script" value="Exame Chunin.lua"/>
+	<event type="combat" name="Exame Chunin Combat" event="script" value="Exame Chunin.lua"/>
+	<event type="target" name="Exame Chunin Target" event="script" value="Exame Chunin.lua"/>
+	<event type="preparedeath" name="Exame Chunin Death" event="script" value="Exame Chunin.lua"/>
+	
+<!--Bounty System-->
+	<!-- <event type="kill" name="Bounty" script="bounty.lua"/> -->
+
+</creaturescripts>

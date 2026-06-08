@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Creeper" nameDescription="a Creeper" race="blood" experience="80" speed="200" manacost="100" taijutsu="10" ninjutsu="1" endurance="15" genjutsu="5" melee_weapon="30" distance_weapon="10" weapon="10" mainSkill="2" agility="15" chakra_level="30">
+	<health now="100" max="100"/>
+	<look type="673" corpse="0"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<defenses armor="0" defense="0">
+	<defense name="speed" interval="1000" chance="8" speedchange="300" duration="10000"></defense>
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<loot>                 
+	</loot>
+	<script>
+	</script>
+</monster>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Kitaro" script="default.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="572" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. Eu sou vendedor de comida, você estaria interessado em comprar algumas laranjas ?! "/>
+		<parameter key="shop_buyable" value="orange,13262,7;bread,13259,8;apple, 13247, 12;cherry, 13250, 10; cheese, 13250, 5;"/>
+	</parameters>
+</npc>

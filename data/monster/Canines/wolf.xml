@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Wolf" nameDescription="a wolf" race="blood" experience="7" speed="195" manacost="255">
+	<health now="75" max="75"/>
+	<look type="27" corpse="5968"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="1"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="18" attack="10"/>
+	</attacks>
+	<defenses defense="1"/>
+	<elements>
+		<element earthPercent="10"/>
+		<element holyPercent="10"/>
+		<element icePercent="-5"/>
+		<elemetn deathPercent="-5"/>
+	</elements>
+	<loot>
+		<item id="5897" countmax="1" chance="6666"/><!-- wolf paw -->
+		<item id="13254" countmax="1" chance="1800"/><!-- meat-->
+	</loot>
+	<script>
+<event name="Hit"/>
+	</script>
+</monster>

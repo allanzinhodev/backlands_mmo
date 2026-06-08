@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Homura" script="default.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="571" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. Eu vendo equipamentos ninja, e tambem posso compra-los ! "/>
+		<parameter key="shop_buyable" value="Ninja Robe,12560,150;Gennin Pants,12644,95;Shinobi Sandals,12580,90;Sandals,12579,30;"/>
+		<parameter key="shop_sellable" value="Sword,12686,10;Ninjutsu Sword,2376,25;Sandals,12579,15;Ninja Robe, 12560, 50; Gennin Pants, 12644, 35;Shinobi Sandals,12580,30;Broken Kunai, 13012,5;shinobi sweater, 12562, 75; taijutsu hand, 11463, 30;"/>
+	</parameters>
+</npc>

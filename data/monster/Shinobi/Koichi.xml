@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Koichi" nameDescription="a Koichi" race="blood" experience="120" speed="800" manacost="600">
+	<health now="2000" max="2000"/>
+	<look type="653" corpse="13234"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="3"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="1" attack="15"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<loot>
+	<item id="2148" countmax="40" chance="20000"/>
+	<item id="12699" chance="5000"/> <!-- double scikle --> 
+	<item id="12689" chance="1000"/> <!-- curved kunai --> 	
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

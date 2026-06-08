@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Reinforced Training Target" nameDescription="a reinforced training target" race="undead" experience="0" speed="0" manacost="0" taijutsu="0" endurance="0" ninjutsu="0" genjutsu="0" melee_weapon="0" distance_weapon="0" weapon="0" mainSkill="1" agility="1" chakra_level="1">
+	<health now="800" max="800"/>
+	<look type="584" corpse="0"/>
+	<targetchange interval="5000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="0"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+	</attacks>
+<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>
+	<loot>
+	</loot>
+	<script>
+	</script>
+</monster>

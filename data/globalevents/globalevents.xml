@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<globalevents>
+	<!-- <globalevent name="propaganda" interval="360000" script="propaganda.lua"/> -->
+	 <!--<globalevent name="shop" interval="30" script="shop.lua"/>-->
+	<globalevent name="init" type="startup" event="script" value="init.lua"/>
+	<globalevent name="playersrecord" type="record" event="script" value="record.lua"/>
+
+
+
+	<!-- <globalevent name="shop" interval="30000" event="script" script="shop.lua"/> -->
+	<!-- <globalevent name="saveplayer" interval="900000" event="script" value="saveplayer.lua"/> -->
+	<!-- <globalevent name="savehouse" interval="900" event="script" value="savehouse.lua"/> -->
+	
+    <!-- <globalevent name="timer_example" time="21:35" event="script" value="my_script.lua"/> -->
+
+
+
+	<globalevent name="Exame Chunin" type="startup" event="script" value="Exame Chunin Startup.lua"/>
+
+
+
+<!-- Dia - Tarde - Noite SYSTEM -->
+	<!--<globalevent name="dia00" time="00:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde02" time="02:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite03" time="03:00" event="script" value="noite.lua"/>
+
+	<globalevent name="dia04" time="04:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde06" time="06:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite07" time="07:00" event="script" value="noite.lua"/>
+
+	<globalevent name="dia08" time="08:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde10" time="10:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite11" time="11:00" event="script" value="noite.lua"/>
+
+	<globalevent name="dia12" time="12:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde14" time="14:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite15" time="15:00" event="script" value="noite.lua"/>
+
+	<globalevent name="dia16" time="16:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde18" time="18:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite19" time="19:00" event="script" value="noite.lua"/>
+
+	<globalevent name="dia20" time="20:00" event="script" value="dia.lua"/>
+	<globalevent name="tarde22" time="22:00" event="script" value="tarde.lua"/>
+	<globalevent name="noite23" time="23:00" event="script" value="noite.lua"/>-->
+
+</globalevents>

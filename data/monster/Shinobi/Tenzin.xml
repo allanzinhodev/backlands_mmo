@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Tenzin" nameDescription="a Tenzin" race="blood" experience="24" speed="260" manacost="200">
+	<health now="325" max="325"/>
+	<look type="394" corpse="13231"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="4"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1000" skill="26" attack="29"/>
+	</attacks>
+	<defenses defense="12"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="HAHAHA!"/>
+	</voices>
+	<loot>
+			<item id="2148" countmax="20" chance="10000"/><!-- gold coin -->
+			<item id="11463" countmax="1" chance="1500"/><!-- taijutsu hands -->
+			<item id="12561" countmax="1" chance="400"/><!-- white pants -->
+			<item id="13259" countmax="3" chance="1600"/>
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

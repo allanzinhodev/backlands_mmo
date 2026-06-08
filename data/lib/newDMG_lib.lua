@@ -1,0 +1,1 @@
+jutsuSkill_factor = getPlayerSkill

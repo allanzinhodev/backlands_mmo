@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Yashiro Uchiha" script="Yashiro Uchiha.lua" walkinterval="100000" floorchange="0" speed="100">
+	<health now="100" max="100"/>
+	<look type="383" head="115" body="106" legs="0" feet="114"/>
+	<parameters>
+		<parameter key="message_greet" value="Ola amigo oque te traz aqui ?"/>
+	</parameters>
+	</npc>

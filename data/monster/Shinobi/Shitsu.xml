@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Shitsu" nameDescription="a Shitsu" race="blood" experience="50" speed="310" manacost="200">
+	<health now="750" max="750"/>
+	<look type="509" corpse="12978"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="4"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1000" skill="26" attack="35"/>
+		<attack name="physical" interval="5000" chance="85" range="7" min="-65" max="-80">
+			<attribute key="shootEffect" value="POISONARROW"/>
+		</attack>
+	</attacks>
+	<defenses defense="15"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="HAHAHA!"/>
+	</voices>
+	<loot>
+			<item id="2148" countmax="31" chance="10000"/><!-- gold coin -->
+			<item id="12644" countmax="1" chance="1400"/><!-- black pants -->
+			<item id="13262" countmax="2" chance="1200"/><!-- orange -->
+			<item id="13035" countmax="3" chance="900"/><!-- fuuma shuriken -->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>

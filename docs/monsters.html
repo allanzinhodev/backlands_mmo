@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestiário — Monstros do Mundo Shinobi</title>
+<meta name="description" content="Documentação completa de todos os monstros do mundo Shinobi, ordenados por experiência. Inclui HP, velocidade, ataques e loot.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --bg-glass: rgba(26, 34, 54, 0.7);
+    --border: rgba(255,255,255,0.06);
+    --border-accent: rgba(99,102,241,0.3);
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-blue: #6366f1;
+    --accent-blue-glow: rgba(99,102,241,0.15);
+    --accent-cyan: #22d3ee;
+    --accent-cyan-glow: rgba(34,211,238,0.1);
+    --accent-green: #34d399;
+    --accent-green-glow: rgba(52,211,153,0.1);
+    --accent-orange: #fb923c;
+    --accent-orange-glow: rgba(251,146,60,0.1);
+    --accent-red: #f87171;
+    --accent-red-glow: rgba(248,113,113,0.1);
+    --accent-purple: #a78bfa;
+    --accent-purple-glow: rgba(167,139,250,0.1);
+    --accent-yellow: #fbbf24;
+    --accent-yellow-glow: rgba(251,191,36,0.1);
+    --accent-pink: #f472b6;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 24px rgba(0,0,0,0.3);
+    --shadow-lg: 0 8px 40px rgba(0,0,0,0.4);
+    --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 10%, rgba(248,113,113,0.06), transparent),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(251,146,60,0.06), transparent),
+      radial-gradient(ellipse 50% 40% at 50% 50%, rgba(99,102,241,0.04), transparent);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ─── HEADER ─── */
+  header {
+    padding: 48px 0 32px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-orange), var(--accent-yellow));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  header p { color: var(--text-secondary); font-size: 1.05rem; font-weight: 400; }
+  .version-badge {
+    display: inline-block; margin-top: 12px;
+    padding: 4px 14px; border-radius: 20px;
+    background: var(--accent-red-glow); border: 1px solid rgba(248,113,113,0.3);
+    color: var(--accent-red); font-size: 0.8rem; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ─── NAV ─── */
+  .nav-bar {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,26,0.85); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    margin: 0 -24px; padding-left: 24px; padding-right: 24px;
+  }
+  .nav-inner {
+    max-width: 1400px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .nav-logo {
+    font-weight: 700; font-size: 0.95rem;
+    color: var(--accent-red);
+    margin-right: 16px; white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .nav-links { display: flex; gap: 4px; flex-wrap: wrap; flex: 1; }
+  .nav-links a {
+    padding: 6px 14px; border-radius: 8px;
+    color: var(--text-secondary); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; transition: var(--transition);
+    white-space: nowrap;
+  }
+  .nav-links a:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+  .nav-links a.active { color: var(--accent-red); background: var(--accent-red-glow); }
+
+  /* ─── SEARCH ─── */
+  .search-section { margin-bottom: 28px; }
+  .search-box { position: relative; max-width: 600px; margin: 0 auto; }
+  .search-box input {
+    width: 100%; padding: 14px 20px 14px 48px;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text-primary);
+    font-size: 0.95rem; font-family: 'Inter', sans-serif;
+    outline: none; transition: var(--transition);
+  }
+  .search-box input:focus { border-color: var(--accent-red); box-shadow: 0 0 0 3px var(--accent-red-glow); }
+  .search-box input::placeholder { color: var(--text-muted); }
+  .search-box svg {
+    position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); width: 20px; height: 20px;
+  }
+  .search-stats {
+    text-align: center; margin-top: 10px;
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+
+  /* ─── STATS GRID ─── */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px; margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 20px;
+    text-align: center; transition: var(--transition);
+  }
+  .stat-card:hover { border-color: var(--border-accent); transform: translateY(-2px); box-shadow: var(--shadow); }
+  .stat-number { font-size: 2rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+  .stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stat-card.total .stat-number {
+    background: linear-gradient(135deg, var(--accent-red), var(--accent-orange));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-card.hostile .stat-number { color: var(--accent-red); }
+  .stat-card.passive .stat-number { color: var(--accent-green); }
+  .stat-card.xp .stat-number { color: var(--accent-yellow); }
+  .stat-card.hp .stat-number { color: var(--accent-cyan); }
+
+  /* ─── TIER BADGES ─── */
+  .tier-section { margin-bottom: 36px; }
+  .tier-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px; cursor: pointer;
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: var(--radius); transition: var(--transition);
+    user-select: none;
+  }
+  .tier-header:hover { border-color: var(--border-accent); background: var(--bg-card-hover); }
+  .tier-header.open { border-radius: var(--radius) var(--radius) 0 0; border-bottom-color: transparent; }
+  .tier-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .tier-title { flex: 1; }
+  .tier-title h3 { font-size: 1rem; font-weight: 700; }
+  .tier-title span { font-size: 0.78rem; color: var(--text-muted); }
+  .tier-badge {
+    padding: 3px 10px; border-radius: 12px;
+    font-size: 0.72rem; font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tier-chevron {
+    transition: transform 0.3s ease; color: var(--text-muted); font-size: 1.2rem;
+  }
+  .tier-header.open .tier-chevron { transform: rotate(180deg); }
+
+  .tier-body {
+    display: none; border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    background: var(--bg-secondary);
+    overflow: hidden;
+  }
+  .tier-body.show { display: block; }
+
+  /* Tier colors */
+  .tier-icon.t0 { background: rgba(148,163,184,0.12); color: var(--text-secondary); }
+  .tier-icon.t1 { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+  .tier-icon.t2 { background: rgba(34,211,238,0.12); color: var(--accent-cyan); }
+  .tier-icon.t3 { background: rgba(99,102,241,0.12); color: var(--accent-blue); }
+  .tier-icon.t4 { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+  .tier-icon.t5 { background: rgba(251,146,60,0.12); color: var(--accent-orange); }
+  .tier-icon.t6 { background: rgba(248,113,113,0.12); color: var(--accent-red); }
+
+  .tier-badge.tb0 { background: rgba(148,163,184,0.1); color: var(--text-secondary); }
+  .tier-badge.tb1 { background: rgba(52,211,153,0.1); color: var(--accent-green); }
+  .tier-badge.tb2 { background: rgba(34,211,238,0.1); color: var(--accent-cyan); }
+  .tier-badge.tb3 { background: rgba(99,102,241,0.1); color: var(--accent-blue); }
+  .tier-badge.tb4 { background: rgba(167,139,250,0.1); color: var(--accent-purple); }
+  .tier-badge.tb5 { background: rgba(251,146,60,0.1); color: var(--accent-orange); }
+  .tier-badge.tb6 { background: rgba(248,113,113,0.1); color: var(--accent-red); }
+
+  /* ─── MONSTER CARDS ─── */
+  .monster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+    padding: 20px;
+  }
+
+  .monster-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: var(--transition);
+    animation: cardFadeIn 0.4s ease forwards;
+    opacity: 0;
+  }
+  .monster-card:hover {
+    border-color: var(--border-accent);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+  }
+
+  @keyframes cardFadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .monster-card-header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .monster-rank {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  .monster-name-block { flex: 1; min-width: 0; }
+  .monster-name {
+    font-size: 1rem; font-weight: 700;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .monster-subtitle {
+    font-size: 0.75rem; color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .xp-badge {
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 0.78rem; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--accent-yellow-glow);
+    border: 1px solid rgba(251,191,36,0.25);
+    color: var(--accent-yellow);
+    white-space: nowrap;
+  }
+
+  .monster-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 0;
+  }
+
+  .monster-stat {
+    padding: 10px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .monster-stat:nth-child(4n) { border-right: none; }
+  .monster-stat:nth-last-child(-n+4) { border-bottom: none; }
+
+  .stat-val {
+    font-size: 1rem; font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stat-lbl {
+    font-size: 0.65rem; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-top: 2px; font-weight: 500;
+  }
+
+  .stat-val.hp { color: var(--accent-red); }
+  .stat-val.speed { color: var(--accent-cyan); }
+  .stat-val.armor { color: var(--accent-orange); }
+  .stat-val.def { color: var(--accent-purple); }
+
+  .monster-attacks {
+    padding: 10px 18px 6px;
+    border-top: 1px solid var(--border);
+  }
+  .monster-attacks-title {
+    font-size: 0.68rem; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+  }
+
+  .attack-tag {
+    display: inline-block;
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    margin: 0 4px 6px 0;
+    background: rgba(248,113,113,0.08);
+    border: 1px solid rgba(248,113,113,0.15);
+    color: var(--accent-red);
+  }
+  .attack-tag.ranged {
+    background: rgba(34,211,238,0.08);
+    border-color: rgba(34,211,238,0.15);
+    color: var(--accent-cyan);
+  }
+  .attack-tag.spell {
+    background: rgba(167,139,250,0.08);
+    border-color: rgba(167,139,250,0.15);
+    color: var(--accent-purple);
+  }
+  .attack-tag.heal {
+    background: rgba(52,211,153,0.08);
+    border-color: rgba(52,211,153,0.15);
+    color: var(--accent-green);
+  }
+
+  .monster-loot {
+    padding: 6px 18px 14px;
+  }
+  .monster-loot-title {
+    font-size: 0.68rem; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+  }
+
+  .loot-item {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+    margin: 0 4px 6px 0;
+    background: rgba(251,191,36,0.06);
+    border: 1px solid rgba(251,191,36,0.12);
+    color: var(--accent-yellow);
+  }
+  .loot-chance {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .hostile-badge {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 10px;
+    font-size: 0.62rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .hostile-badge.yes { background: rgba(248,113,113,0.12); color: var(--accent-red); }
+  .hostile-badge.no { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+
+  /* ─── FULL TABLE ─── */
+  .table-container {
+    margin-bottom: 36px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .table-header-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .table-header-bar h2 {
+    font-size: 1.1rem; font-weight: 700; flex: 1;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .full-table {
+    width: 100%; border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .full-table thead th {
+    padding: 12px 16px; text-align: left;
+    font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted);
+    background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 2;
+    cursor: pointer; user-select: none;
+    transition: var(--transition);
+  }
+  .full-table thead th:hover { color: var(--text-primary); }
+  .full-table thead th.sorted-asc::after { content: ' ▲'; color: var(--accent-red); }
+  .full-table thead th.sorted-desc::after { content: ' ▼'; color: var(--accent-red); }
+
+  .full-table tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+  }
+  .full-table tbody tr:hover { background: rgba(248,113,113,0.04); }
+  .full-table tbody tr:last-child { border-bottom: none; }
+  .full-table tbody td { padding: 10px 16px; vertical-align: middle; }
+
+  .table-rank {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.68rem; font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .table-name { font-weight: 600; color: var(--text-primary); }
+  .table-xp { font-family: 'JetBrains Mono', monospace; color: var(--accent-yellow); font-weight: 600; }
+  .table-hp { font-family: 'JetBrains Mono', monospace; color: var(--accent-red); font-weight: 600; }
+  .table-speed { font-family: 'JetBrains Mono', monospace; color: var(--accent-cyan); }
+
+  /* ─── HP BAR ─── */
+  .hp-bar-bg {
+    width: 80px; height: 6px;
+    background: rgba(248,113,113,0.12);
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+  .hp-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent-red), var(--accent-orange));
+    transition: width 0.6s ease;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    text-align: center; padding: 40px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 768px) {
+    header h1 { font-size: 1.6rem; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .monster-grid { grid-template-columns: 1fr; }
+    .full-table { font-size: 0.78rem; }
+    .full-table thead th, .full-table tbody td { padding: 8px 10px; }
+    .hp-bar-bg { display: none; }
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .tier-section { animation: fadeIn 0.3s ease forwards; }
+
+  /* ─── BACK LINK ─── */
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 8px;
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.82rem; font-weight: 500; transition: var(--transition);
+  }
+  .back-link:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+  /* View toggle */
+  .view-toggle {
+    display: flex; gap: 4px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 3px;
+  }
+  .view-btn {
+    padding: 6px 14px; border-radius: 8px; border: none;
+    background: transparent; color: var(--text-secondary);
+    font-size: 0.78rem; font-weight: 500; cursor: pointer;
+    transition: var(--transition); font-family: 'Inter', sans-serif;
+  }
+  .view-btn:hover { color: var(--text-primary); }
+  .view-btn.active { background: var(--accent-red-glow); color: var(--accent-red); }
+
+  #cardsView, #tableView { display: none; }
+  #cardsView.active, #tableView.active { display: block; }
+
+  /* No results */
+  .no-results {
+    text-align: center; padding: 60px 20px;
+    color: var(--text-muted); font-size: 1rem;
+  }
+  .no-results .emoji { font-size: 2.5rem; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ NAV BAR ═══════════ -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-logo">⚔️ Bestiário</div>
+    <div class="nav-links">
+      <a href="#overview" class="active">Visão Geral</a>
+      <a href="#monsters-section">Monstros</a>
+      <a href="#table-section">Tabela Completa</a>
+      <a href="protocol_map.html" class="back-link">← Protocol Map</a>
+      <a href="equipment.html" class="back-link" style="color:var(--accent-green);">🛡️ Arsenal</a>
+      <a href="spells.html" class="back-link" style="color:var(--accent-purple);">📜 Jutsus</a>
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" onclick="setView('cards')" id="btn-cards">🃏 Cards</button>
+      <button class="view-btn" onclick="setView('table')" id="btn-table">📊 Tabela</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══════════ HEADER ═══════════ -->
+<header>
+  <h1>Bestiário do Mundo Shinobi</h1>
+  <p>Guia completo de todos os monstros — ordenados por experiência</p>
+  <div class="version-badge">29 Monstros • Mundo Shinobi NTO</div>
+</header>
+
+<!-- ═══════════ STATS ═══════════ -->
+<section id="overview">
+<div class="stats-grid">
+  <div class="stat-card total">
+    <div class="stat-number">29</div>
+    <div class="stat-label">Total de Monstros</div>
+  </div>
+  <div class="stat-card hostile">
+    <div class="stat-number">24</div>
+    <div class="stat-label">Hostis</div>
+  </div>
+  <div class="stat-card passive">
+    <div class="stat-number">5</div>
+    <div class="stat-label">Passivos</div>
+  </div>
+  <div class="stat-card xp">
+    <div class="stat-number">7,000</div>
+    <div class="stat-label">Max EXP</div>
+  </div>
+  <div class="stat-card hp">
+    <div class="stat-number">4,500</div>
+    <div class="stat-label">Max HP</div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════ SEARCH ═══════════ -->
+<div class="search-section">
+  <div class="search-box">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+    <input type="text" id="searchInput" placeholder="Buscar monstro por nome, HP, experiência..." autocomplete="off">
+  </div>
+  <div class="search-stats" id="searchStats"></div>
+</div>
+
+<!-- ═══════════ CARDS VIEW ═══════════ -->
+<div id="cardsView" class="active">
+<section id="monsters-section"></section>
+</div>
+
+<!-- ═══════════ TABLE VIEW ═══════════ -->
+<div id="tableView">
+<section id="table-section">
+  <div class="table-container">
+    <div class="table-header-bar">
+      <h2>📋 Todos os Monstros <span style="font-size:0.78rem;color:var(--text-muted);font-weight:400;margin-left:8px;">Clique nos cabeçalhos para ordenar</span></h2>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="full-table" id="monsterTable">
+        <thead>
+          <tr>
+            <th style="width:50px" data-sort="rank">#</th>
+            <th data-sort="name">Nome</th>
+            <th data-sort="exp" class="sorted-asc">EXP</th>
+            <th data-sort="hp">HP</th>
+            <th data-sort="speed">Speed</th>
+            <th style="width:70px" data-sort="armor">Armor</th>
+            <th style="width:80px">Hostil</th>
+          </tr>
+        </thead>
+        <tbody id="monsterTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</div>
+
+</div><!-- /container -->
+
+<footer>
+  <p>Bestiário do Mundo Shinobi — Gerado a partir dos XMLs em <code>data/monster/Shinobi/</code></p>
+  <p style="margin-top:4px;">Mundo NTO • Ninja Tales Online</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  MONSTER DATA — Extraído dos XMLs de data/monster/Shinobi/
+// ══════════════════════════════════════════════════════════════
+
+const MONSTERS = [
+  {
+    name: "Rabbit", desc: "a rabbit", exp: 0, hp: 5, speed: 180,
+    armor: 0, defense: 0, hostile: false, lookType: 74,
+    attacks: [{type:"melee",skill:0,attack:0,interval:2000}],
+    loot: [{name:"Worm",chance:50},{name:"Rabbit Foot",chance:8.88}],
+    abilities: []
+  },
+  {
+    name: "Pig", desc: "a pig", exp: 0, hp: 10, speed: 114,
+    armor: 0, defense: 0, hostile: false, lookType: 60,
+    attacks: [{type:"melee",skill:1,attack:1,interval:2000}],
+    loot: [],
+    abilities: []
+  },
+  {
+    name: "Deer", desc: "a deer", exp: 0, hp: 10, speed: 150,
+    armor: 0, defense: 0, hostile: false, lookType: 31,
+    attacks: [{type:"melee",skill:1,attack:1,interval:2000}],
+    loot: [{name:"Meat",chance:16},{name:"Deer Antler",chance:66.66}],
+    abilities: []
+  },
+  {
+    name: "Snake", desc: "a snake", exp: 2, hp: 3, speed: 150,
+    armor: 0, defense: 0, hostile: true, lookType: 28,
+    attacks: [{type:"melee",skill:5,attack:5,interval:2000}],
+    loot: [{name:"Snake Skin",chance:100}],
+    abilities: []
+  },
+  {
+    name: "Bat", desc: "a bat", exp: 5, hp: 30, speed: 200,
+    armor: 1, defense: 6, hostile: true, lookType: 122,
+    attacks: [{type:"melee",skill:16,attack:8,interval:2000}],
+    loot: [{name:"Worm",chance:50},{name:"Worm",chance:50},{name:"Bat Wing",chance:50}],
+    abilities: [],
+    elements: "Earth -20%"
+  },
+  {
+    name: "Cave Rat", desc: "a cave rat", exp: 5, hp: 15, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 56,
+    attacks: [{type:"melee",skill:10,attack:5,interval:1500}],
+    loot: [{name:"Snake Skin",chance:100}],
+    abilities: [],
+    elements: "Earth -20%"
+  },
+  {
+    name: "Rat", desc: "a rat", exp: 6, hp: 7, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 21,
+    attacks: [{type:"melee",skill:10,attack:5,interval:1500}],
+    loot: [{name:"Snake Skin",chance:100}],
+    abilities: [],
+    elements: "Earth -20%"
+  },
+  {
+    name: "Wolf", desc: "a wolf", exp: 7, hp: 20, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 27,
+    attacks: [{type:"melee",skill:15,attack:5,interval:2000}],
+    loot: [{name:"Meat",chance:10},{name:"Wolf Paw",chance:100}],
+    abilities: ["Speed Boost"],
+  },
+  {
+    name: "Hiroku", desc: "a Hiroku", exp: 13, hp: 60, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 388,
+    attacks: [{type:"melee",skill:10,attack:3,interval:2000},{type:"ranged",name:"Throwing Star",min:12,max:20,range:7}],
+    loot: [{name:"Gold Coin",chance:20,max:3},{name:"Throwing Knife",chance:50}],
+    abilities: []
+  },
+  {
+    name: "Bear", desc: "a bear", exp: 14, hp: 100, speed: 176,
+    armor: 0, defense: 0, hostile: true, lookType: 664,
+    attacks: [{type:"melee",skill:10,attack:5,interval:2000}],
+    loot: [{name:"Bear Paw",chance:100},{name:"Meat",chance:100}],
+    abilities: []
+  },
+  {
+    name: "Hizoku", desc: "a Hizoku", exp: 15, hp: 40, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 550,
+    attacks: [{type:"melee",skill:15,attack:20,interval:2000}],
+    loot: [{name:"Sword",chance:50.06},{name:"Gold Coin",chance:100,max:10},{name:"Shuriken",chance:80}],
+    abilities: []
+  },
+  {
+    name: "Maka", desc: "a Maka", exp: 17, hp: 70, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 396,
+    attacks: [{type:"melee",skill:5,attack:5,interval:2000},{type:"ranged",name:"Throwing Star",min:20,max:25,range:7}],
+    loot: [{name:"Gold Coin",chance:20,max:5},{name:"Throwing Knife",chance:10},{name:"Black Pants",chance:70,max:2}],
+    abilities: []
+  },
+  {
+    name: "Sanzoku", desc: "a Sanzoku", exp: 25, hp: 150, speed: 250,
+    armor: 4, defense: 0, hostile: true, lookType: 549,
+    attacks: [{type:"melee",skill:26,attack:17,interval:900},{type:"ranged",name:"Poison Arrow",min:30,max:40,range:7}],
+    loot: [{name:"Gold Coin",chance:100,max:15},{name:"Ninja Robe",chance:15},{name:"Black Pants",chance:14},{name:"Orange",chance:12,max:2},{name:"Fuuma Shuriken",chance:9}],
+    abilities: ["Speed Boost"]
+  },
+  {
+    name: "Touzoku", desc: "a Touzoku", exp: 33, hp: 400, speed: 200,
+    armor: 5, defense: 0, hostile: true, lookType: 392,
+    attacks: [{type:"melee",skill:26,attack:20,interval:1200}],
+    loot: [{name:"Gold Coin",chance:100,max:15},{name:"White Pants",chance:12},{name:"Ninjutsu Sword",chance:6}],
+    abilities: ["Speed Boost"]
+  },
+  {
+    name: "Dorobou", desc: "a Dorobou", exp: 44, hp: 600, speed: 200,
+    armor: 0, defense: 0, hostile: true, lookType: 417,
+    attacks: [{type:"melee",skill:30,attack:60,interval:2000}],
+    loot: [{name:"Gold Coin",chance:20,max:20},{name:"Taijutsu Bandage",chance:150},{name:"Mercenary Razor",chance:30}],
+    abilities: []
+  },
+  {
+    name: "Tiger", desc: "a tiger", exp: 66, hp: 650, speed: 450,
+    armor: 0, defense: 0, hostile: true, lookType: 318,
+    attacks: [{type:"melee",skill:80,attack:75,interval:1500}],
+    loot: [{name:"Meat",chance:50,max:3},{name:"Tiger Fang",chance:100}],
+    abilities: ["Speed Boost"]
+  },
+  {
+    name: "Hito", desc: "a Hito", exp: 69, hp: 1250, speed: 300,
+    armor: 0, defense: 0, hostile: true, lookType: 408,
+    attacks: [{type:"melee",skill:80,attack:60,interval:2000}],
+    loot: [{name:"Gold Coin",chance:30,max:30},{name:"Aian Nakuru",chance:1},{name:"Black Pants",chance:100},{name:"Black Shinobi Sandals",chance:100}],
+    abilities: []
+  },
+  {
+    name: "Gorotsuki", desc: "a Gorotsuki", exp: 75, hp: 700, speed: 400,
+    armor: 0, defense: 0, hostile: true, lookType: 651,
+    attacks: [{type:"melee",skill:60,attack:65,interval:2000},{type:"ranged",name:"Throwing Star",min:150,max:180,range:7}],
+    loot: [{name:"Gold Coin",chance:50,max:10},{name:"Kunai Pouch",chance:150},{name:"Wooden Gloves",chance:150},{name:"Silver Kunai",chance:50}],
+    abilities: []
+  },
+  {
+    name: "Kora", desc: "a Kora", exp: 79, hp: 1000, speed: 280,
+    armor: 0, defense: 0, hostile: true, lookType: 411,
+    attacks: [{type:"melee",skill:80,attack:65,interval:2000},{type:"spell",name:"Goukakyuu",min:60,max:80}],
+    loot: [{name:"Gold Coin",chance:50,max:10},{name:"Silver Kunai",chance:50}],
+    abilities: ["Jutsu: Goukakyuu"]
+  },
+  {
+    name: "Fire Monk", desc: "a fire monk", exp: 89, hp: 900, speed: 300,
+    armor: 0, defense: 0, hostile: true, lookType: 394,
+    attacks: [{type:"melee",skill:80,attack:47,interval:1500}],
+    loot: [{name:"Gold Coin",chance:20,max:50},{name:"Mercenary Razor",chance:50},{name:"Double Sickle",chance:10},{name:"Wooden Baton",chance:50},{name:"Ninja Robe",chance:4}],
+    abilities: []
+  },
+  {
+    name: "Monk", desc: "a Monk", exp: 100, hp: 100, speed: 250,
+    armor: 0, defense: 0, hostile: true, lookType: 57,
+    attacks: [{type:"melee",skill:30,attack:20,interval:2000}],
+    loot: [{name:"Gold Coin",chance:35,max:20}],
+    abilities: ["Self Healing (30-50)"]
+  },
+  {
+    name: "Yuugen", desc: "a Yuugen", exp: 115, hp: 2300, speed: 400,
+    armor: 0, defense: 0, hostile: true, lookType: 509,
+    attacks: [{type:"melee",skill:95,attack:90,interval:1500}],
+    loot: [{name:"Platinum Coin",chance:35,max:2}],
+    abilities: ["Speed Boost"]
+  },
+  {
+    name: "Koichi", desc: "a Koichi", exp: 120, hp: 2000, speed: 800,
+    armor: 0, defense: 0, hostile: true, lookType: 653,
+    attacks: [{type:"melee",skill:1,attack:15,interval:2000}],
+    loot: [{name:"Gold Coin",chance:20,max:40},{name:"Double Sickle",chance:50},{name:"Curved Kunai",chance:10}],
+    abilities: []
+  },
+  {
+    name: "Shinnou", desc: "a shinnou", exp: 625, hp: 900, speed: 300,
+    armor: 0, defense: 0, hostile: true, lookType: 652,
+    attacks: [{type:"melee",skill:15,attack:5,interval:2000}],
+    loot: [{name:"Gold Coin",chance:20,max:50}],
+    abilities: []
+  },
+  {
+    name: "Kumori", desc: "a Kumori", exp: 1500, hp: 2500, speed: 400,
+    armor: 0, defense: 0, hostile: true, lookType: 510,
+    attacks: [{type:"melee",skill:75,attack:80,interval:2000}],
+    loot: [{name:"Platinum Coin",chance:35,max:2}],
+    abilities: []
+  },
+  {
+    name: "Shitoru", desc: "a Shitoru", exp: 1500, hp: 2100, speed: 600,
+    armor: 0, defense: 0, hostile: true, lookType: 511,
+    attacks: [{type:"melee",skill:60,attack:80,interval:1500}],
+    loot: [{name:"Platinum Coin",chance:35,max:2}],
+    abilities: ["Speed Boost"]
+  },
+  {
+    name: "Dead Shogun", desc: "a dead shogun", exp: 2220, hp: 4500, speed: 220,
+    armor: 10, defense: 0, hostile: true, lookType: 395,
+    attacks: [{type:"melee",skill:65,attack:120,interval:1000}],
+    loot: [{name:"Gold Coin",chance:50,max:13},{name:"Skull",chance:50},{name:"Bone",chance:10},{name:"Ring of Healing",chance:5},{name:"Small Amethyst",chance:10,max:3}],
+    abilities: []
+  },
+  {
+    name: "Zig", desc: "Zig", exp: 7000, hp: 500, speed: 280,
+    armor: 0, defense: 12, hostile: true, lookType: 411,
+    attacks: [{type:"melee",skill:24,attack:26,interval:900},{type:"ranged",name:"Poison Arrow",min:70,max:100,range:7},{type:"spell",name:"Goukakyuu",min:60,max:80}],
+    loot: [{name:"Gold Coin",chance:100,max:30},{name:"Ninja Robe",chance:15},{name:"White Pants",chance:14},{name:"Sandals",chance:16}],
+    abilities: ["Jutsu: Goukakyuu"]
+  }
+].sort((a, b) => a.exp - b.exp);
+
+// Assign ranks after sorting
+MONSTERS.forEach((m, i) => m.rank = i + 1);
+
+// ─── TIER DEFINITIONS ───
+const TIERS = [
+  { name: "Passivos", desc: "Criaturas não agressivas — EXP 0", icon: "🐇", cls: "t0", badgeCls: "tb0", filter: m => m.exp === 0 },
+  { name: "Tier 1 — Iniciante", desc: "EXP 1 ~ 10", icon: "🌱", cls: "t1", badgeCls: "tb1", filter: m => m.exp >= 1 && m.exp <= 10 },
+  { name: "Tier 2 — Aprendiz", desc: "EXP 11 ~ 30", icon: "⚡", cls: "t2", badgeCls: "tb2", filter: m => m.exp >= 11 && m.exp <= 30 },
+  { name: "Tier 3 — Genin", desc: "EXP 31 ~ 80", icon: "🔥", cls: "t3", badgeCls: "tb3", filter: m => m.exp >= 31 && m.exp <= 80 },
+  { name: "Tier 4 — Chuunin", desc: "EXP 81 ~ 200", icon: "💎", cls: "t4", badgeCls: "tb4", filter: m => m.exp >= 81 && m.exp <= 200 },
+  { name: "Tier 5 — Jounin", desc: "EXP 201 ~ 2000", icon: "🌀", cls: "t5", badgeCls: "tb5", filter: m => m.exp >= 201 && m.exp <= 2000 },
+  { name: "Tier 6 — Kage", desc: "EXP 2001+", icon: "👹", cls: "t6", badgeCls: "tb6", filter: m => m.exp > 2000 },
+];
+
+const maxHP = Math.max(...MONSTERS.map(m => m.hp));
+
+// ─── RENDER CARDS ───
+function renderCards(filter = '') {
+  const section = document.getElementById('monsters-section');
+  section.innerHTML = '';
+  const filterLower = filter.toLowerCase();
+
+  let totalVisible = 0;
+
+  TIERS.forEach((tier, ti) => {
+    let monsters = MONSTERS.filter(tier.filter);
+    if (filter) {
+      monsters = monsters.filter(m =>
+        m.name.toLowerCase().includes(filterLower) ||
+        m.desc.toLowerCase().includes(filterLower) ||
+        String(m.exp).includes(filterLower) ||
+        String(m.hp).includes(filterLower)
+      );
+    }
+    if (monsters.length === 0) return;
+    totalVisible += monsters.length;
+
+    const div = document.createElement('div');
+    div.className = 'tier-section';
+    div.innerHTML = `
+      <div class="tier-header open" onclick="toggleSection(this)">
+        <div class="tier-icon ${tier.cls}">${tier.icon}</div>
+        <div class="tier-title">
+          <h3>${tier.name}</h3>
+          <span>${tier.desc}</span>
+        </div>
+        <span class="tier-badge ${tier.badgeCls}">${monsters.length} monstro${monsters.length > 1 ? 's' : ''}</span>
+        <span class="tier-chevron">▼</span>
+      </div>
+      <div class="tier-body show">
+        <div class="monster-grid">
+          ${monsters.map((m, i) => renderMonsterCard(m, i)).join('')}
+        </div>
+      </div>
+    `;
+    section.appendChild(div);
+  });
+
+  if (totalVisible === 0) {
+    section.innerHTML = `<div class="no-results"><div class="emoji">🔍</div><p>Nenhum monstro encontrado para "<strong>${filter}</strong>"</p></div>`;
+  }
+
+  document.getElementById('searchStats').textContent = filter
+    ? `${totalVisible} monstro${totalVisible !== 1 ? 's' : ''} encontrado${totalVisible !== 1 ? 's' : ''}`
+    : '';
+}
+
+function renderMonsterCard(m, delay) {
+  const rankColor = getRankColor(m);
+  const attacksHTML = m.attacks.map(a => {
+    if (a.type === 'melee') return `<span class="attack-tag">⚔️ Melee sk:${a.skill} atk:${a.attack}</span>`;
+    if (a.type === 'ranged') return `<span class="attack-tag ranged">🏹 ${a.name} ${a.min}-${a.max}</span>`;
+    if (a.type === 'spell') return `<span class="attack-tag spell">🔮 ${a.name} ${a.min}-${a.max}</span>`;
+    return '';
+  }).join('');
+
+  const abilitiesHTML = m.abilities.map(a => `<span class="attack-tag heal">✨ ${a}</span>`).join('');
+
+  const lootHTML = m.loot.map(l =>
+    `<span class="loot-item">${l.name}${l.max ? ' x'+l.max : ''} <span class="loot-chance">${l.chance}%</span></span>`
+  ).join('');
+
+  return `
+    <div class="monster-card" style="animation-delay:${delay * 0.05}s">
+      <div class="monster-card-header">
+        <div class="monster-rank" style="background:${rankColor}22;color:${rankColor}">#${m.rank}</div>
+        <div class="monster-name-block">
+          <div class="monster-name">${m.name}</div>
+          <div class="monster-subtitle">${m.desc} · lookType ${m.lookType}</div>
+        </div>
+        <div class="xp-badge">${m.exp.toLocaleString()} XP</div>
+      </div>
+      <div class="monster-stats">
+        <div class="monster-stat"><div class="stat-val hp">${m.hp.toLocaleString()}</div><div class="stat-lbl">HP</div></div>
+        <div class="monster-stat"><div class="stat-val speed">${m.speed}</div><div class="stat-lbl">Speed</div></div>
+        <div class="monster-stat"><div class="stat-val armor">${m.armor}</div><div class="stat-lbl">Armor</div></div>
+        <div class="monster-stat"><div class="stat-val def">${m.defense}</div><div class="stat-lbl">Defense</div></div>
+      </div>
+      <div class="monster-attacks">
+        <div class="monster-attacks-title">Ataques & Habilidades</div>
+        ${attacksHTML}${abilitiesHTML}
+      </div>
+      ${m.loot.length ? `
+      <div class="monster-loot">
+        <div class="monster-loot-title">Loot</div>
+        ${lootHTML}
+      </div>` : ''}
+    </div>
+  `;
+}
+
+// ─── RENDER TABLE ───
+function renderTable(filter = '', sortKey = 'exp', sortDir = 'asc') {
+  const tbody = document.getElementById('monsterTableBody');
+  let data = [...MONSTERS];
+
+  if (filter) {
+    const f = filter.toLowerCase();
+    data = data.filter(m =>
+      m.name.toLowerCase().includes(f) ||
+      m.desc.toLowerCase().includes(f) ||
+      String(m.exp).includes(f) ||
+      String(m.hp).includes(f)
+    );
+  }
+
+  data.sort((a, b) => {
+    let va = a[sortKey], vb = b[sortKey];
+    if (sortKey === 'name') { va = va.toLowerCase(); vb = vb.toLowerCase(); }
+    if (sortKey === 'rank') { va = a.exp; vb = b.exp; }
+    if (va < vb) return sortDir === 'asc' ? -1 : 1;
+    if (va > vb) return sortDir === 'asc' ? 1 : -1;
+    return 0;
+  });
+
+  tbody.innerHTML = data.map((m, i) => {
+    const rankColor = getRankColor(m);
+    const hpPercent = Math.round((m.hp / maxHP) * 100);
+    return `
+      <tr>
+        <td><span class="table-rank" style="background:${rankColor}22;color:${rankColor}">${m.rank}</span></td>
+        <td><span class="table-name">${m.name}</span> <span class="hostile-badge ${m.hostile ? 'yes' : 'no'}">${m.hostile ? '' : '🕊️'}</span></td>
+        <td class="table-xp">${m.exp.toLocaleString()}</td>
+        <td class="table-hp">${m.hp.toLocaleString()} <div class="hp-bar-bg"><div class="hp-bar-fill" style="width:${hpPercent}%"></div></div></td>
+        <td class="table-speed">${m.speed}</td>
+        <td>${m.armor}</td>
+        <td><span class="hostile-badge ${m.hostile ? 'yes' : 'no'}">${m.hostile ? 'Sim' : 'Não'}</span></td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// ─── UTILITIES ───
+function getRankColor(m) {
+  if (m.exp === 0) return '#94a3b8';
+  if (m.exp <= 10) return '#34d399';
+  if (m.exp <= 30) return '#22d3ee';
+  if (m.exp <= 80) return '#6366f1';
+  if (m.exp <= 200) return '#a78bfa';
+  if (m.exp <= 2000) return '#fb923c';
+  return '#f87171';
+}
+
+function toggleSection(el) {
+  el.classList.toggle('open');
+  const body = el.nextElementSibling;
+  body.classList.toggle('show');
+}
+
+// ─── VIEW TOGGLE ───
+function setView(view) {
+  document.getElementById('cardsView').classList.toggle('active', view === 'cards');
+  document.getElementById('tableView').classList.toggle('active', view === 'table');
+  document.getElementById('btn-cards').classList.toggle('active', view === 'cards');
+  document.getElementById('btn-table').classList.toggle('active', view === 'table');
+}
+
+// ─── SEARCH ───
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', function() {
+  clearTimeout(searchTimeout);
+  const val = this.value.trim();
+  searchTimeout = setTimeout(() => {
+    renderCards(val);
+    renderTable(val, currentSort, currentDir);
+  }, 150);
+});
+
+// ─── TABLE SORT ───
+let currentSort = 'exp';
+let currentDir = 'asc';
+
+document.querySelectorAll('.full-table thead th[data-sort]').forEach(th => {
+  th.addEventListener('click', function() {
+    const key = this.dataset.sort;
+    if (currentSort === key) {
+      currentDir = currentDir === 'asc' ? 'desc' : 'asc';
+    } else {
+      currentSort = key;
+      currentDir = 'asc';
+    }
+    document.querySelectorAll('.full-table thead th').forEach(t => {
+      t.classList.remove('sorted-asc', 'sorted-desc');
+    });
+    this.classList.add(currentDir === 'asc' ? 'sorted-asc' : 'sorted-desc');
+    renderTable(document.getElementById('searchInput').value.trim(), currentSort, currentDir);
+  });
+});
+
+// ─── NAV HIGHLIGHT ───
+document.querySelectorAll('.nav-links a:not(.back-link)').forEach(link => {
+  link.addEventListener('click', function() {
+    document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// ─── INIT ───
+renderCards();
+renderTable();
+</script>
+</body>
+</html>

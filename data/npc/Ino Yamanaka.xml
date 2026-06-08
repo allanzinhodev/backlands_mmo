@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Ino Yamanaka"  script="default.lua" walkinterval="5000" floorchange="0" speed="0">
+	<health now="100" max="100"/>
+	<look type="686" head="79" body="70" legs="70" feet="125"/>
+	<parameters>
+		<parameter key="module_shop" value="2"/>
+		<parameter key="message_greet" value="Ola |PLAYERNAME|. Eu posso te vender lindas flores.. ! {trade} "/>
+		<parameter key="shop_buyable" value="flowers,12655,70;"/>
+	</parameters>
+	</npc>

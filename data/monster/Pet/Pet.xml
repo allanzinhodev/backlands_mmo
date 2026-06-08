@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Pet" nameDescription="an pet" race="blood" experience="0" speed="400" manacost="0">
+	<health now="25" max="25"/>
+	<look type="403"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="1"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="1"/>
+		<flag pushable="1"/>
+		<flag canpushitems="0"/>
+		<flag canpushcreatures="0"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1500" skill="15" attack="12"/>
+	</attacks>
+	<defenses armor="1" defense="4"/>
+	<elements>
+		<element earthPercent="10"/>
+		<element holyPercent="10"/>
+		<element icePercent="-5"/>
+		<elemetn deathPercent="-5"/>
+	</elements>
+	<loot>
+	</loot>
+	<script>
+		<event name="petKill"/>
+		<event name="petStats"/>
+		<event name="petDeath"/>
+	</script>
+		<voices interval="5000" chance="10">
+		<voice sentence="Wuff! Wuff!"/>
+	</voices>
+</monster>

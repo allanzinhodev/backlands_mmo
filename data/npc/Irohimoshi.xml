@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Irohimoshi" script="Irohimoshi.lua" walkinterval="2000" floorchange="0">
+	<health now="150" max="150"/>
+	<look type="582" head="20" body="100" legs="50" feet="99" corpse="2212"/>
+	<parameters>
+	
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Ola |PLAYERNAME|! Veio aqui ver minhas ofertas? venha aqui!, vamos.... {trade}!"/>
+		<parameter key="message_farewell" value="Adeus |PLAYERNAME| venha visitar minha loja mais vezes!"/>
+		<parameter key="message_idletimeout" value="Adeus!"/>
+		<parameter key="message_walkaway" value="Meu estoque esta acabando... acho melhor ligar para o fornecedor!"/>
+		<parameter key="shop_buyable" value="Beige bag,1987,5;Great bag,13022,45;Rope,2120,20;"/>
+		<parameter key="shop_sellable" value="wolf paw,5897,5;bat wing,5894,15;"/>
+	</parameters>
+</npc>

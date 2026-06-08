@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Fire Monk" nameDescription="a fire monk" race="blood" experience="89" speed="300" manacost="400">
+	<health now="900" max="900"/>
+	<look type="394" corpse="13231"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>                                   
+	<attacks>
+		<attack name="melee" interval="1500" skill="80" attack="47"/>
+	</attacks>
+	<defenses armor="0" defense="0">
+	</defenses>
+	<elements>
+	</elements>
+	<immunities>
+	</immunities>         
+	<loot>
+	<item id="2148" countmax="50" chance="20000"/>
+	<item id="12694" chance="5000"/>  <!-- mercenary razor -->
+	<item id="12699" chance="1000"/>  <!-- double sickle-->    
+	<item id="12681" chance="5000"/> <!-- wooden baton-->   
+	<item id="12561" countmax="1" chance="400"/><!-- white pants -->  
+	</loot>
+	<script>
+		<event name="Hit" />
+	</script>
+</monster>

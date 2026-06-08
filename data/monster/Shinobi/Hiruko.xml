@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Hiruko" nameDescription="a Hiruko" race="blood" experience="18" speed="230" manacost="200">
+	<health now="130" max="130"/>
+	<look type="388" corpse="12983"/>
+	<targetchange interval="2000" chance="0"/>
+	<strategy attack="100" defense="4"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="5"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="8"/>
+	</flags>
+	<attacks>
+		<attack name="physical" interval="5000" chance="60" range="7" min="-12" max="-20">
+			<attribute key="shootEffect" value="throwingstar"/>
+		</attack>
+	</attacks>
+	<defenses defense="9"/>
+	<elements>
+	</elements>
+	<voices interval="5000" chance="10">
+		<voice sentence="HAHAHA!"/>
+	</voices>
+	<loot>
+			<item id="2148" countmax="4" chance="10000"/><!-- gold coin -->
+			<item id="2399" countmax="4" chance="8000"/><!--shuriken -->
+	</loot>
+<script>
+<event name="Hit"/>
+</script>
+</monster>
