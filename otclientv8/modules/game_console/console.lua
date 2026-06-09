@@ -38,7 +38,7 @@ SpeakTypes = {
   --[MessageModes.RVRChannel] = SpeakTypesSettings.channelWhite,
   --[MessageModes.RVRContinue] = SpeakTypesSettings.rvrContinue,
   --[MessageModes.RVRAnswer] = SpeakTypesSettings.rvrAnswerFrom,
-  --[MessageModes.NpcFromStartBlock] = SpeakTypesSettings.privateNpcToPlayer,
+  [MessageModes.NpcFromStartBlock] = SpeakTypesSettings.privateNpcToPlayer,
 
   -- ignored types
   [MessageModes.Spell] = SpeakTypesSettings.none,
@@ -1790,10 +1790,10 @@ function online()
   serverTab = addTab(tr('Server Log'), false)
 
 
-  if g_game.getClientVersion() >= 820 then
-    local tab = addTab("NPCs", false)
-    tab.npcChat = true
-  end
+  -- if g_game.getClientVersion() >= 820 then
+  --   local tab = addTab("NPCs", false)
+  --   tab.npcChat = true
+  -- end
 
   if g_game.getClientVersion() < 862 then
     Keybind.new("Dialogs", "Open Rule Violation", "Ctrl+R", "")
