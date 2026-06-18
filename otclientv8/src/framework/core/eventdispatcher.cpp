@@ -122,7 +122,7 @@ ScheduledEventPtr EventDispatcher::scheduleEventEx(const std::string& function, 
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
     VALIDATE(delay >= 0);
-    auto scheduledEvent = std::make_shared<ScheduledEvent>(function, callback, delay, 1, g_app.isOnInputEvent());
+    auto scheduledEvent = std::make_shared<ScheduledEvent>(function, callback, delay, 1);
     m_scheduledEventList.push(scheduledEvent);
     return scheduledEvent;
 }
@@ -135,7 +135,7 @@ ScheduledEventPtr EventDispatcher::cycleEventEx(const std::string& function, con
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
 
     VALIDATE(delay > 0);
-    auto scheduledEvent = std::make_shared<ScheduledEvent>(function, callback, delay, 0, g_app.isOnInputEvent());
+    auto scheduledEvent = std::make_shared<ScheduledEvent>(function, callback, delay, 0);
     m_scheduledEventList.push(scheduledEvent);
     return scheduledEvent;
 }
@@ -145,7 +145,7 @@ EventPtr EventDispatcher::addEventEx(const std::string& function, const std::fun
     if(m_disabled)
         return std::make_shared<Event>("", nullptr);
 
-    auto event = std::make_shared<Event>(function, callback, g_app.isOnInputEvent());
+    auto event = std::make_shared<Event>(function, callback);
 
     std::lock_guard<std::recursive_mutex> lock(m_mutex);
 

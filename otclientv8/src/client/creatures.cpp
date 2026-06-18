@@ -333,7 +333,6 @@ void CreatureManager::internalLoadCreatureBuffer(TiXmlElement* attrib, const Cre
         out.setLegs(attrib->readType<int>(("legs")));
         out.setFeet(attrib->readType<int>(("feet")));
         out.setAddons(attrib->readType<int>(("addons")));
-        out.setMount(attrib->readType<int>(("mount")));
     }
 
     m->setOutfit(out);

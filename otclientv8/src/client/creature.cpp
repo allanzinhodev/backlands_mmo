@@ -103,7 +103,11 @@ void Creature::draw(const Point& dest, bool animate, LightView* lightView)
         animationOffset -= getDisplacement();
 
     size_t drawQueueSize = g_drawQueue->size();
-    m_outfit.draw(dest - jumpOffset + animationOffset, m_walking ? m_walkDirection : m_direction, m_walkAnimationPhase, true, lightView);
+        int customActionGroup = 0;
+    if (m_customActionGroup > 0 && g_clock.millis() < m_customActionTicks) {
+        customActionGroup = m_customActionGroup;
+    }
+    m_outfit.draw(dest - jumpOffset + animationOffset, m_walking ? m_walkDirection : m_direction, m_walkAnimationPhase, true, lightView, false, customActionGroup);
     if (m_marked) {
         g_drawQueue->setMark(drawQueueSize, updatedMarkedColor());
     }
@@ -494,12 +498,6 @@ void Creature::updateWalkAnimation(uint8 totalPixelsWalked)
         footDelay += 10;
     if (footDelay < 20)
         footDelay = 20;
-
-    // Since mount is a different outfit we need to get the mount animation phases
-    if (m_outfit.getMount() != 0) {
-        ThingType* type = g_things.rawGetThingType(m_outfit.getMount(), m_outfit.getCategory());
-        footAnimPhases = std::min<int>(footAnimPhases, type->getAnimationPhases() - 1);
-    }
 
     if (footAnimPhases == 0) {
         m_walkAnimationPhase = 0;
@@ -946,11 +944,6 @@ Point Creature::getDisplacement()
     else if (m_outfit.getCategory() == ThingCategoryItem)
         return Point(0, 0);
 
-    if (m_outfit.getMount() != 0) {
-        auto datType = g_things.rawGetThingType(m_outfit.getMount(), ThingCategoryCreature);
-        return datType->getDisplacement() * g_sprites.getOffsetFactor();
-    }
-
     return Thing::getDisplacement() * g_sprites.getOffsetFactor();
 }
 
@@ -961,11 +954,6 @@ int Creature::getDisplacementX()
     else if (m_outfit.getCategory() == ThingCategoryItem)
         return 0;
 
-    if (m_outfit.getMount() != 0) {
-        auto datType = g_things.rawGetThingType(m_outfit.getMount(), ThingCategoryCreature);
-        return datType->getDisplacementX() * g_sprites.getOffsetFactor();
-    }
-
     return Thing::getDisplacementX() * g_sprites.getOffsetFactor();
 }
 
@@ -975,13 +963,6 @@ int Creature::getDisplacementY()
         return 8 * g_sprites.getOffsetFactor();
     else if (m_outfit.getCategory() == ThingCategoryItem)
         return 0;
-
-    if (m_outfit.getMount() != 0) {
-        auto datType = g_things.rawGetThingType(m_outfit.getMount(), ThingCategoryCreature);
-        if (datType) {
-            return datType->getDisplacementY() * g_sprites.getOffsetFactor();
-        }
-    }
 
     return Thing::getDisplacementY() * g_sprites.getOffsetFactor();
 }
@@ -994,8 +975,6 @@ int Creature::getExactSize(int layer, int xPattern, int yPattern, int zPattern, 
     xPattern = Otc::South;
 
     zPattern = 0;
-    if (m_outfit.getMount() != 0)
-        zPattern = 1;
 
     for (yPattern = 0; yPattern < getNumPatternY(); yPattern++) {
         if (yPattern > 0 && !(m_outfit.getAddons() & (1 << (yPattern - 1))))
@@ -1213,4 +1192,10 @@ void Creature::setTitle(const std::string& title, const std::string& font, const
         m_titleCache.setFont(g_fonts.getFont(font));
     }
     m_titleColor = color;
+}
+
+void Creature::setCustomAction(uint8 actionId, int duration)
+{
+    m_customActionGroup = actionId;
+    m_customActionTicks = g_clock.millis() + duration;
 }

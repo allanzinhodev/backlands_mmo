@@ -169,6 +169,8 @@ struct DrawOutfitParams {
 class ThingType : public LuaObject
 {
 public:
+    int getGroupStartPhase(uint8 group) { auto it = m_groupStartPhases.find(group); return it != m_groupStartPhases.end() ? it->second : 0; }
+    int getGroupPhases(uint8 group) { auto it = m_groupPhases.find(group); return it != m_groupPhases.end() ? it->second : 0; }
     ThingType();
 
     void unserialize(uint16 clientId, ThingCategory category, const FileStreamPtr& fin);
@@ -204,8 +206,9 @@ public:
     int getNumPatternY() { return m_numPatternY; }
     int getNumPatternZ() { return m_numPatternZ; }
     int getAnimationPhases() { return m_animationPhases; }
-    AnimatorPtr getAnimator() { return m_animator; }
-    AnimatorPtr getIdleAnimator() { return m_idleAnimator; }
+    AnimatorPtr getAnimator(uint8 group = FrameGroupMoving) { auto it = m_animators.find(group); return it != m_animators.end() ? it->second : nullptr; }
+    AnimatorPtr getIdleAnimator() { return getAnimator(FrameGroupIdle); }
+    
     Point getDisplacement() { return m_displacement; }
     int getDisplacementX() { return getDisplacement().x; }
     int getDisplacementY() { return getDisplacement().y; }
@@ -280,8 +283,10 @@ private:
 
     Size m_size;
     Point m_displacement;
-    AnimatorPtr m_animator;
-    AnimatorPtr m_idleAnimator;
+    std::map<uint8, AnimatorPtr> m_animators;
+    std::map<uint8, int> m_groupStartPhases;
+    std::map<uint8, int> m_groupPhases;
+    
     std::vector<Point> m_bones;
     int m_animationPhases;
     int m_exactSize;

@@ -12,7 +12,7 @@ function updateFeatures(version)
       return
     end
     
-    g_game.enableFeature(GameExtendedOpcode)
+    -- g_game.enableFeature(GameExtendedOpcode)
     --g_game.enableFeature(GameMinimapLimitedToSingleFloor) -- it will generate minimap only for current floor
 
     -- Enhanced DAT/SPR format features (always enabled, independent of protocol version)

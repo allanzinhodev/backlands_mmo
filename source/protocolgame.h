@@ -206,6 +206,7 @@ class ProtocolGame : public Protocol
 		void sendCreatureShield(const Creature* creature);
 		void sendCreatureEmblem(const Creature* creature) {reloadCreature(creature);}
 		void sendCreatureImpassable(const Creature* creature);
+		void sendCreatureAction(const Creature* creature, uint8_t actionId, uint16_t duration);
 
 		void sendShop(const ShopInfoList& shop);
 		void sendCloseShop();

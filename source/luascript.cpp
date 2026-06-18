@@ -1402,7 +1402,7 @@ void LuaInterface::registerFunctions()
 	//example(...)
 	//lua_register(L, "name", C_function);
 	
-	//AQUI REGISTRAR AS NOVAS FUNÇÕES DO NTO (Lembrando que, em TFS 0.4 LuaScripInterface é LuaInterface apenas).
+	//AQUI REGISTRAR AS NOVAS FUNï¿½ï¿½ES DO NTO (Lembrando que, em TFS 0.4 LuaScripInterface ï¿½ LuaInterface apenas).
 	
 	//doSendPlayerExtendedOpcode(cid, opcode, buffer)
 	lua_register(m_luaState, "doSendPlayerExtendedOpcode", LuaInterface::luaDoSendPlayerExtendedOpcode);
@@ -2073,6 +2073,9 @@ void LuaInterface::registerFunctions()
 
 	//doSetCreatureOutfit(cid, outfit[, time = -1])
 	lua_register(m_luaState, "doSetCreatureOutfit", LuaInterface::luaSetCreatureOutfit);
+
+	//doCreaturePlayAction(cid, actionId[, duration = 1000])
+	lua_register(m_luaState, "doCreaturePlayAction", LuaInterface::luaDoCreaturePlayAction);
 
 	//getCreatureOutfit(cid)
 	lua_register(m_luaState, "getCreatureOutfit", LuaInterface::luaGetCreatureOutfit);
@@ -10881,3 +10884,25 @@ SHIFT_OPERATOR(uint32_t, ULeftShift, <<)
 SHIFT_OPERATOR(uint32_t, URightShift, >>)
 
 #undef SHIFT_OPERATOR
+
+int32_t LuaInterface::luaDoCreaturePlayAction(lua_State* L)
+{
+	//doCreaturePlayAction(cid, actionId[, duration = 1000])
+	uint16_t duration = 1000;
+	if(lua_gettop(L) > 2)
+		duration = popNumber(L);
+
+	uint8_t actionId = popNumber(L);
+	ScriptEnviroment* env = getEnv();
+	if(Creature* creature = env->getCreatureByUID(popNumber(L)))
+	{
+		g_game.internalCreatureAction(creature, actionId, duration);
+		lua_pushboolean(L, true);
+	}
+	else
+	{
+		errorEx(getError(LUA_ERROR_CREATURE_NOT_FOUND));
+		lua_pushboolean(L, false);
+	}
+	return 1;
+}

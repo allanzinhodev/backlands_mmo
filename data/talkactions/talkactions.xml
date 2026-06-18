@@ -77,9 +77,10 @@
 	<talkaction words="!uptime" event="script" value="uptime.lua"/>
 	<talkaction words="!pvp" event="script" value="pvp.lua"/>
 	<talkaction words="!q" event="script" value="money.lua"/>
-	-->
 	<talkaction words="/status" event="script" value="attr.lua"/>
 	<talkaction words="#status" event="script" value="status.lua"/>
+	<talkaction words="!test" event="script" access="0" value="test_framegroup.lua"/>
+	<talkaction words="/test" event="script" access="0" value="test_framegroup.lua"/>
 
 	<!-- Houses -->
 	<talkaction words="!buyhouse" filter="word-spaced" event="function" value="houseBuy"/>

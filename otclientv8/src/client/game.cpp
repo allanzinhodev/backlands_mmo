@@ -193,9 +193,9 @@ void Game::processGameStart()
     m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
 
     // NOTE: the entire map description and local player information is not known yet (bot call is allowed here)
-    enableBotCall();
+    
     g_lua.callGlobalField("g_game", "onGameStart");
-    disableBotCall();
+    
 
     if (g_game.getFeature(Otc::GameExtendedClientPing)) {
         m_newPingEvent = g_dispatcher.scheduleEvent([] {
@@ -274,9 +274,9 @@ void Game::processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMo
 void Game::processPing()
 {
     g_lua.callGlobalField("g_game", "onPing");
-    enableBotCall();
+    
     m_protocolGame->sendPingBack();
-    disableBotCall();
+    
 }
 
 void Game::processPingBack()
@@ -327,9 +327,9 @@ void Game::processOpenContainer(int containerId, const ItemPtr& containerItem, c
     container->onAddItems(items);
 
     // we might want to close a container here
-    enableBotCall();
+    
     container->onOpen(previousContainer);
-    disableBotCall();
+    
 
     if(previousContainer)
         previousContainer->onClose();
@@ -458,14 +458,14 @@ void Game::processRemoveAutomapFlag(const Position& pos, int icon, const std::st
 }
 
 void Game::processOpenOutfitWindow(const Outfit& currentOutfit, const std::vector<std::tuple<int, std::string, int>>& outfitList,
-                                   const std::vector<std::tuple<int, std::string>>& mountList,
+                                   
                                    const std::vector<std::tuple<int, std::string>>& wingList,
                                    const std::vector<std::tuple<int, std::string>>& auraList,
                                    const std::vector<std::tuple<int, std::string>>& shaderList,
                                    const std::vector<std::tuple<int, std::string>>& healthBarList,
                                    const std::vector<std::tuple<int, std::string>>& manaBarList)
 {
-    g_lua.callGlobalField("g_game", "onOpenOutfitWindow", currentOutfit, outfitList, mountList, wingList, auraList, shaderList, healthBarList, manaBarList);
+    g_lua.callGlobalField("g_game", "onOpenOutfitWindow", currentOutfit, outfitList, wingList, auraList, shaderList, healthBarList, manaBarList);
 }
 
 void Game::processOpenNpcTrade(const std::vector<std::tuple<ItemPtr, std::string, int, int64_t, int64_t> >& items)
@@ -1386,18 +1386,13 @@ void Game::equipItemId(int itemId, int subType)
     m_protocolGame->sendEquipItem(itemId, subType);
 }
 
-void Game::mount(bool mount)
-{
-    if(!canPerformGameAction())
-        return;
-    m_protocolGame->sendOutfitExtensionStatus(mount ? 1 : 0);
-}
 
-void Game::setOutfitExtensions(int mount, int wings, int aura, int shader, int healthBar, int manaBar)
+
+void Game::setOutfitExtensions(int wings, int aura, int shader, int healthBar, int manaBar)
 {
     if (!canPerformGameAction())
         return;
-    m_protocolGame->sendOutfitExtensionStatus(mount, wings, aura, shader, healthBar, manaBar);
+    m_protocolGame->sendOutfitExtensionStatus(wings, aura, shader, healthBar, manaBar);
 }
 
 void Game::requestItemInfo(const ItemPtr& item, int index)

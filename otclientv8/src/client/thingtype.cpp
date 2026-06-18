@@ -41,7 +41,9 @@ ThingType::ThingType()
     m_null = true;
     m_exactSize = 0;
     m_realSize = 0;
-    m_animator = nullptr;
+    m_animators.clear();
+    m_groupStartPhases.clear();
+    m_groupPhases.clear();
     m_numPatternX = m_numPatternY = m_numPatternZ = 0;
     m_animationPhases = 0;
     m_layers = 0;
@@ -120,8 +122,8 @@ void ThingType::serialize(const FileStreamPtr& fin)
     fin->addU8(m_animationPhases);
 
     if(g_game.getFeature(Otc::GameEnhancedAnimations)) {
-        if(m_animationPhases > 1 && m_animator != nullptr)  {
-            m_animator->serialize(fin);
+        if(m_animationPhases > 1 && m_animators.find(FrameGroupMoving) != m_animators.end())  {
+            m_animators[FrameGroupMoving]->serialize(fin);
         }
     }
 
@@ -317,6 +319,8 @@ void ThingType::unserialize(uint16 clientId, ThingCategory category, const FileS
             m_numPatternZ = 1;
         
         int groupAnimationsPhases = fin->getU8();
+        m_groupStartPhases[frameGroupType] = m_animationPhases;
+        m_groupPhases[frameGroupType] = groupAnimationsPhases;
         m_animationPhases += groupAnimationsPhases;
 
         if(groupAnimationsPhases > 1 && g_game.getFeature(Otc::GameEnhancedAnimations)) {
@@ -324,13 +328,11 @@ void ThingType::unserialize(uint16 clientId, ThingCategory category, const FileS
             animator->unserialize(groupAnimationsPhases, fin);
 
             switch (frameGroupType) {
-            case FrameGroupIdle:
-                m_idleAnimator = animator;
-                break;
+            // old animator assigment removed
             case FrameGroupMoving:
-                m_animator = animator;
                 break;
             }
+            m_animators[frameGroupType] = animator;
         }
 
         int totalSprites = m_size.area() * m_layers * m_numPatternX * m_numPatternY * m_numPatternZ * groupAnimationsPhases;
@@ -384,10 +386,7 @@ void ThingType::unserialize(uint16 clientId, ThingCategory category, const FileS
         }
     }
 
-    if (m_idleAnimator && !m_animator) {
-        m_animator = m_idleAnimator;
-        m_idleAnimator = nullptr;
-    }
+    // old idle animator copy removed
 
     m_textures.resize(m_animationPhases);
     m_texturesFramesRects.resize(m_animationPhases);

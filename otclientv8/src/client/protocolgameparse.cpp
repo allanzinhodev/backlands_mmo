@@ -527,6 +527,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerProgressBar:
                 parseProgressBar(msg);
                 break;
+            case Proto::GameServerCreatureAction:
+                parseCreatureAction(msg);
+                break;
             case Proto::GameServerFeatures:
                 parseFeatures(msg);
                 break;
@@ -846,7 +849,7 @@ void ProtocolGame::parseStoreOffers(const InputMessagePtr& msg)
             } else if (offerType == 1) { // mount
                 msg->getU16();
             } else if (offerType == 2) { // outfit
-                getOutfit(msg, true);
+                getOutfit(msg);
             } else if (offerType == 3) { // item
                 msg->getU16();
             }
@@ -898,7 +901,7 @@ void ProtocolGame::parseStoreOffers(const InputMessagePtr& msg)
                 } else if (offerType == 1) { // mount
                     msg->getU16();
                 } else if (offerType == 2) { // outfit
-                    getOutfit(msg, true);
+                    getOutfit(msg);
                 } else if (offerType == 3) { // item
                     msg->getU16();
                 }
@@ -1790,7 +1793,7 @@ void ProtocolGame::parsePreyData(const InputMessagePtr& msg)
         return g_lua.callGlobalField("g_game", "onPreyInactive", slot, timeUntilFreeReroll, lockType);
     } else if (state == Otc::PREY_STATE_ACTIVE) {
         std::string currentHolderName = msg->getString();
-        Outfit currentHolderOutfit = getOutfit(msg, true);
+        Outfit currentHolderOutfit = getOutfit(msg);
         Otc::PreyBonusType_t bonusType = (Otc::PreyBonusType_t)msg->getU8();
         int bonusValue = msg->getU16();
         int bonusGrade = msg->getU8();
@@ -1811,7 +1814,7 @@ void ProtocolGame::parsePreyData(const InputMessagePtr& msg)
         int selectionSize = msg->getU8();
         for (int i = 0; i < selectionSize; ++i) {
             names.push_back(msg->getString());
-            outfits.push_back(getOutfit(msg, true));
+            outfits.push_back(getOutfit(msg));
         }
         int timeUntilFreeReroll = g_game.getProtocolVersion() >= 1252 ? msg->getU32() : msg->getU16();
         uint8_t lockType = g_game.getFeature(Otc::GameTibia12Protocol) ? msg->getU8() : 0;
@@ -2530,7 +2533,7 @@ void ProtocolGame::parseOpenOutfitWindow(const InputMessagePtr& msg)
         msg->getU8(); // mounted?
     }
 
-    g_game.processOpenOutfitWindow(currentOutfit, outfitList, mountList, wingList, auraList, shaderList, healthBarList, manaBarList);
+    g_game.processOpenOutfitWindow(currentOutfit, outfitList, wingList, auraList, shaderList, healthBarList, manaBarList);
 }
 
 void ProtocolGame::parseVipAdd(const InputMessagePtr& msg)
@@ -3289,7 +3292,7 @@ int ProtocolGame::setTileDescription(const InputMessagePtr& msg, Position positi
     return 0;
 }
 
-Outfit ProtocolGame::getOutfit(const InputMessagePtr& msg, bool ignoreMount)
+Outfit ProtocolGame::getOutfit(const InputMessagePtr& msg)
 {
     Outfit outfit;
 
@@ -3335,9 +3338,9 @@ Outfit ProtocolGame::getOutfit(const InputMessagePtr& msg, bool ignoreMount)
         }
     }
 
-    if (!ignoreMount) {
+    {
         if (g_game.getFeature(Otc::GamePlayerMounts)) {
-            outfit.setMount(msg->getU16());
+            
         }
         if (g_game.getFeature(Otc::GameWingsAndAura)) {
             outfit.setWings(msg->getU16());
@@ -3670,4 +3673,16 @@ Position ProtocolGame::getPosition(const InputMessagePtr& msg)
     uint8 z = msg->getU8();
 
     return Position(x, y, z);
+}
+
+void ProtocolGame::parseCreatureAction(const InputMessagePtr& msg)
+{
+    uint32 id = msg->getU32();
+    uint8 actionId = msg->getU8();
+    uint16 duration = msg->getU16();
+
+    CreaturePtr creature = g_map.getCreatureById(id);
+    if(creature) {
+        creature->setCustomAction(actionId, duration);
+    }
 }

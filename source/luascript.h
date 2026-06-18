@@ -327,14 +327,14 @@ class LuaInterface
 
 		//lua functions
 		
-		//NOVAS FUNÇÕES DO NTO
+		//NOVAS FUNÃ‡Ã•ES DO NTO
 		static int32_t luaDoSendPlayerExtendedOpcode(lua_State* L);
 		static int32_t luaDoCreateMonsterNick(lua_State* L);
 		static int32_t luaGetCreatureNickRealName(lua_State* L);
 		static int32_t luaDoPlayerCastSpell(lua_State* L);
 
 		
-		//FIM DAS NOVAS FUNÇÕES
+		//FIM DAS NOVAS FUNÃ‡Ã•ES
 		static int32_t luaDoRemoveItem(lua_State* L);
 		static int32_t luaDoPlayerFeed(lua_State* L);
 		static int32_t luaDoPlayerSendCancel(lua_State* L);
@@ -616,6 +616,7 @@ class LuaInterface
 		static int32_t luaGetExperienceStage(lua_State* L);
 		static int32_t luaDoCreatureChangeOutfit(lua_State* L);
 		static int32_t luaSetCreatureOutfit(lua_State* L);
+		static int32_t luaDoCreaturePlayAction(lua_State* L);
 		static int32_t luaGetCreatureOutfit(lua_State* L);
 		static int32_t luaSetMonsterOutfit(lua_State* L);
 		static int32_t luaSetItemOutfit(lua_State* L);

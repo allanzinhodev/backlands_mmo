@@ -93,10 +93,7 @@ void UICreature::onStyleApply(const std::string& styleName, const OTMLNodePtr& s
             Outfit outfit = getOutfit();
             outfit.setAddons(node->value<int>());
             setOutfit(outfit);
-        } else if (node->tag() == "outfit-mount") {
-            Outfit outfit = getOutfit();
-            outfit.setMount(node->value<int>());
-            setOutfit(outfit);
+        // mount removed
         } else if (node->tag() == "outfit-wings") {
             Outfit outfit = getOutfit();
             outfit.setWings(node->value<int>());

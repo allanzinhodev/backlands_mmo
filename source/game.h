@@ -558,6 +558,7 @@ class Game
 
 		void internalCreatureChangeOutfit(Creature* creature, const Outfit_t& oufit, bool forced = false);
 		void internalCreatureChangeVisible(Creature* creature, Visible_t visible);
+		void internalCreatureAction(Creature* creature, uint8_t actionId, uint16_t duration);
 
 		void updateCreatureSkull(Creature* creature);
 		void updateCreatureShield(Creature* creature);

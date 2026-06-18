@@ -36,7 +36,7 @@ void ProtocolGame::send(const OutputMessagePtr& outputMessage, bool rawPacket)
 
 void ProtocolGame::sendExtendedOpcode(uint8 opcode, const std::string& buffer)
 {
-    g_game.enableBotCall();
+    
     if(m_enableSendExtendedOpcode) {
         auto msg = std::make_shared<OutputMessage>();
         msg->addU8(Proto::ClientExtendedOpcode);
@@ -46,7 +46,7 @@ void ProtocolGame::sendExtendedOpcode(uint8 opcode, const std::string& buffer)
     } else {
         g_logger.error(stdext::format("Unable to send extended opcode %d, extended opcodes are not enabled on this server.", opcode));
     }
-    g_game.disableBotCall();
+    
 }
 
 void ProtocolGame::sendWorldName()
@@ -827,8 +827,7 @@ void ProtocolGame::sendChangeOutfit(const Outfit& outfit)
     msg->addU8(outfit.getFeet());
     if(g_game.getFeature(Otc::GamePlayerAddons))
         msg->addU8(outfit.getAddons());
-    if(g_game.getFeature(Otc::GamePlayerMounts))
-        msg->addU16(outfit.getMount());
+    
     if (g_game.getFeature(Otc::GameWingsAndAura)) {
         msg->addU16(outfit.getWings());
         msg->addU16(outfit.getAura());
@@ -842,14 +841,12 @@ void ProtocolGame::sendChangeOutfit(const Outfit& outfit)
     send(msg);
 }
 
-void ProtocolGame::sendOutfitExtensionStatus(int mount, int wings, int aura, int shader, int healthBar, int manaBar)
+void ProtocolGame::sendOutfitExtensionStatus(int wings, int aura, int shader, int healthBar, int manaBar)
 {
-    if(g_game.getFeature(Otc::GamePlayerMounts) || g_game.getFeature(Otc::GameWingsAndAura) || g_game.getFeature(Otc::GameOutfitShaders) || g_game.getFeature(Otc::GameHealthInfoBackground)) {
+    if(g_game.getFeature(Otc::GameWingsAndAura) || g_game.getFeature(Otc::GameOutfitShaders) || g_game.getFeature(Otc::GameHealthInfoBackground)) {
         auto msg = std::make_shared<OutputMessage>();
         msg->addU8(Proto::ClientMount);
-        if (g_game.getFeature(Otc::GamePlayerMounts)) {
-            msg->addU8(mount);
-        }
+        
         if (g_game.getFeature(Otc::GameWingsAndAura)) {
             msg->addU8(wings);
             msg->addU8(aura);

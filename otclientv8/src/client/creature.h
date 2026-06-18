@@ -58,6 +58,7 @@ public:
     void setManaPercent(int8 value) { m_manaPercent = value; }
     void setHealthPercent(uint8 healthPercent);
     void setDirection(Otc::Direction direction);
+    void setCustomAction(uint8 actionId, int duration);
     void setOutfit(const Outfit& outfit);
     void setOutfitColor(const Color& color, int duration);
     void setLight(const Light& light) { m_light = light; }
@@ -214,6 +215,8 @@ protected:
     uint8 m_healthPercent;
     int8 m_manaPercent;
     Otc::Direction m_direction;
+    uint8 m_customActionGroup{0};
+    ticks_t m_customActionTicks{0};
     Otc::Direction m_walkDirection;
     Outfit m_outfit;
     Light m_light;

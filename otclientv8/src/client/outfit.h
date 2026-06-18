@@ -37,7 +37,7 @@ public:
         return Color::getOutfitColor(color);
     }
 
-    void draw(Point dest, Otc::Direction direction, uint walkAnimationPhase, bool animate = true, LightView* lightView = nullptr, bool ui = false);
+    void draw(Point dest, Otc::Direction direction, uint walkAnimationPhase, bool animate = true, LightView* lightView = nullptr, bool ui = false, int customActionGroup = 0);
     void draw(const Rect& dest, Otc::Direction direction, uint animationPhase, bool animate = true, bool ui = false, bool oldScaling = false);
 
     void setId(int id) { m_id = id; }
@@ -47,7 +47,6 @@ public:
     void setLegs(int legs) { m_legs = legs; }
     void setFeet(int feet) { m_feet = feet; }
     void setAddons(int addons) { m_addons = addons; }
-    void setMount(int mount) { m_mount = mount; }
     void setWings(int wings) { m_wings = wings; }
     void setAura(int aura) { m_aura = aura; }
     void setCategory(ThingCategory category) { m_category = category; }
@@ -66,7 +65,6 @@ public:
     int getLegs() const { return m_legs; }
     int getFeet() const { return m_feet; }
     int getAddons() const { return m_addons; }
-    int getMount() const { return m_mount; }
     int getWings() const { return m_wings; }
     int getAura() const { return m_aura; }
     ThingCategory getCategory() const { return m_category; }
@@ -76,7 +74,7 @@ public:
 
 private:
     ThingCategory m_category;
-    int m_id, m_auxId, m_head, m_body, m_legs, m_feet, m_addons, m_mount = 0, m_wings = 0, m_aura = 0;
+    int m_id, m_auxId, m_head, m_body, m_legs, m_feet, m_addons, m_wings = 0, m_aura = 0;
     int m_healthBar = 0, m_manaBar = 0;
     std::string m_shader;
     bool m_center = false;

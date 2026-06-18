@@ -76,6 +76,7 @@ namespace Proto {
         GameServerNewCancelWalk             = 69,
         GameServerPredictiveCancelWalk      = 70,
         GameServerWalkId                    = 71,
+        GameServerCreatureAction            = 78,
 
         GameServerFloorDescription          = 75,
 

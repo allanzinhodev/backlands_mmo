@@ -4271,6 +4271,20 @@ void Game::internalCreatureChangeVisible(Creature* creature, Visible_t visible)
 		(*it)->onCreatureChangeVisible(creature, visible);
 }
 
+void Game::internalCreatureAction(Creature* creature, uint8_t actionId, uint16_t duration)
+{
+	const SpectatorVec& list = getSpectators(creature->getPosition());
+	SpectatorVec::const_iterator it;
+
+	//send to client
+	Player* tmpPlayer = NULL;
+	for(it = list.begin(); it != list.end(); ++it)
+	{
+		if((tmpPlayer = (*it)->getPlayer()))
+			tmpPlayer->sendCreatureAction(creature, actionId, duration);
+	}
+}
+
 
 void Game::changeLight(const Creature* creature)
 {

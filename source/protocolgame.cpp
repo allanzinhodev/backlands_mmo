@@ -1602,6 +1602,22 @@ void ProtocolGame::sendCreatureImpassable(const Creature* creature)
 	}*/
 }
 
+void ProtocolGame::sendCreatureAction(const Creature* creature, uint8_t actionId, uint16_t duration)
+{
+	if(!canSee(creature))
+		return;
+
+	NetworkMessage_ptr msg = getOutputBuffer();
+	if(msg)
+	{
+		TRACK_MESSAGE(msg);
+		msg->put<char>(0x4E);
+		msg->put<uint32_t>(creature->getID());
+		msg->put<char>(actionId);
+		msg->put<uint16_t>(duration);
+	}
+}
+
 void ProtocolGame::sendCreatureShield(const Creature* creature)
 {
 	if(!canSee(creature))

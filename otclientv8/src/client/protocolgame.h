@@ -102,7 +102,7 @@ public:
     void sendRefreshContainer(int containerId);
     void sendRequestOutfit();
     void sendChangeOutfit(const Outfit& outfit);
-    void sendOutfitExtensionStatus(int mount = -1, int wings = -1, int aura = -1, int shader = -1, int healthBar = -1, int manaBar = -1);
+    void sendOutfitExtensionStatus(int wings = -1, int aura = -1, int shader = -1, int healthBar = -1, int manaBar = -1);
     void sendApplyImbuement(uint8_t slot, uint32_t imbuementId, bool protectionCharm);
     void sendClearImbuement(uint8_t slot);
     void sendCloseImbuingWindow();
@@ -244,6 +244,7 @@ private:
     void parseCloseTrade(const InputMessagePtr&);
     void parseTextMessage(const InputMessagePtr& msg);
     void parseCancelWalk(const InputMessagePtr& msg);
+    void parseCreatureAction(const InputMessagePtr& msg);
     void parseWalkWait(const InputMessagePtr& msg);
     void parseFloorChangeUp(const InputMessagePtr& msg);
     void parseFloorChangeDown(const InputMessagePtr& msg);
@@ -304,7 +305,7 @@ public:
     int setFloorDescription(const InputMessagePtr& msg, int x, int y, int z, int width, int height, int offset, int skip);
     int setTileDescription(const InputMessagePtr& msg, Position position);
 
-    Outfit getOutfit(const InputMessagePtr& msg, bool ignoreMount = false);
+    Outfit getOutfit(const InputMessagePtr& msg);
     ThingPtr getThing(const InputMessagePtr& msg);
     ThingPtr getMappedThing(const InputMessagePtr & msg);
     CreaturePtr getCreature(const InputMessagePtr& msg, int type = 0);

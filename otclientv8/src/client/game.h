@@ -136,7 +136,7 @@ protected:
 
     // outfit
     void processOpenOutfitWindow(const Outfit& currentOutfit, const std::vector<std::tuple<int, std::string, int>>& outfitList,
-                                 const std::vector<std::tuple<int, std::string>>& mountList,
+                                 
                                  const std::vector<std::tuple<int, std::string>>& wingList,
                                  const std::vector<std::tuple<int, std::string>>& auraList,
                                  const std::vector<std::tuple<int, std::string>>& shaderList,
@@ -288,8 +288,7 @@ public:
     // 870 only
     void equipItem(const ItemPtr& item);
     void equipItemId(int itemId, int subType);
-    void mount(bool mount);
-    void setOutfitExtensions(int mount, int wings, int aura, int shader, int healthBar, int manaBar);
+    void setOutfitExtensions(int wings, int aura, int shader, int healthBar, int manaBar);
 
     // 910 only
     void requestItemInfo(const ItemPtr& item, int index);

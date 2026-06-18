@@ -584,7 +584,7 @@ function showOutfits()
     local outfit = table.copy(previewCreature:getOutfit())
     outfit.type = outfitData[1]
     outfit.addons = outfitData[3]
-    outfit.mount = 0
+    
     outfit.aura = 0
     outfit.wings = 0
     outfit.shader = "outfit_default"
@@ -627,7 +627,7 @@ function showMounts()
     button.outfit:setOutfit({type = mountData[1]})
     button.outfit:setCenter(true)
     button.name:setText(mountData[2])
-    if tempOutfit.mount == mountData[1] then
+    if false then
       focused = mountData[1]
     end
   end
@@ -891,7 +891,7 @@ function onPresetSelect(list, focusedChild, unfocusedChild, reason)
     end
 
     if g_game.getFeature(GamePlayerMounts) then
-      window.configure.mount.check:setChecked(preset.mounted and tempOutfit.mount > 0)
+      window.configure.mount.check:setChecked(preset.mounted and false)
     end
 
     settings.currentPreset = presetId
@@ -924,7 +924,7 @@ end
 function onMountSelect(list, focusedChild, unfocusedChild, reason)
   if focusedChild then
     local mountType = tonumber(focusedChild:getId())
-    tempOutfit.mount = mountType
+    
 
     deselectPreset()
 
@@ -932,8 +932,8 @@ function onMountSelect(list, focusedChild, unfocusedChild, reason)
       updatePreview()
     end
 
-    window.configure.mount.check:setEnabled(tempOutfit.mount > 0)
-    window.configure.mount.check:setChecked(g_game.getLocalPlayer():isMounted() and tempOutfit.mount > 0)
+    window.configure.mount.check:setEnabled(false)
+    window.configure.mount.check:setChecked(g_game.getLocalPlayer():isMounted() and false)
 
     updateAppearanceText("mount", focusedChild.name:getText())
   end
@@ -1098,9 +1098,7 @@ function updatePreview()
     previewCreature:show()
   end
 
-  if not settings.showMount then
-    previewOutfit.mount = 0
-  end
+
 
   if not settings.showAura then
     previewOutfit.aura = 0
@@ -1119,7 +1117,7 @@ function updatePreview()
     previewOutfit.manaBar = 0
     window.preview.panel.bars:hide()
   else
-    if g_game.getFeature(GamePlayerMounts) and settings.showMount and previewOutfit.mount > 0 then
+    if g_game.getFeature(GamePlayerMounts) and settings.showMount and false then
       window.preview.panel.bars:setMarginTop(45)
       window.preview.panel.bars:setMarginLeft(25)
     else

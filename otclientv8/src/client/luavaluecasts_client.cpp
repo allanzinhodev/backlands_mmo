@@ -42,10 +42,7 @@ int push_luavalue(const Outfit& outfit)
     g_lua.setField("legs");
     g_lua.pushInteger(outfit.getFeet());
     g_lua.setField("feet");
-    if (g_game.getFeature(Otc::GamePlayerMounts)) {
-        g_lua.pushInteger(outfit.getMount());
-        g_lua.setField("mount");
-    }
+    
     if (g_game.getFeature(Otc::GameWingsAndAura)) {
         g_lua.pushInteger(outfit.getWings());
         g_lua.setField("wings");
@@ -86,10 +83,7 @@ bool luavalue_cast(int index, Outfit& outfit)
         outfit.setLegs(g_lua.popInteger());
         g_lua.getField("feet", index);
         outfit.setFeet(g_lua.popInteger());
-        if (g_game.getFeature(Otc::GamePlayerMounts)) {
-            g_lua.getField("mount", index);
-            outfit.setMount(g_lua.popInteger());
-        }
+        
         if (g_game.getFeature(Otc::GameWingsAndAura)) {
             g_lua.getField("wings", index);
             outfit.setWings(g_lua.popInteger());

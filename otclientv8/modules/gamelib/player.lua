@@ -74,28 +74,6 @@ function Player:hasVip(creatureName)
   return false
 end
 
-function Player:isMounted()
-  local outfit = self:getOutfit()
-  return outfit.mount ~= nil and outfit.mount > 0
-end
-
-function Player:toggleMount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(not self:isMounted())
-  end
-end
-
-function Player:mount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(true)
-  end
-end
-
-function Player:dismount()
-  if g_game.getFeature(GamePlayerMounts) then
-    g_game.mount(false)
-  end
-end
 
 function Player:getItem(itemId, subType)
   return g_game.findPlayerItem(itemId, subType or -1)

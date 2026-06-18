@@ -560,6 +560,8 @@ class Player : public Creature, public Cylinder
 		void sendCreatureChangeVisible(const Creature* creature, Visible_t visible);
 		void sendCreatureLight(const Creature* creature)
 			{if(client) client->sendCreatureLight(creature);}
+		void sendCreatureAction(const Creature* creature, uint8_t actionId, uint16_t duration)
+			{if(client) client->sendCreatureAction(creature, actionId, duration);}
 		void sendCreatureShield(const Creature* creature)
 			{if(client) client->sendCreatureShield(creature);}
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer)
