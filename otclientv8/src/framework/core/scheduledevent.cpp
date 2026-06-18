@@ -22,7 +22,7 @@
 
 #include "scheduledevent.h"
 
-ScheduledEvent::ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles, bool botSafe) : Event(function, callback, botSafe)
+ScheduledEvent::ScheduledEvent(const std::string& function, const std::function<void()>& callback, int delay, int maxCycles) : Event(function, callback)
 {
     m_ticks = g_clock.millis() + delay;
     m_delay = delay;

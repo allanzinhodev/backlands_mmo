@@ -607,15 +607,7 @@ function createThingMenu(menuPosition, lookThing, useThing, creatureThing)
     end
   end
 
-  if g_game.getFeature(GameBot) and useThing and useThing:isItem() then
-    menu:addSeparator()
-    local useThingId = useThing:getId()
-    if useThing:getSubType() > 1 then
-      menu:addOption("ID: " .. useThingId .. " SubType: " .. useThing:getSubType(), function() g_window.setClipboardText(useThingId) end)
-    else
-      menu:addOption("ID: " .. useThingId, function() g_window.setClipboardText(useThingId) end)
-    end
-  end
+
 
   menu:display(menuPosition)
 end
@@ -1089,13 +1081,7 @@ function updateSize()
       gameMapPanel:setMarginRight(0)
     end
       
-    if modules.game_bot then
-      for i, child in ipairs(gameMapPanel:getChildren()) do
-        if child.botIcon and child.onGeometryChange then
-          child.onGeometryChange(child)
-        end
-      end
-    end
+
   else
     if modules.game_stats then
       modules.game_stats.ui:setMarginTop(0)

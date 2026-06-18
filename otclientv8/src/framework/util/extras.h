@@ -26,8 +26,6 @@ public:
         DEFINE_OPTION(disablePredictiveWalking, "Disable predictive walking");
     }
 
-    bool botDetection = default_value;
-    
     bool newMapViewRendering = default_value;
     bool limitedPolling = default_value;
 

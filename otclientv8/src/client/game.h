@@ -344,7 +344,6 @@ public:
     int getOs();
 
     bool canPerformGameAction();
-    bool checkBotProtection();
 
     bool isOnline() { return m_online; }
     bool isLogging() { return !m_online && m_protocolGame; }
@@ -419,9 +418,6 @@ public:
     }
 
 protected:
-    void enableBotCall() { m_denyBotCall = false; }
-    void disableBotCall() { m_denyBotCall = true; }
-
 private:
     void setAttackingCreature(const CreaturePtr& creature);
     void setFollowingCreature(const CreaturePtr& creature);
@@ -434,7 +430,6 @@ private:
     std::map<int, Vip> m_vips;
 
     bool m_online;
-    bool m_denyBotCall;
     bool m_dead;
     bool m_expertPvpMode;
     int m_serverBeat;

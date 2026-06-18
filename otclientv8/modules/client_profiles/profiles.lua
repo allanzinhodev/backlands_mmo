@@ -121,11 +121,9 @@ function onProfileChange(offline)
   end
 end
 
--- collection of refresh functions from different modules
 function collectiveReload()
   modules.game_topbar.refresh(true)
   modules.game_actionbar.refresh(true)
-  modules.game_bot.refresh()
 end
 
 -- json handlers

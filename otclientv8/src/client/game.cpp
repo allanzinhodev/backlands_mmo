@@ -47,7 +47,6 @@ Game::Game()
     m_clientCustomOs = -1;
     m_clientVersion = 0;
     m_online = false;
-    m_denyBotCall = false;
     m_dead = false;
     m_serverBeat = 50;
     m_seq = 0;
@@ -75,7 +74,6 @@ void Game::terminate()
 void Game::resetGameStates()
 {
     m_online = false;
-    m_denyBotCall = false;
     m_dead = false;
     m_serverBeat = 50;
     m_seq = 0;
@@ -677,9 +675,7 @@ void Game::autoWalk(const std::vector<Otc::Direction>& dirs, Position startPos)
 
 void Game::walk(Otc::Direction direction, bool withPreWalk)
 {
-    m_denyBotCall = false;
     if (!canPerformGameAction()) {
-        m_denyBotCall = true;
         return;
     }
     if (g_extras.debugWalking) {
@@ -695,7 +691,6 @@ void Game::walk(Otc::Direction direction, bool withPreWalk)
             flags |= 0x01;
         }
         m_protocolGame->sendNewWalk(m_walkId, m_walkPrediction, pos, flags, { direction });
-        m_denyBotCall = true;
         return;
     }
 
@@ -727,14 +722,11 @@ void Game::walk(Otc::Direction direction, bool withPreWalk)
     default:
         break;
     }
-    m_denyBotCall = true;
 }
 
 void Game::turn(Otc::Direction direction)
 {
-    m_denyBotCall = false;
     if (!canPerformGameAction()) {
-        m_denyBotCall = true;
         return;
     }
 
@@ -758,7 +750,6 @@ void Game::turn(Otc::Direction direction)
     default:
         break;
     }
-    m_denyBotCall = true;
 }
 
 void Game::stop()
@@ -767,18 +758,13 @@ void Game::stop()
         g_logger.info(stdext::format("[%i] Game::stop", (int)g_clock.millis()));
     }
 
-    m_denyBotCall = false;
     if (!canPerformGameAction()) {
-        m_denyBotCall = true;
         return;
     }
 
     if(isFollowing())
-        cancelFollow(); // can change m_denyBotCall
-    m_denyBotCall = false;
 
     m_protocolGame->sendStop();
-    m_denyBotCall = true;
 }
 
 void Game::look(const ThingPtr& thing, bool isBattleList)
@@ -980,9 +966,7 @@ void Game::attack(CreaturePtr creature)
 
 void Game::follow(CreaturePtr creature)
 {
-    m_denyBotCall = false;
     if (!canPerformGameAction() || creature == m_localPlayer) {
-        m_denyBotCall = true;
         return;
     }
 
@@ -1003,7 +987,6 @@ void Game::follow(CreaturePtr creature)
         m_seq++;
 
     m_protocolGame->sendFollow(creature ? creature->getId() : 0, m_seq);
-    m_denyBotCall = true;
 }
 
 void Game::cancelAttackAndFollow()
@@ -1531,9 +1514,7 @@ void Game::ping()
     if(m_pingReceived != m_pingSent)
         return;
 
-    m_denyBotCall = false;
     m_protocolGame->sendPing();
-    m_denyBotCall = true;
     m_pingSent++;
     m_pingTimer.restart();
 }
@@ -1560,20 +1541,6 @@ void Game::changeMapAwareRange(int xrange, int yrange)
     m_protocolGame->sendChangeMapAwareRange(xrange, yrange);
 }
 
-bool Game::checkBotProtection()
-{
-    if (getFeature(Otc::GameBotProtection)) {
-        // accepts calls comming from a stacktrace containing only C++ functions,
-        // if the stacktrace contains a lua function, then only accept if the engine is processing an input event
-        if (m_denyBotCall && g_lua.isInCppCallback() && !g_app.isOnInputEvent() && !g_dispatcher.isBotSafe()) {
-            g_logger.error(g_lua.traceback("caught a lua call to a bot protected game function, the call was cancelled"));
-            return false;
-        }
-    }
-
-    return true;
-}
-
 bool Game::canPerformGameAction()
 {
     // we can only perform game actions if we meet these conditions:
@@ -1582,8 +1549,7 @@ bool Game::canPerformGameAction()
     // - the local player is not dead
     // - we have a game protocol
     // - the game protocol is connected
-    // - its not a bot action
-    return m_online && m_localPlayer && !m_localPlayer->isDead() && !m_dead && m_protocolGame && m_protocolGame->isConnected() && checkBotProtection();
+    return m_online && m_localPlayer && !m_localPlayer->isDead() && !m_dead && m_protocolGame && m_protocolGame->isConnected();
 }
 
 void Game::setProtocolVersion(int version)

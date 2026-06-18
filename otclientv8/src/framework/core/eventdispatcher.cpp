@@ -61,7 +61,7 @@ void EventDispatcher::poll()
         m_scheduledEventList.pop();
         {
             AutoStat s2(STATS_DISPATCHER, scheduledEvent->getFunction());
-            m_botSafe = scheduledEvent->isBotSafe();
+
             lock.unlock();
             scheduledEvent->execute();
             events += 1;
@@ -97,7 +97,7 @@ void EventDispatcher::poll()
             m_eventList.pop_front();
             {
                 AutoStat s2(STATS_DISPATCHER, event->getFunction());
-                m_botSafe = event->isBotSafe();
+
                 lock.unlock();
                 event->execute();
                 events += 1;
@@ -111,7 +111,7 @@ void EventDispatcher::poll()
 
     g_graphs[this == &g_dispatcher ? GRAPH_DISPATCHER_EVENTS : GRAPH_GRAPHICS_EVENTS].addValue(events, true);
 
-    m_botSafe = false;
+
 }
 
 ScheduledEventPtr EventDispatcher::scheduleEventEx(const std::string& function, const std::function<void()>& callback, int delay)

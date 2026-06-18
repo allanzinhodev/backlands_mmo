@@ -30,9 +30,7 @@
 
 void ProtocolGame::send(const OutputMessagePtr& outputMessage, bool rawPacket)
 {
-    // avoid usage of automated sends (bot modules)
-    if(!g_game.checkBotProtection())
-        return;
+
     Protocol::send(outputMessage, rawPacket);
 }
 
