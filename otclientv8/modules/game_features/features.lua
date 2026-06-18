@@ -13,10 +13,15 @@ function updateFeatures(version)
     end
     
     -- you can add custom features here, list of them is in the modules\gamelib\const.lua
-    g_game.enableFeature(GameBot)
-    --g_game.enableFeature(GameExtendedOpcode)
+    -- g_game.enableFeature(GameBot)
+    g_game.enableFeature(GameExtendedOpcode)
     --g_game.enableFeature(GameMinimapLimitedToSingleFloor) -- it will generate minimap only for current floor
-    --g_game.enableFeature(GameSpritesAlphaChannel)
+
+    -- Enhanced DAT/SPR format features (always enabled, independent of protocol version)
+    g_game.enableFeature(GameSpritesAlphaChannel)   -- transparency/alpha channel in sprites
+    g_game.enableFeature(GameEnhancedAnimations)     -- per-frame animation durations
+    g_game.enableFeature(GameIdleAnimations)          -- frame groups (idle/moving) for creatures
+    g_game.enableFeature(GameSpritesU32)              -- 32-bit sprite IDs (supports > 65535 sprites)
     
     if(version >= 770) then
         g_game.enableFeature(GameLooktypeU16)

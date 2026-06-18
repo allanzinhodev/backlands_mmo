@@ -22,6 +22,7 @@ function load()
       datPath = resolvepath('/things/' .. filename)
       sprPath = resolvepath('/things/' .. filename)
     else
+      -- Load from version directory (854/ with converted modern format)
       datPath = resolvepath('/things/' .. version .. '/Tibia')
       sprPath = resolvepath('/things/' .. version .. '/Tibia')
     end
