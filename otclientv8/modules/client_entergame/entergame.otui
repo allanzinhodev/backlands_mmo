@@ -1,5 +1,6 @@
 EnterGameWindow
   id: enterGame
+  image-source: ~
   @onEnter: EnterGame.doLogin()
 
   MenuLabel

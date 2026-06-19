@@ -250,6 +250,7 @@ function ProtocolLogin:parseCharacterList(msg)
       character.worldPort = msg:getU16()
 
       character.level = msg:getU16()
+      character.vocation = msg:getU16()
       character.outfit = {
         type = msg:getU16(),
         head = msg:getU8(),

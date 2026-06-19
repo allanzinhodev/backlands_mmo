@@ -227,6 +227,7 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 			
 			PlayerLookData lookData = account.charsData[*it];
 			output->put<uint16_t>(lookData.level);
+			output->put<uint16_t>(lookData.vocation);
 			output->put<uint16_t>(lookData.lookType);
 			output->put<char>(lookData.lookHead);
 			output->put<char>(lookData.lookBody);

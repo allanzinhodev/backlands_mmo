@@ -11,6 +11,7 @@ CharacterCard < Panel
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 10
+    margin-left: -24
     size: 48 48
 
   Label
@@ -40,11 +41,29 @@ CharacterSelectedCard < Panel
   border-color: #ffff00
   border-width: 1
 
+  UIWidget
+    id: ground
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 68
+    margin-left: 8
+    size: 64 64
+    image-source: /images/flags/ground1.png
+
+  UIWidget
+    id: flag
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 46
+    margin-left: -23
+    size: 93 33
+
   UICreature
     id: outfit
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
     margin-top: 15
+    margin-left: -24
     size: 96 96
 
   Label
@@ -69,6 +88,7 @@ StaticMainWindow
   id: charactersWindow
   !text: tr('Select Character')
   visible: false
+  image-source: ~
   size: 460 350
   $mobile:
     size: 460 300

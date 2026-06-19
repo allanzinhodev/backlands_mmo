@@ -249,6 +249,12 @@ function CharacterList.updateCards()
   local char = G.characters[selectedIndex]
   selectedCard:getChildById('name'):setText(char.name)
   selectedCard:getChildById('level'):setText("Level " .. (char.level or 1))
+  
+  if char.vocation then
+    local flagPath = "/images/flags/" .. char.vocation .. ".png"
+    selectedCard:getChildById('flag'):setImageSource(flagPath)
+  end
+
   if char.outfit then
     selectedCard:getChildById('outfit'):setOutfit(char.outfit)
   end

@@ -21,6 +21,7 @@
 
 struct PlayerLookData {
 	uint32_t level;
+	uint16_t vocation;
 	uint16_t lookType;
 	uint16_t lookHead;
 	uint16_t lookBody;
