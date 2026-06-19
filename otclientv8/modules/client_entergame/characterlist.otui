@@ -1,98 +1,112 @@
-CharacterWidget < UIWidget
-  height: 14
-  background-color: alpha
-  &updateOnStates: |
-    function(self)
-      local children = self:getChildren()
-      for i=1,#children do
-        children[i]:setOn(self:isFocused())
-      end
-    end
-  @onFocusChange: self:updateOnStates()
-  @onSetup: self:updateOnStates()
+CharacterCard < Panel
+  width: 100
+  height: 140
+  image-source: /images/ui/panel_flat
+  image-border: 4
+  padding: 5
+  focusable: false
 
-  $focus:
-    background-color: #ffffff22
+  UICreature
+    id: outfit
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 10
+    size: 48 48
 
   Label
     id: name
-    color: #bbbbbb
-    anchors.top: parent.top
-    anchors.left: parent.left
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 10
     font: verdana-11px-monochrome
     text-auto-resize: true
-    background-color: alpha
-    text-offset: 2 0
-
-    $on:
-      color: #ffffff
+    color: #bbbbbb
 
   Label
-    id: worldName
-    color: #bbbbbb
-    anchors.top: parent.top
-    anchors.right: parent.right
-    margin-right: 5
+    id: level
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 5
     font: verdana-11px-monochrome
     text-auto-resize: true
-    background-color: alpha
-    &baseText: '(%s)'
+    color: #bbbbbb
 
-    $on:
-      color: #ffffff
+CharacterSelectedCard < Panel
+  width: 160
+  height: 224
+  image-source: /images/ui/panel_flat
+  image-border: 4
+  padding: 5
+  border-color: #ffff00
+  border-width: 1
+
+  UICreature
+    id: outfit
+    anchors.top: parent.top
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 15
+    size: 96 96
+
+  Label
+    id: name
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 15
+    font: verdana-11px-rounded
+    text-auto-resize: true
+    color: #ffffff
+
+  Label
+    id: level
+    anchors.top: prev.bottom
+    anchors.horizontalCenter: parent.horizontalCenter
+    margin-top: 5
+    font: verdana-11px-monochrome
+    text-auto-resize: true
+    color: #ffffff
 
 StaticMainWindow
   id: charactersWindow
-  !text: tr('Character List')
+  !text: tr('Select Character')
   visible: false
-  size: 350 400
+  size: 460 350
   $mobile:
-    size: 350 280
+    size: 460 300
   @onEnter: CharacterList.doLogin()
   @onEscape: CharacterList.hide(true)
   @onSetup: |
-    g_keyboard.bindKeyPress('Up', function() self:getChildById('characters'):focusPreviousChild(KeyboardFocusReason) end, self)
-    g_keyboard.bindKeyPress('Down', function() self:getChildById('characters'):focusNextChild(KeyboardFocusReason) end, self)  
+    g_keyboard.bindKeyPress('Left', function() CharacterList.selectPrevious() end, self)
+    g_keyboard.bindKeyPress('Right', function() CharacterList.selectNext() end, self)
 
-  TextList
-    id: characters
-    background-color: #565656
+  Panel
+    id: charactersPanel
     anchors.top: parent.top
     anchors.left: parent.left
-    anchors.right: characterListScrollBar.left
-    anchors.bottom: accountStatusCaption.top
-    margin-bottom: 5
-    padding: 1
-    focusable: false
-    vertical-scrollbar: characterListScrollBar
-    auto-focus: first
-
-  VerticalScrollBar
-    id: characterListScrollBar
-    anchors.top: parent.top
-    anchors.bottom: accountStatusCaption.top
-    anchors.right: parent.right
-    margin-bottom: 5
-    step: 14
-    pixels-scroll: true
-
-  Label
-    id: accountStatusCaption
-    !text: tr('Account Status') .. ':'
-    anchors.left: parent.left
-    anchors.bottom: separator.top
-    margin-bottom: 5
-
-  Label
-    id: accountStatusLabel
-    !text: tr('Free Account')
     anchors.right: parent.right
     anchors.bottom: separator.top
-    margin-bottom: 5
-    text-auto-resize: true
+    margin-bottom: 10
+    margin-top: 10
 
-    $on:
-      color: #FF0000
+    CharacterCard
+      id: prevCharacter
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.left: parent.left
+      margin-left: 10
+      opacity: 0.6
+      @onClick: CharacterList.selectPrevious()
+
+    CharacterSelectedCard
+      id: selectedCharacter
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.horizontalCenter: parent.horizontalCenter
+
+    CharacterCard
+      id: nextCharacter
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.right: parent.right
+      margin-right: 10
+      opacity: 0.6
+      @onClick: CharacterList.selectNext()
 
   HorizontalSeparator
     id: separator
@@ -100,20 +114,6 @@ StaticMainWindow
     anchors.right: parent.right
     anchors.bottom: next.top
     margin-bottom: 10
-
-  Button
-    id: autoReconnect
-    width: 140
-    anchors.left: parent.left
-    anchors.bottom: parent.bottom
-    
-    $!on:
-      image-color: red    
-      !text: tr('Auto reconnect: Off')
-
-    $on:
-      !text: tr('Auto reconnect: On')
-      image-color: green
 
   Button
     id: buttonOk

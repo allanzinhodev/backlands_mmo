@@ -224,6 +224,15 @@ bool ProtocolLogin::parseFirstPacket(NetworkMessage& msg)
 
 			output->put<uint32_t>(serverIp);
 			output->put<uint16_t>(g_config.getNumber(ConfigManager::GAME_PORT));
+			
+			PlayerLookData lookData = account.charsData[*it];
+			output->put<uint16_t>(lookData.level);
+			output->put<uint16_t>(lookData.lookType);
+			output->put<char>(lookData.lookHead);
+			output->put<char>(lookData.lookBody);
+			output->put<char>(lookData.lookLegs);
+			output->put<char>(lookData.lookFeet);
+			output->put<char>(lookData.lookAddons);
 			#else
 			if(version < it->second->getVersionMin() || version > it->second->getVersionMax())
 				continue;

@@ -302,48 +302,11 @@ function EnterGame.init()
     logpass = g_ui.loadUI('logpass', enterGame:getParent())
   end
   
-  serverSelectorPanel = enterGame:getChildById('serverSelectorPanel')
-  customServerSelectorPanel = enterGame:getChildById('customServerSelectorPanel')
-  
-  serverSelector = serverSelectorPanel:getChildById('serverSelector')
   rememberPasswordBox = enterGame:getChildById('rememberPasswordBox')
-  serverHostTextEdit = customServerSelectorPanel:getChildById('serverHostTextEdit')
-  clientVersionSelector = customServerSelectorPanel:getChildById('clientVersionSelector')
-  
-  if Servers ~= nil then 
-    for name,server in pairs(Servers) do
-      serverSelector:addOption(name)
-    end
-  end
-  if serverSelector:getOptionsCount() == 0 or ALLOW_CUSTOM_SERVERS then
-    serverSelector:addOption(tr("Another"))    
-  end  
-  for i,proto in pairs(protos) do
-    clientVersionSelector:addOption(proto)
-  end
-
-  if serverSelector:getOptionsCount() == 1 then
-    enterGame:setHeight(enterGame:getHeight() - serverSelectorPanel:getHeight())
-    serverSelectorPanel:setOn(false)
-  end
   
   local account = g_crypt.decrypt(g_settings.get('account'))
   local password = g_crypt.decrypt(g_settings.get('password'))
-  local server = g_settings.get('server')
-  local host = g_settings.get('host')
-  local clientVersion = g_settings.get('client-version')
 
-  if serverSelector:isOption(server) then
-    serverSelector:setCurrentOption(server, false)
-    if Servers == nil or Servers[server] == nil then
-      serverHostTextEdit:setText(host)
-    end
-    clientVersionSelector:setOption(clientVersion)
-  else
-    server = ""
-    host = ""
-  end
-  
   enterGame:getChildById('accountPasswordTextEdit'):setText(password)
   enterGame:getChildById('accountNameTextEdit'):setText(account)
   rememberPasswordBox:setChecked(#account > 0)
@@ -422,31 +385,12 @@ end
 function EnterGame.clearAccountFields()
   enterGame:getChildById('accountNameTextEdit'):clearText()
   enterGame:getChildById('accountPasswordTextEdit'):clearText()
-  enterGame:getChildById('accountTokenTextEdit'):clearText()
   enterGame:getChildById('accountNameTextEdit'):focus()
   g_settings.remove('account')
   g_settings.remove('password')
 end
 
 function EnterGame.onServerChange()
-  server = serverSelector:getText()
-  if server == tr("Another") then
-    if not customServerSelectorPanel:isOn() then
-      serverHostTextEdit:setText("")
-      customServerSelectorPanel:setOn(true)  
-      enterGame:setHeight(enterGame:getHeight() + customServerSelectorPanel:getHeight())
-    end
-  elseif customServerSelectorPanel:isOn() then
-    enterGame:setHeight(enterGame:getHeight() - customServerSelectorPanel:getHeight())
-    customServerSelectorPanel:setOn(false)
-  end
-  if Servers and Servers[server] ~= nil then
-    if type(Servers[server]) == "table" then
-      serverHostTextEdit:setText(Servers[server][1])
-    else
-      serverHostTextEdit:setText(Servers[server])
-    end
-  end
 end
 
 function EnterGame.doLogin(account, password, token, host)
@@ -458,11 +402,11 @@ function EnterGame.doLogin(account, password, token, host)
   
   G.account = account or enterGame:getChildById('accountNameTextEdit'):getText()
   G.password = password or enterGame:getChildById('accountPasswordTextEdit'):getText()
-  G.authenticatorToken = token or enterGame:getChildById('accountTokenTextEdit'):getText()
+  G.authenticatorToken = ""
   G.stayLogged = true
-  G.server = serverSelector:getText():trim()
-  G.host = host or serverHostTextEdit:getText()
-  G.clientVersion = tonumber(clientVersionSelector:getText())  
+  G.server = "local"
+  G.host = "127.0.0.1"
+  G.clientVersion = 854
  
   if not rememberPasswordBox:isChecked() then
     g_settings.set('account', G.account)

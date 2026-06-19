@@ -249,6 +249,16 @@ function ProtocolLogin:parseCharacterList(msg)
       character.worldIp = iptostring(msg:getU32())
       character.worldPort = msg:getU16()
 
+      character.level = msg:getU16()
+      character.outfit = {
+        type = msg:getU16(),
+        head = msg:getU8(),
+        body = msg:getU8(),
+        legs = msg:getU8(),
+        feet = msg:getU8(),
+        addons = msg:getU8()
+      }
+
       if g_game.getFeature(GamePreviewState) then
         character.previewState = msg:getU8()
       end

@@ -18,6 +18,17 @@
 #ifndef __ACCOUNT__
 #define __ACCOUNT__
 #include "otsystem.h"
+
+struct PlayerLookData {
+	uint32_t level;
+	uint16_t lookType;
+	uint16_t lookHead;
+	uint16_t lookBody;
+	uint16_t lookLegs;
+	uint16_t lookFeet;
+	uint16_t lookAddons;
+};
+
 #ifndef __LOGIN_SERVER__
 
 typedef std::list<std::string> Characters;
@@ -36,5 +47,6 @@ class Account
 		int32_t warnings;
 		std::string name, password, recoveryKey, salt;
 		Characters charList;
+		std::map<std::string, PlayerLookData> charsData;
 };
 #endif

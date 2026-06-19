@@ -1299,7 +1299,7 @@ configure:4896: $? = 0
 configure:4896: result: yes
 configure:4896: checking for gethostbyname
 configure:4896: g++ -o conftest.exe -g -O2   conftest.cpp  >&5
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\msys64\tmp\ccCcOQ7y.o: in function `main':
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\msys64\tmp\cckXu5Kc.o: in function `main':
 C:/Users/allan/OneDrive/Desktop/Project/source/conftest.cpp:67:(.text.startup+0xa): undefined reference to `gethostbyname'
 collect2.exe: error: ld returned 1 exit status
 configure:4896: $? = 1
@@ -1377,7 +1377,7 @@ configure: failed program was:
 configure:4896: result: no
 configure:4896: checking for gethostname
 configure:4896: g++ -o conftest.exe -g -O2   conftest.cpp  >&5
-C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\msys64\tmp\ccAxiuPw.o: in function `main':
+C:/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/16.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\msys64\tmp\ccq7y9yj.o: in function `main':
 C:/Users/allan/OneDrive/Desktop/Project/source/conftest.cpp:67:(.text.startup+0xa): undefined reference to `gethostname'
 collect2.exe: error: ld returned 1 exit status
 configure:4896: $? = 1

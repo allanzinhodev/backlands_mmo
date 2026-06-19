@@ -12,6 +12,7 @@ local resendWaitEvent
 local loginEvent
 local autoReconnectEvent
 local lastLogout = 0
+local selectedIndex = 1
 
 -- private functions
 local function tryLogin(charInfo, tries)
@@ -79,12 +80,12 @@ local function resendWait()
     end
 
     if charactersWindow then
-      local selected = characterList:getFocusedChild()
+      local selected = G.characters[selectedIndex]
       if selected then
-        local charInfo = { worldHost = selected.worldHost,
+        local charInfo = { worldHost = selected.worldIp,
                            worldPort = selected.worldPort,
                            worldName = selected.worldName,
-                           characterName = selected.characterName }
+                           characterName = selected.name }
         tryLogin(charInfo)
       end
     end
@@ -165,7 +166,7 @@ function scheduleAutoReconnect()
 end
 
 function executeAutoReconnect()  
-  if not autoReconnectButton or not autoReconnectButton:isOn() or g_game.isOnline() then
+  if g_game.isOnline() then
     return
   end
   if errorBox then
@@ -238,6 +239,60 @@ function CharacterList.terminate()
   CharacterList = nil
 end
 
+function CharacterList.updateCards()
+  if not G.characters or #G.characters == 0 then return end
+
+  local prevCard = charactersWindow:getChildById('charactersPanel'):getChildById('prevCharacter')
+  local selectedCard = charactersWindow:getChildById('charactersPanel'):getChildById('selectedCharacter')
+  local nextCard = charactersWindow:getChildById('charactersPanel'):getChildById('nextCharacter')
+
+  local char = G.characters[selectedIndex]
+  selectedCard:getChildById('name'):setText(char.name)
+  selectedCard:getChildById('level'):setText("Level " .. (char.level or 1))
+  if char.outfit then
+    selectedCard:getChildById('outfit'):setOutfit(char.outfit)
+  end
+
+  if #G.characters > 1 then
+    local prevIndex = selectedIndex - 1
+    if prevIndex < 1 then prevIndex = #G.characters end
+    local prevChar = G.characters[prevIndex]
+    prevCard:show()
+    prevCard:getChildById('name'):setText(prevChar.name)
+    prevCard:getChildById('level'):setText("Level " .. (prevChar.level or 1))
+    if prevChar.outfit then
+      prevCard:getChildById('outfit'):setOutfit(prevChar.outfit)
+    end
+
+    local nextIndex = selectedIndex + 1
+    if nextIndex > #G.characters then nextIndex = 1 end
+    local nextChar = G.characters[nextIndex]
+    nextCard:show()
+    nextCard:getChildById('name'):setText(nextChar.name)
+    nextCard:getChildById('level'):setText("Level " .. (nextChar.level or 1))
+    if nextChar.outfit then
+      nextCard:getChildById('outfit'):setOutfit(nextChar.outfit)
+    end
+  else
+    prevCard:hide()
+    nextCard:hide()
+  end
+end
+
+function CharacterList.selectNext()
+  if not G.characters or #G.characters <= 1 then return end
+  selectedIndex = selectedIndex + 1
+  if selectedIndex > #G.characters then selectedIndex = 1 end
+  CharacterList.updateCards()
+end
+
+function CharacterList.selectPrevious()
+  if not G.characters or #G.characters <= 1 then return end
+  selectedIndex = selectedIndex - 1
+  if selectedIndex < 1 then selectedIndex = #G.characters end
+  CharacterList.updateCards()
+end
+
 function CharacterList.create(characters, account, otui)
   if not otui then otui = 'characterlist' end
   if charactersWindow then
@@ -245,87 +300,20 @@ function CharacterList.create(characters, account, otui)
   end
 
   charactersWindow = g_ui.displayUI(otui)
-  characterList = charactersWindow:getChildById('characters')
-  autoReconnectButton = charactersWindow:getChildById('autoReconnect')
 
   -- characters
   G.characters = characters
   G.characterAccount = account
 
-  characterList:destroyChildren()
-  local accountStatusLabel = charactersWindow:getChildById('accountStatusLabel')
-  local focusLabel
-  for i,characterInfo in ipairs(characters) do
-    local widget = g_ui.createWidget('CharacterWidget', characterList)
-    for key,value in pairs(characterInfo) do
-      local subWidget = widget:getChildById(key)
-      if subWidget then
-        if key == 'outfit' then -- it's an exception
-          subWidget:setOutfit(value)
-        else
-          local text = value
-          if subWidget.baseText and subWidget.baseTranslate then
-            text = tr(subWidget.baseText, text)
-          elseif subWidget.baseText then
-            text = string.format(subWidget.baseText, text)
-          end
-          subWidget:setText(text)
-        end
-      end
-    end
-
-    -- these are used by login
-    widget.characterName = characterInfo.name
-    widget.worldName = characterInfo.worldName
-    widget.worldHost = characterInfo.worldIp
-    widget.worldPort = characterInfo.worldPort
-
-    connect(widget, { onDoubleClick = function () CharacterList.doLogin() return true end } )
-
-    if i == 1 or (g_settings.get('last-used-character') == widget.characterName and g_settings.get('last-used-world') == widget.worldName) then
-      focusLabel = widget
+  selectedIndex = 1
+  for i, char in ipairs(characters) do
+    if g_settings.get('last-used-character') == char.name and g_settings.get('last-used-world') == char.worldName then
+      selectedIndex = i
+      break
     end
   end
 
-  if focusLabel then
-    characterList:focusChild(focusLabel, KeyboardFocusReason)
-    addEvent(function() characterList:ensureChildVisible(focusLabel) end)
-  end
-  
-  characterList.onChildFocusChange = function()
-    removeEvent(autoReconnectEvent)
-    autoReconnectEvent = nil
-  end
-
-  -- account
-  local status = ''
-  if account.status == AccountStatus.Frozen then
-    status = tr(' (Frozen)')
-  elseif account.status == AccountStatus.Suspended then
-    status = tr(' (Suspended)')
-  end
-
-  if account.subStatus == SubscriptionStatus.Free and account.premDays < 1 then
-    accountStatusLabel:setText(('%s%s'):format(tr('Free Account'), status))
-  else
-    if account.premDays == 0 or account.premDays == 65535 then
-      accountStatusLabel:setText(('%s%s'):format(tr('Gratis Premium Account'), status))
-    else
-      accountStatusLabel:setText(('%s%s'):format(tr('Premium Account (%s) days left', account.premDays), status))
-    end
-  end
-
-  if account.premDays > 0 and account.premDays <= 7 then
-    accountStatusLabel:setOn(true)
-  else
-    accountStatusLabel:setOn(false)
-  end
-  
-  autoReconnectButton.onClick = function(widget)
-    local autoReconnect = not g_settings.getBoolean('autoReconnect', true)
-    autoReconnectButton:setOn(autoReconnect)
-    g_settings.set('autoReconnect', autoReconnect)
-  end
+  CharacterList.updateCards()
 end
 
 function CharacterList.destroy()
@@ -343,9 +331,6 @@ function CharacterList.show()
   charactersWindow:show()
   charactersWindow:raise()
   charactersWindow:focus()
-  
-  local autoReconnect = g_settings.getBoolean('autoReconnect', true)
-  autoReconnectButton:setOn(autoReconnect)
 end
 
 function CharacterList.hide(showLogin)
@@ -361,7 +346,7 @@ function CharacterList.hide(showLogin)
 end
 
 function CharacterList.showAgain()
-  if characterList and characterList:hasChildren() then
+  if charactersWindow then
     CharacterList.show()
   end
 end
@@ -377,12 +362,12 @@ function CharacterList.doLogin()
   removeEvent(autoReconnectEvent)
   autoReconnectEvent = nil
 
-  local selected = characterList:getFocusedChild()
+  local selected = G.characters[selectedIndex]
   if selected then
-    local charInfo = { worldHost = selected.worldHost,
+    local charInfo = { worldHost = selected.worldIp,
                        worldPort = selected.worldPort,
                        worldName = selected.worldName,
-                       characterName = selected.characterName }
+                       characterName = selected.name }
     charactersWindow:hide()
     if loginEvent then
       removeEvent(loginEvent)

@@ -67,7 +67,7 @@ Account IOLoginData::loadAccount(uint32_t accountId, bool preLoad/* = false*/)
 		return account;
 
 #ifndef __LOGIN_SERVER__
-	query << "SELECT `name` FROM `players` WHERE `account_id` = " << accountId << " AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " AND `deleted` = 0";
+	query << "SELECT `name`, `level`, `looktype`, `lookhead`, `lookbody`, `looklegs`, `lookfeet`, `lookaddons` FROM `players` WHERE `account_id` = " << accountId << " AND `world_id` = " << g_config.getNumber(ConfigManager::WORLD_ID) << " AND `deleted` = 0";
 #else
 	query << "SELECT `name`, `world_id` FROM `players` WHERE `account_id` = " << accountId << " AND `deleted` = 0";
 #endif
@@ -79,6 +79,16 @@ Account IOLoginData::loadAccount(uint32_t accountId, bool preLoad/* = false*/)
 		std::string ss = result->getDataString("name");
 #ifndef __LOGIN_SERVER__
 		account.charList.push_back(ss.c_str());
+		
+		PlayerLookData lookData;
+		lookData.level = result->getDataInt("level");
+		lookData.lookType = result->getDataInt("looktype");
+		lookData.lookHead = result->getDataInt("lookhead");
+		lookData.lookBody = result->getDataInt("lookbody");
+		lookData.lookLegs = result->getDataInt("looklegs");
+		lookData.lookFeet = result->getDataInt("lookfeet");
+		lookData.lookAddons = result->getDataInt("lookaddons");
+		account.charsData[ss] = lookData;
 #else
 		if(GameServer* server = GameServers::getInstance()->getServerById(result->getDataInt("world_id")))
 			account.charList[ss] = server;
