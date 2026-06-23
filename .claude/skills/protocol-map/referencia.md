@@ -223,6 +223,15 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
 - [x] **`0x92` creature impassable** — `sendCreatureImpassable` está **inteiramente comentado**
   na fonte (`protocolgame.cpp` ~L1588); o servidor **nunca** envia. NÃO catalogar como ativo,
   mesmo o cliente tendo `GameServerCreatureUnpass`.
+- [ ] **BUG `0xA3` Cancel Target / ClearTarget (S→C)** — mismatch de payload confirmado em
+  tráfego real. Servidor (`sendCancelTarget`, `protocolgame.cpp` ~L2051) envia **sempre**
+  `0xA3` + `u32(0)`. Cliente (`parsePlayerCancelAttack`, `protocolgameparse.cpp`) só lê o `u32`
+  **se a feature `Otc::GameAttackSeq` estiver ligada**. No 8.54 deste server não há negociação de
+  features (ver "extended opcodes are not enabled on this server" no log), então a feature fica
+  **off** → o cliente não consome os 4 bytes → sobram no buffer → o parser descarrila com
+  `InputMessage eof reached` (capturas `prev opcode is 0xa3` no `packet.log`).
+  **Correção:** alinhar os dois lados — ou o servidor para de mandar o `u32` no 8.54, ou habilitar
+  `GameAttackSeq` no cliente para esta versão. (Pendente de decisão.)
 
 ### Resultado da auditoria completa (2026-06-23)
 - **C→S:** os `case` de `parsePacket` batem 1:1 com o array `C2S` — a única falta era `0x42`
@@ -252,16 +261,21 @@ grep "proto: 854" otclientv8/packet.log \
 grep "parse message exception" otclientv8/otclientv8.log | sed 's/.*last opcode/last opcode/' | sort | uniq -c
 ```
 
-**Heurística importante — binário dessincronizado da source.**
+**Heurística importante — `unhandled opcode N` = binário antigo, NÃO bug de protocolo.**
 Se o log diz `unhandled opcode N` para um opcode que a source **tem** no `switch` de `parseMessage`
-(`protocolgameparse.cpp`), então o **.exe em uso é antigo** — foi compilado antes do handler ou o
-build incremental não recompilou o arquivo. O número de **bytes não lidos** costuma ser exatamente o
-tamanho do payload daquele opcode (o parser leu o opcode mas não consumiu os campos).
-Correção: **rebuild limpo do cliente**, não mexer no protocolo.
+(`protocolgameparse.cpp`), o `.exe` em uso foi compilado **antes** do handler. O número de
+**bytes não lidos** costuma ser exatamente o tamanho do payload daquele opcode (o parser leu o
+opcode mas não consumiu os campos). Correção: usar/recompilar o binário certo, não mexer no protocolo.
+**Atenção:** existem dois binários — `otclient_dx_x64.exe` e `otclient_debug_x64.exe` — com datas de
+build diferentes. O banner do log (`built on ...`) é string fixa e NÃO distingue qual rodou; cheque o
+processo (`Get-Process otclient*`) e o mtime do `.exe`. O `packet.log` é gravado a CADA exceção de
+parse, então se o mtime dele NÃO mudou após um teste, não houve exceção (opcode tratado OK).
 
-> Caso real observado (2026-06-23): `unhandled opcode 78` (0x4E Creature Action), `7 unread`
-> (= `u32`+`u8`+`u16`), sempre após `0xb4` (Text Message). A source tem `parseCreatureAction`
-> (linha ~3678) lendo os 7 bytes certos e o servidor envia os 7 bytes certos — o mapa está OK; o
-> binário do cliente é que estava velho. Pacotes confirmados no fio: `0x42, 0x4E, 0x64, 0x65–0x68,
-> 0x6D, 0xA2, 0xA3, 0xB3, 0xB4` — todos presentes no catálogo. A sequência real `0x42 → 0x64`
-> (aware range seguido de full map) confirma `updateAwareRange()` → `sendAwareRange()` + `AddMapDescription()`.
+> Caso real (2026-06-23) — **0x4E Creature Action**: o `otclient_debug_x64.exe` (build 18/jun, ANTES
+> do commit `6a67758` que adicionou `parseCreatureAction`) logava `unhandled opcode 78` (`7 unread`
+> = `u32`+`u8`+`u16`, após `0xb4`). Já o `otclient_dx_x64.exe` (build 19/jun, DEPOIS do commit)
+> processa o 0x4E sem erro — confirmado ao rodar `!test` no DX: nenhuma exceção, `packet.log`
+> intacto **e a animação de troca de frame group tocou in-game (confirmado visualmente pelo usuário)**.
+> Ou seja, source e DX corretos; só o debug estava velho. Pacotes confirmados no fio:
+> `0x42, 0x4E, 0x64, 0x65–0x68, 0x6D, 0xA2, 0xA3, 0xB3, 0xB4`. A sequência real `0x42 → 0x64`
+> confirma `updateAwareRange()` → `sendAwareRange()` + `AddMapDescription()`.
