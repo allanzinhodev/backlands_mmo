@@ -645,6 +645,7 @@ const C2S = [
   { hex:"0x14", dec:20, name:"Logout", method:"parseLogout", cat:"system", fields:[], desc:"Desconecta o jogador do servidor." },
   { hex:"0x1E", dec:30, name:"Ping / Keep Alive", method:"parseReceivePing", cat:"system", fields:[], desc:"Resposta ao ping do servidor, mantém a conexão ativa." },
   { hex:"0x32", dec:50, name:"Extended Opcode", method:"parseExtendedOpcode", cat:"extended", fields:[{t:"u8",n:"opcode"},{t:"str",n:"buffer"}], desc:"Opcode estendido do OTClient. Permite comunicação customizada via Lua scripts." },
+  { hex:"0x42", dec:66, name:"Change Map Aware Range", method:"parseChangeMapAwareRange", cat:"extended", fields:[{t:"u8",n:"xrange (width)"},{t:"u8",n:"yrange (height)"}], desc:"Custom OTClientV8: o cliente pede uma área de visão diferente da 18×14 padrão. Requer a feature GameChangeMapAwareRange. O servidor responde com 0x42 (aware range) + redescrição do mapa." },
   { hex:"0x64", dec:100, name:"Auto Walk", method:"parseAutoWalk", cat:"movement", fields:[{t:"u8",n:"dirCount"},{t:"arr",n:"directions[dirCount]"}], desc:"Envia um caminho de autowalk com múltiplas direções. Cada byte de dir: 1=E,2=NE,3=N,4=NW,5=W,6=SW,7=S,8=SE." },
   { hex:"0x65", dec:101, name:"Walk North", method:"parseMove(NORTH)", cat:"movement", fields:[], desc:"Move o jogador um tile para o norte." },
   { hex:"0x66", dec:102, name:"Walk East", method:"parseMove(EAST)", cat:"movement", fields:[], desc:"Move o jogador um tile para o leste." },

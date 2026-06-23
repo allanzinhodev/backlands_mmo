@@ -217,12 +217,21 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
 
 - [x] **LOGIN `0x64` char list** — corrigido no `protocol_map.html`: agora inclui
   `level/vocation/lookType/head/body/legs/feet/addons` por personagem (ver §4).
-- [ ] **`0x42` aware range (S→C)** — `sendAwareRange` envia `0x42` + `u8 width` + `u8 height`;
-  ainda não consta no array `S2C` do HTML. (Adicionado nesta passagem.)
+- [x] **`0x42` Change Map Aware Range** — corrigido: adicionado nos DOIS arrays.
+  C→S (`parseChangeMapAwareRange`: `u8 xrange`, `u8 yrange`) e S→C (`sendAwareRange`:
+  `u8 width`, `u8 height`). Requer a feature `GameChangeMapAwareRange` no cliente.
 - [x] **`0x92` creature impassable** — `sendCreatureImpassable` está **inteiramente comentado**
   na fonte (`protocolgame.cpp` ~L1588); o servidor **nunca** envia. NÃO catalogar como ativo,
   mesmo o cliente tendo `GameServerCreatureUnpass`.
-- [ ] Revisar se há `sendXxx` no servidor sem `case` correspondente no `parseMessage` do cliente
-  (pacote enviado e ignorado) e vice-versa.
+
+### Resultado da auditoria completa (2026-06-23)
+- **C→S:** os `case` de `parsePacket` batem 1:1 com o array `C2S` — a única falta era `0x42`
+  (agora incluída). Nenhum opcode sobrando.
+- **S→C:** todo `sendXxx`/`AddXxx` ativo do servidor tem entrada no `S2C`. Casos inline corretos:
+  `0x0B` (GM actions, só GM, dentro do self-appear `0x0A`), `0x65–0x68` (faixas de mapa dentro de
+  `sendMoveCreature`/`MoveUp`/`MoveDown`), `0x7E` (counter trade em `sendTradeItemRequest`).
+- **Cliente recebe muito mais do que o servidor envia** (store/prey/market/cyclopedia/NewPing/
+  NewWalk/Features…): correto NÃO catalogar — são protocolo moderno não implementado no 8.54.
+- **LOGIN:** char list sincronizada com os campos custom; demais pacotes conferem.
 
 > Ao fechar um item, mova a anotação para o histórico de commits e desmarque aqui.
