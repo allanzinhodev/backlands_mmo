@@ -223,15 +223,17 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
 - [x] **`0x92` creature impassable** — `sendCreatureImpassable` está **inteiramente comentado**
   na fonte (`protocolgame.cpp` ~L1588); o servidor **nunca** envia. NÃO catalogar como ativo,
   mesmo o cliente tendo `GameServerCreatureUnpass`.
-- [ ] **BUG `0xA3` Cancel Target / ClearTarget (S→C)** — mismatch de payload confirmado em
-  tráfego real. Servidor (`sendCancelTarget`, `protocolgame.cpp` ~L2051) envia **sempre**
-  `0xA3` + `u32(0)`. Cliente (`parsePlayerCancelAttack`, `protocolgameparse.cpp`) só lê o `u32`
-  **se a feature `Otc::GameAttackSeq` estiver ligada**. No 8.54 deste server não há negociação de
-  features (ver "extended opcodes are not enabled on this server" no log), então a feature fica
-  **off** → o cliente não consome os 4 bytes → sobram no buffer → o parser descarrila com
-  `InputMessage eof reached` (capturas `prev opcode is 0xa3` no `packet.log`).
-  **Correção:** alinhar os dois lados — ou o servidor para de mandar o `u32` no 8.54, ou habilitar
-  `GameAttackSeq` no cliente para esta versão. (Pendente de decisão.)
+- [x] **`0xA3` Cancel Target / ClearTarget (S→C)** — mismatch de payload corrigido.
+  Servidor (`sendCancelTarget`, `protocolgame.cpp` ~L2051) envia **sempre** `0xA3` + `u32(0)`.
+  Cliente (`parsePlayerCancelAttack`) só lê o `u32` se `Otc::GameAttackSeq` estiver ligada — e ela
+  só ligava em `version >= 860` (`game_features/features.lua`). No 854 ficava **off** → o cliente
+  não consumia os 4 bytes → parser descarrilava com `InputMessage eof reached` (capturas
+  `prev opcode is 0xa3` no `packet.log`).
+  **Decisão (servidor é custom):** habilitar `GameAttackSeq` a partir de `version >= 854` no
+  `features.lua`. Efeito colateral coerente: o client passa a anexar `seq` (u32) no Attack (0xA1) e
+  Follow (0xA2) — o `parseAttack` do server já lê 3 u32 (ignora extras) e o `parseFollow` lê só o
+  `creatureId` (resto do frame descartado), então C→S continua OK. Fix é só Lua → reabrir o client,
+  sem recompilar. (Validação pendente: confirmar que o `eof reached` sumiu do log.)
 
 ### Resultado da auditoria completa (2026-06-23)
 - **C→S:** os `case` de `parsePacket` batem 1:1 com o array `C2S` — a única falta era `0x42`

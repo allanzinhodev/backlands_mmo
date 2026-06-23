@@ -12,7 +12,7 @@ function updateFeatures(version)
       return
     end
     
-    -- g_game.enableFeature(GameExtendedOpcode)
+    g_game.enableFeature(GameExtendedOpcode)
     --g_game.enableFeature(GameMinimapLimitedToSingleFloor) -- it will generate minimap only for current floor
 
     -- Enhanced DAT/SPR format features (always enabled, independent of protocol version)
@@ -55,9 +55,8 @@ function updateFeatures(version)
     if(version >= 854) then
         g_game.enableFeature(GameCreatureEmblems)
         g_game.enableFeature(GameChangeMapAwareRange)
-    end
-
-    if(version >= 860) then
+        -- custom: este servidor (TFS/OTX custom) usa attack seq no 8.54 —
+        -- envia u32(0) junto do Cancel Target (0xA3) e lê o seq no Attack/Follow.
         g_game.enableFeature(GameAttackSeq)
     end
 
