@@ -40,7 +40,7 @@ SkillUp < Button
 MiniWindow
   id: skillWindow
   !text: tr('Ninja Info')
-  size: 380 455
+  size: 480 455
   icon: /images/topbuttons/skills       
   @onClose: modules.game_skills.onMiniWindowClose()
   &save: true

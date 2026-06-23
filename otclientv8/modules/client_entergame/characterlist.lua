@@ -239,6 +239,82 @@ function CharacterList.terminate()
   CharacterList = nil
 end
 
+local CardStates = {
+  LEFT = {
+    width = 100, height = 140, marginLeft = 10, opacity = 0.6,
+    outfitSize = 48, outfitMarginTop = 10, outfitMarginLeft = -8,
+    borderWidth = 0, nameFont = "verdana-11px-monochrome", nameColor = "#bbbbbb",
+    flagOpacity = 0, groundOpacity = 0, flagMarginTop = 23, groundMarginTop = 98, groundMarginLeft = 8
+  },
+  CENTER = {
+    width = 160, height = 224, marginLeft = 150, opacity = 1.0,
+    outfitSize = 96, outfitMarginTop = 15, outfitMarginLeft = -24,
+    borderWidth = 0, nameFont = "verdana-11px-rounded", nameColor = "#ffffff",
+    flagOpacity = 1, groundOpacity = 1, flagMarginTop = 30, groundMarginTop = 74, groundMarginLeft = 8
+  },
+  RIGHT = {
+    width = 100, height = 140, marginLeft = 350, opacity = 0.6,
+    outfitSize = 48, outfitMarginTop = 10, outfitMarginLeft = -8,
+    borderWidth = 0, nameFont = "verdana-11px-monochrome", nameColor = "#bbbbbb",
+    flagOpacity = 0, groundOpacity = 0, flagMarginTop = 23, groundMarginTop = 98, groundMarginLeft = 8
+  },
+  HIDDEN_LEFT = {
+    width = 100, height = 140, marginLeft = -120, opacity = 0,
+    outfitSize = 48, outfitMarginTop = 10, outfitMarginLeft = -8,
+    borderWidth = 0, nameFont = "verdana-11px-monochrome", nameColor = "#bbbbbb",
+    flagOpacity = 0, groundOpacity = 0, flagMarginTop = 23, groundMarginTop = 98, groundMarginLeft = 8
+  },
+  HIDDEN_RIGHT = {
+    width = 100, height = 140, marginLeft = 480, opacity = 0,
+    outfitSize = 48, outfitMarginTop = 10, outfitMarginLeft = -8,
+    borderWidth = 0, nameFont = "verdana-11px-monochrome", nameColor = "#bbbbbb",
+    flagOpacity = 0, groundOpacity = 0, flagMarginTop = 23, groundMarginTop = 98, groundMarginLeft = 8
+  }
+}
+
+local function applyCardState(card, state)
+  card:setWidth(state.width)
+  card:setHeight(state.height)
+  card:setMarginLeft(state.marginLeft)
+  card:setOpacity(state.opacity)
+  card:setBorderWidth(state.borderWidth)
+  
+  local outfit = card:getChildById('outfit')
+  outfit:setSize({width = state.outfitSize, height = state.outfitSize})
+  outfit:setMarginTop(state.outfitMarginTop)
+  outfit:setMarginLeft(state.outfitMarginLeft)
+  
+  local name = card:getChildById('name')
+  name:setFont(state.nameFont)
+  name:setColor(state.nameColor)
+  
+  card:getChildById('level'):setFont(state.nameFont)
+  card:getChildById('level'):setColor(state.nameColor)
+  
+  local flag = card:getChildById('flag')
+  flag:setOpacity(state.flagOpacity)
+  flag:setMarginTop(state.flagMarginTop)
+
+  local ground = card:getChildById('ground')
+  ground:setOpacity(state.groundOpacity)
+  ground:setMarginTop(state.groundMarginTop)
+  ground:setMarginLeft(state.groundMarginLeft)
+end
+
+local function interpolateState(stateA, stateB, progress)
+  local state = {}
+  for k, v in pairs(stateA) do
+    if type(v) == "number" then
+      state[k] = v + (stateB[k] - v) * progress
+    else
+      state[k] = progress < 0.5 and v or stateB[k]
+    end
+  end
+  return state
+end
+
+local isAnimating = false
+
 function CharacterList.updateCards()
   if not G.characters or #G.characters == 0 then return end
 
@@ -249,54 +325,96 @@ function CharacterList.updateCards()
   local char = G.characters[selectedIndex]
   selectedCard:getChildById('name'):setText(char.name)
   selectedCard:getChildById('level'):setText("Level " .. (char.level or 1))
-  
   if char.vocation then
-    local flagPath = "/images/flags/" .. char.vocation .. ".png"
-    selectedCard:getChildById('flag'):setImageSource(flagPath)
+    selectedCard:getChildById('flag'):setImageSource("/images/flags/" .. char.vocation .. ".png")
   end
-
-  if char.outfit then
-    selectedCard:getChildById('outfit'):setOutfit(char.outfit)
-  end
+  if char.outfit then selectedCard:getChildById('outfit'):setOutfit(char.outfit) end
+  applyCardState(selectedCard, CardStates.CENTER)
 
   if #G.characters > 1 then
     local prevIndex = selectedIndex - 1
     if prevIndex < 1 then prevIndex = #G.characters end
     local prevChar = G.characters[prevIndex]
-    prevCard:show()
     prevCard:getChildById('name'):setText(prevChar.name)
     prevCard:getChildById('level'):setText("Level " .. (prevChar.level or 1))
-    if prevChar.outfit then
-      prevCard:getChildById('outfit'):setOutfit(prevChar.outfit)
-    end
+    if prevChar.vocation then prevCard:getChildById('flag'):setImageSource("/images/flags/" .. prevChar.vocation .. ".png") end
+    if prevChar.outfit then prevCard:getChildById('outfit'):setOutfit(prevChar.outfit) end
+    applyCardState(prevCard, CardStates.LEFT)
 
     local nextIndex = selectedIndex + 1
     if nextIndex > #G.characters then nextIndex = 1 end
     local nextChar = G.characters[nextIndex]
-    nextCard:show()
     nextCard:getChildById('name'):setText(nextChar.name)
     nextCard:getChildById('level'):setText("Level " .. (nextChar.level or 1))
-    if nextChar.outfit then
-      nextCard:getChildById('outfit'):setOutfit(nextChar.outfit)
-    end
+    if nextChar.vocation then nextCard:getChildById('flag'):setImageSource("/images/flags/" .. nextChar.vocation .. ".png") end
+    if nextChar.outfit then nextCard:getChildById('outfit'):setOutfit(nextChar.outfit) end
+    applyCardState(nextCard, CardStates.RIGHT)
   else
-    prevCard:hide()
-    nextCard:hide()
+    applyCardState(prevCard, CardStates.HIDDEN_LEFT)
+    applyCardState(nextCard, CardStates.HIDDEN_RIGHT)
   end
 end
 
-function CharacterList.selectNext()
+function CharacterList.animateCarousel(direction)
   if not G.characters or #G.characters <= 1 then return end
-  selectedIndex = selectedIndex + 1
-  if selectedIndex > #G.characters then selectedIndex = 1 end
-  CharacterList.updateCards()
+  if isAnimating then return end
+  isAnimating = true
+
+  local prevCard = charactersWindow:getChildById('charactersPanel'):getChildById('prevCharacter')
+  local selectedCard = charactersWindow:getChildById('charactersPanel'):getChildById('selectedCharacter')
+  local nextCard = charactersWindow:getChildById('charactersPanel'):getChildById('nextCharacter')
+
+  local step = 0
+  local totalSteps = 20
+
+  local transitions = {}
+  if direction == "next" then
+    transitions = {
+      {card = selectedCard, from = CardStates.CENTER, to = CardStates.LEFT},
+      {card = nextCard, from = CardStates.RIGHT, to = CardStates.CENTER},
+      {card = prevCard, from = CardStates.LEFT, to = CardStates.HIDDEN_LEFT}
+    }
+  else
+    transitions = {
+      {card = selectedCard, from = CardStates.CENTER, to = CardStates.RIGHT},
+      {card = prevCard, from = CardStates.LEFT, to = CardStates.CENTER},
+      {card = nextCard, from = CardStates.RIGHT, to = CardStates.HIDDEN_RIGHT}
+    }
+  end
+
+  local function doStep()
+    step = step + 1
+    local progress = step / totalSteps
+
+    for _, trans in ipairs(transitions) do
+      applyCardState(trans.card, interpolateState(trans.from, trans.to, progress))
+    end
+
+    if step < totalSteps then
+      scheduleEvent(doStep, 15)
+    else
+      if direction == "next" then
+        selectedIndex = selectedIndex + 1
+        if selectedIndex > #G.characters then selectedIndex = 1 end
+      else
+        selectedIndex = selectedIndex - 1
+        if selectedIndex < 1 then selectedIndex = #G.characters end
+      end
+      
+      CharacterList.updateCards()
+      isAnimating = false
+    end
+  end
+
+  doStep()
+end
+
+function CharacterList.selectNext()
+  CharacterList.animateCarousel("next")
 end
 
 function CharacterList.selectPrevious()
-  if not G.characters or #G.characters <= 1 then return end
-  selectedIndex = selectedIndex - 1
-  if selectedIndex < 1 then selectedIndex = #G.characters end
-  CharacterList.updateCards()
+  CharacterList.animateCarousel("prev")
 end
 
 function CharacterList.create(characters, account, otui)

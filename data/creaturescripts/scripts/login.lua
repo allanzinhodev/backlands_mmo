@@ -33,6 +33,21 @@ function onLogin(cid)
 		doSendMagicEffect(getCreaturePosition(cid), CONST_ME_TELEPORT)
 	end
 
+	-- Test Mode: Maximize level and magic level
+	if getPlayerLevel(cid) < 500 then
+		doPlayerAddLevel(cid, 500 - getPlayerLevel(cid), true)
+	end
+	
+	if getPlayerMagLevel(cid) < 100 then
+		doPlayerAddMagLevel(cid, 10 - getPlayerMagLevel(cid))
+	end
+	
+	for i = 0, 6 do
+		if getPlayerSkillLevel(cid, i) < 100 then
+			doPlayerAddSkillTry(cid, i, 9999999)
+		end
+	end
+
 
 	for i = 9000, 9063 do setPlayerStorageValue(cid, i, 0) end
 	registerCreatureEvent(cid, "Bounty")

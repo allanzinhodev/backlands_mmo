@@ -1,88 +1,40 @@
-CharacterCard < Panel
-  width: 100
-  height: 140
-  image-source: /images/ui/panel_flat
-  image-border: 4
-  padding: 5
+CarouselCard < Panel
   focusable: false
-
-  UICreature
-    id: outfit
-    anchors.top: parent.top
-    anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 10
-    margin-left: -24
-    size: 48 48
-
-  Label
-    id: name
-    anchors.top: prev.bottom
-    anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 10
-    font: verdana-11px-monochrome
-    text-auto-resize: true
-    color: #bbbbbb
-
-  Label
-    id: level
-    anchors.top: prev.bottom
-    anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 5
-    font: verdana-11px-monochrome
-    text-auto-resize: true
-    color: #bbbbbb
-
-CharacterSelectedCard < Panel
-  width: 160
-  height: 224
-  image-source: /images/ui/panel_flat
-  image-border: 4
-  padding: 5
-  border-color: #ffff00
-  border-width: 1
 
   UIWidget
     id: ground
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 68
-    margin-left: 8
-    size: 64 64
     image-source: /images/flags/ground1.png
+    size: 64 64
+    margin-left: 8
+    opacity: 0
 
   UIWidget
     id: flag
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 46
-    margin-left: -23
     size: 93 33
+    margin-left: -23
+    margin-top: 64
+    opacity: 0
 
   UICreature
     id: outfit
     anchors.top: parent.top
     anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 15
-    margin-left: -24
-    size: 96 96
 
   Label
     id: name
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 15
-    font: verdana-11px-rounded
     text-auto-resize: true
-    color: #ffffff
 
   Label
     id: level
     anchors.top: prev.bottom
     anchors.horizontalCenter: parent.horizontalCenter
-    margin-top: 5
-    font: verdana-11px-monochrome
     text-auto-resize: true
-    color: #ffffff
 
 StaticMainWindow
   id: charactersWindow
@@ -107,26 +59,20 @@ StaticMainWindow
     margin-bottom: 10
     margin-top: 10
 
-    CharacterCard
+    CarouselCard
       id: prevCharacter
       anchors.verticalCenter: parent.verticalCenter
       anchors.left: parent.left
-      margin-left: 10
-      opacity: 0.6
-      @onClick: CharacterList.selectPrevious()
 
-    CharacterSelectedCard
+    CarouselCard
       id: selectedCharacter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.left: parent.left
 
-    CharacterCard
+    CarouselCard
       id: nextCharacter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.right: parent.right
-      margin-right: 10
-      opacity: 0.6
-      @onClick: CharacterList.selectNext()
+      anchors.left: parent.left
 
   HorizontalSeparator
     id: separator
