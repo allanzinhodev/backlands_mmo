@@ -235,3 +235,33 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
 - **LOGIN:** char list sincronizada com os campos custom; demais pacotes conferem.
 
 > Ao fechar um item, mova a anotação para o histórico de commits e desmarque aqui.
+
+---
+
+## 9. Validação prática (logs reais do cliente)
+
+O OTClientV8 grava capturas em `otclientv8/packet.log` e erros em `otclientv8/otclientv8.log`.
+Quando o parser falha, registra: `last opcode`, `prev opcode`, bytes totais, bytes não lidos e o motivo.
+Use para validar o mapeamento contra tráfego real:
+
+```bash
+# Opcodes realmente vistos no fio (proto 854), cruzar com o catálogo S2C
+grep "proto: 854" otclientv8/packet.log \
+  | grep -oE "opcode is 0x[0-9a-f]+" | grep -oE "0x[0-9a-f]+" | sort -u
+# Erros de parse atuais e o motivo
+grep "parse message exception" otclientv8/otclientv8.log | sed 's/.*last opcode/last opcode/' | sort | uniq -c
+```
+
+**Heurística importante — binário dessincronizado da source.**
+Se o log diz `unhandled opcode N` para um opcode que a source **tem** no `switch` de `parseMessage`
+(`protocolgameparse.cpp`), então o **.exe em uso é antigo** — foi compilado antes do handler ou o
+build incremental não recompilou o arquivo. O número de **bytes não lidos** costuma ser exatamente o
+tamanho do payload daquele opcode (o parser leu o opcode mas não consumiu os campos).
+Correção: **rebuild limpo do cliente**, não mexer no protocolo.
+
+> Caso real observado (2026-06-23): `unhandled opcode 78` (0x4E Creature Action), `7 unread`
+> (= `u32`+`u8`+`u16`), sempre após `0xb4` (Text Message). A source tem `parseCreatureAction`
+> (linha ~3678) lendo os 7 bytes certos e o servidor envia os 7 bytes certos — o mapa está OK; o
+> binário do cliente é que estava velho. Pacotes confirmados no fio: `0x42, 0x4E, 0x64, 0x65–0x68,
+> 0x6D, 0xA2, 0xA3, 0xB3, 0xB4` — todos presentes no catálogo. A sequência real `0x42 → 0x64`
+> (aware range seguido de full map) confirma `updateAwareRange()` → `sendAwareRange()` + `AddMapDescription()`.
