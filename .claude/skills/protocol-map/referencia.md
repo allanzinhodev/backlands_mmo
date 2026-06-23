@@ -233,7 +233,8 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
   `features.lua`. Efeito colateral coerente: o client passa a anexar `seq` (u32) no Attack (0xA1) e
   Follow (0xA2) — o `parseAttack` do server já lê 3 u32 (ignora extras) e o `parseFollow` lê só o
   `creatureId` (resto do frame descartado), então C→S continua OK. Fix é só Lua → reabrir o client,
-  sem recompilar. (Validação pendente: confirmar que o `eof reached` sumiu do log.)
+  sem recompilar. **Validado em runtime (2026-06-23):** após o fix, sessão com combate +
+  cancelar alvo não gerou nenhuma exceção; `packet.log` ficou vazio (zero `eof reached`).
 
 ### Resultado da auditoria completa (2026-06-23)
 - **C→S:** os `case` de `parsePacket` batem 1:1 com o array `C2S` — a única falta era `0x42`
