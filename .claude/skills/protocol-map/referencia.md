@@ -246,6 +246,17 @@ sed -n '/enum GameServerOpcodes/,/};/p; /enum ClientOpcodes/,/};/p' otclientv8/s
   NewWalk/Features…): correto NÃO catalogar — são protocolo moderno não implementado no 8.54.
 - **LOGIN:** char list sincronizada com os campos custom; demais pacotes conferem.
 
+- [x] **Message modes dessincronizados (Lua × C++)** — os payloads de TextMessage (`0xB4`) e
+  Talk (`0xAA`) carregam um *message mode*. O servidor manda a classe interna (`MessageClasses`,
+  `const.h`, ex. `MSG_STATUS_CONSOLE_BLUE=27`); o cliente C++ traduz via
+  `messageModesMap`/`translateMessageModeFromServer` (`protocolcodes.cpp`, por **protocol version**)
+  para o enum `Otc::MessageMode` (`src/client/const.h`) e passa o **valor do enum** ao Lua. A tabela
+  Lua `MessageModes` (`modules/gamelib/const.lua`) PRECISA ter os mesmos números do enum C++.
+  Bug achado (2026-06-23): o Lua não tinha `Mana=41` → ficou off-by-one de `BeyondLast` em diante
+  (`Blue` 45 no Lua vs 46 no C++, `MonsterSay` 43 vs 44) → "unhandled onTextMessage/onTalk message
+  mode 44/46". Corrigido alinhando `gamelib/const.lua` ao `src/client/const.h`.
+  **Regra:** ao mexer em mensagens, mantenha `Otc::MessageMode` (C++) e `MessageModes` (Lua) idênticos.
+
 > Ao fechar um item, mova a anotação para o histórico de commits e desmarque aqui.
 
 ---

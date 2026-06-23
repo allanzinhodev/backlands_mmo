@@ -579,10 +579,14 @@ function updateValues(key, value)
     end
     soundPanel:getChildById("botSoundVolumeLabel"):setText(tr("Bot sound volume: %d", value))
   elseif key == "showHealthManaCircle" then
-    modules.game_healthinfo.healthCircle:setVisible(value)
-    modules.game_healthinfo.healthCircleFront:setVisible(value)
-    modules.game_healthinfo.manaCircle:setVisible(value)
-    modules.game_healthinfo.manaCircleFront:setVisible(value)
+    -- Este projeto removeu os círculos de health/mana do game_healthinfo na
+    -- remodelagem da UI; protege contra nil para a opção não quebrar o setup.
+    if modules.game_healthinfo and modules.game_healthinfo.healthCircle then
+      modules.game_healthinfo.healthCircle:setVisible(value)
+      modules.game_healthinfo.healthCircleFront:setVisible(value)
+      modules.game_healthinfo.manaCircle:setVisible(value)
+      modules.game_healthinfo.manaCircleFront:setVisible(value)
+    end
   elseif key == "backgroundFrameRate" then
     local text, v = value, value
     if value <= 0 or value >= 201 then

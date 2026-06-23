@@ -463,7 +463,6 @@ function getReqInfo(cid, opcode, buffer)
   local player = g_game.getLocalPlayer()
   if not player then return end
   local rank = tonumber(buffer)
-  print(buffer)
   if ranks and rank ~= 0 then
   setSkillValue('rank', ranks[rank].path)
   skillsWindow:recursiveGetChildById('rankMiniature'):setImageSource(ranksMiniature[rank].path)
