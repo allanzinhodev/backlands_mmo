@@ -627,8 +627,11 @@ function updateValues(key, value)
   elseif key == "hidePlayerBars" then
     gameMapPanel:setDrawPlayerBars(value)
   elseif key == "topHealtManaBar" then
-    modules.game_healthinfo.topHealthBar:setVisible(value)
-    modules.game_healthinfo.topManaBar:setVisible(value)
+    -- topHealthBar/topManaBar não existem neste game_healthinfo (UI remodelada); guard contra nil.
+    if modules.game_healthinfo and modules.game_healthinfo.topHealthBar then
+      modules.game_healthinfo.topHealthBar:setVisible(value)
+      modules.game_healthinfo.topManaBar:setVisible(value)
+    end
   elseif key == "displayText" then
     gameMapPanel:setDrawTexts(value)
   elseif key == "dontStretchShrink" then
