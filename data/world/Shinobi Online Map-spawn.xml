@@ -3989,11 +3989,7 @@
   </spawn>
   <spawn centerx="2635" centery="1751" centerz="7" radius="5">
     <npc name="Citizen3" x="-2" y="-1" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2851" centery="1751" centerz="7" radius="5">
-    <npc name="Woody" x="-1" y="0" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2101" centery="1752" centerz="7" radius="30">
+  </spawn>  <spawn centerx="2101" centery="1752" centerz="7" radius="30">
     <monster name="Wolf" x="-25" y="-29" z="7" spawntime="60"/>
     <monster name="Wolf" x="-5" y="-25" z="7" spawntime="60"/>
     <monster name="Bat" x="-16" y="-23" z="7" spawntime="60"/>
@@ -4007,11 +4003,7 @@
     <monster name="Bat" x="1" y="12" z="7" spawntime="60"/>
     <monster name="Wolf" x="-18" y="22" z="7" spawntime="60"/>
     <monster name="Wolf" x="1" y="24" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2376" centery="1753" centerz="7" radius="5">
-    <npc name="Uchiha Lynn" x="-1" y="-2" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2256" centery="1754" centerz="7" radius="10">
+  </spawn>  <spawn centerx="2256" centery="1754" centerz="7" radius="10">
     <monster name="Bat" x="3" y="-1" z="7" spawntime="60"/>
   </spawn>
   <spawn centerx="2685" centery="1754" centerz="7" radius="5">
@@ -4089,11 +4081,7 @@
   </spawn>
   <spawn centerx="2167" centery="1759" centerz="7" radius="5">
     <monster name="Bat" x="-1" y="-1" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2404" centery="1759" centerz="7" radius="5">
-    <npc name="Uchiha Kyoto" x="0" y="-3" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2665" centery="1760" centerz="7" radius="5">
+  </spawn>  <spawn centerx="2665" centery="1760" centerz="7" radius="5">
     <npc name="Akimichi_citizen1" x="-4" y="-1" z="7" spawntime="60"/>
   </spawn>
   <spawn centerx="2599" centery="1764" centerz="7" radius="2">
@@ -4226,9 +4214,7 @@
     <monster name="Bat" x="3" y="-28" z="7" spawntime="60"/>
     <monster name="Wolf" x="20" y="-22" z="7" spawntime="60"/>
     <monster name="Bat" x="-5" y="-17" z="7" spawntime="60"/>
-    <monster name="Wolf" x="-19" y="-14" z="7" spawntime="1536"/>
-    <npc name="Woody" x="11" y="-8" z="7" spawntime="60"/>
-    <monster name="Bat" x="19" y="-7" z="7" spawntime="60"/>
+    <monster name="Wolf" x="-19" y="-14" z="7" spawntime="1536"/>    <monster name="Bat" x="19" y="-7" z="7" spawntime="60"/>
     <monster name="Wolf" x="-6" y="-4" z="7" spawntime="60"/>
     <monster name="Bat" x="2" y="4" z="7" spawntime="60"/>
     <monster name="Wolf" x="30" y="7" z="7" spawntime="60"/>
@@ -5928,9 +5914,7 @@
     <monster name="Hiroku" x="-25" y="-1" z="7" spawntime="60"/>
     <monster name="Wolf" x="-19" y="13" z="7" spawntime="60"/>
     <monster name="Maka" x="-5" y="13" z="7" spawntime="60"/>
-    <monster name="Wolf" x="9" y="16" z="7" spawntime="60"/>
-    <npc name="Lost Medical Ninja" x="24" y="20" z="7" spawntime="60"/>
-    <monster name="Maka" x="2" y="24" z="7" spawntime="10"/>
+    <monster name="Wolf" x="9" y="16" z="7" spawntime="60"/>    <monster name="Maka" x="2" y="24" z="7" spawntime="10"/>
     <monster name="Sanzoku" x="-23" y="28" z="7" spawntime="10"/>
   </spawn>
   <spawn centerx="2512" centery="2119" centerz="7" radius="10">
@@ -6911,11 +6895,7 @@
     <monster name="Touzoku" x="18" y="6" z="7" spawntime="60"/>
     <monster name="Sanzoku" x="-21" y="13" z="7" spawntime="60"/>
     <monster name="Sanzoku" x="-26" y="27" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2798" centery="2350" centerz="7" radius="1">
-    <npc name="Freecss" x="-1" y="0" z="7" spawntime="60"/>
-  </spawn>
-  <spawn centerx="2875" centery="2351" centerz="7" radius="6">
+  </spawn>  <spawn centerx="2875" centery="2351" centerz="7" radius="6">
     <monster name="Rabbit" x="3" y="-4" z="7" spawntime="60"/>
     <monster name="Rabbit" x="-4" y="0" z="7" spawntime="60"/>
     <monster name="Rabbit" x="-1" y="3" z="7" spawntime="60"/>

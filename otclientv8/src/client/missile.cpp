@@ -74,10 +74,28 @@ void Missile::setPath(const Position& fromPosition, const Position& toPosition)
 
     m_direction = fromPosition.getDirectionFromPosition(toPosition);
 
+    // Transform logical direction to visual direction for isometric projection
+    switch(m_direction) {
+        case Otc::North: m_direction = Otc::NorthWest; break;
+        case Otc::East: m_direction = Otc::NorthEast; break;
+        case Otc::South: m_direction = Otc::SouthEast; break;
+        case Otc::West: m_direction = Otc::SouthWest; break;
+        case Otc::NorthEast: m_direction = Otc::North; break;
+        case Otc::SouthEast: m_direction = Otc::East; break;
+        case Otc::SouthWest: m_direction = Otc::South; break;
+        case Otc::NorthWest: m_direction = Otc::West; break;
+        default: break;
+    }
+
     m_position = fromPosition;
-    m_delta = Point(toPosition.x - fromPosition.x, toPosition.y - fromPosition.y);
-    m_duration = 150 * std::sqrt(m_delta.length());
-    m_delta *= g_sprites.spriteSize();
+    Point tileDelta(toPosition.x - fromPosition.x, toPosition.y - fromPosition.y);
+    m_duration = 150 * std::sqrt(tileDelta.length());
+    
+    float spriteSize = g_sprites.spriteSize();
+    int dz = toPosition.z - fromPosition.z;
+    // Isometric screen space transformation matching MapView::transformPositionTo2D
+    m_delta.x = (tileDelta.x + tileDelta.y) * (spriteSize / Otc::ISO_TILE_HALF_W_DIV);
+    m_delta.y = (tileDelta.y - tileDelta.x) * (spriteSize / Otc::ISO_TILE_HALF_H_DIV) - (dz * (spriteSize / Otc::ISO_FLOOR_STEP_DIV));
     m_animationTimer.restart();
 
     // schedule removal

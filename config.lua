@@ -131,7 +131,7 @@
 	timeBetweenExActions = 1000
 	hotkeyAimbotEnabled = true
 
-	mapName = "Shinobi Online Map.otbm"
+	mapName = "grass_test.otbm"
 	mapAuthor = "leo"
 	randomizeTiles = true
 	storeTrash = true

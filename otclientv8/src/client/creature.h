@@ -115,7 +115,15 @@ public:
     bool isPassable() { return m_passable; }
     Point getDrawOffset();
     uint16 getStepDuration(bool ignoreDiagonal = false, Otc::Direction dir = Otc::InvalidDirection);
-    Point getWalkOffset(bool inNextFrame = false) { return inNextFrame ? m_walkOffsetInNextFrame : m_walkOffset; }
+    // Offset de caminhada para DESENHO/CÂMERA: interpola a posição entre o tile de origem e o de
+    // destino e projeta no losango isométrico (dest + getWalkOffset == projeção da posição contínua).
+    // Independe do walkingTile que troca a meio passo, então não há salto. Ver skill isometric-view.
+    // m_walkOffset (quadrado) continua existindo só para a lógica interna de updateWalkingTile.
+    Point getWalkOffset(bool inNextFrame = false);
+    // offset iso da posição contínua do passo relativo a uma posição de referência (tile de desenho
+    // para o sprite; posição da câmera para o scroll). isoProject(interp - ref).
+    Point getIsoWalkOffsetFrom(const Position& ref, bool inNextFrame = false);
+    Point getRawWalkOffset(bool inNextFrame = false) { return inNextFrame ? m_walkOffsetInNextFrame : m_walkOffset; }
     Position getLastStepFromPosition() { return m_lastStepFromPosition; }
     Position getLastStepToPosition() { return m_lastStepToPosition; }
     float getStepProgress() { return m_walkTimer.ticksElapsed() / getStepDuration(); }
@@ -256,6 +264,7 @@ protected:
     // walk related
     int m_walkAnimationPhase;
     uint8 m_walkedPixels;
+    uint8 m_walkedPixelsInNextFrame = 0;
     uint m_footStep;
     Timer m_walkTimer;
     ticks_t m_footLastStep;

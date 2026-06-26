@@ -86,10 +86,12 @@ void Creature::draw(const Point& dest, bool animate, LightView* lightView)
 
     const int sprSize = g_sprites.spriteSize();
     Point jumpOffset = Point(m_jumpOffset.x, m_jumpOffset.y);
-    Point creatureCenter = dest - jumpOffset + m_walkOffset - getDisplacement() + Point(sprSize / 2, sprSize / 2);
+    // walk offset já projetado para o losango isométrico (mesma fonte usada pela câmera). Ver skill isometric-view.
+    Point isoWalkOffset = getWalkOffset();
+    Point creatureCenter = dest - jumpOffset + isoWalkOffset - getDisplacement() + Point(sprSize / 2, sprSize / 2);
     drawBottomWidgets(creatureCenter, m_walking ? m_walkDirection : m_direction);
 
-    Point animationOffset = animate ? m_walkOffset : Point(0, 0);
+    Point animationOffset = animate ? isoWalkOffset : Point(0, 0);
 
     if (m_showTimedSquare && animate) {
         g_drawQueue->addBoundingRect(Rect(dest - jumpOffset + (animationOffset - getDisplacement() + 2 * g_sprites.getOffsetFactor()), Size(sprSize - 4 * g_sprites.getOffsetFactor(), sprSize - 4 * g_sprites.getOffsetFactor())), 2 * g_sprites.getOffsetFactor(), m_timedSquareColor);
@@ -599,6 +601,7 @@ void Creature::updateWalk()
     // needed for paralyze effect
     m_walkedPixels = std::max<uint8>(m_walkedPixels, totalPixelsWalked);
     uint8 walkedPixelsInNextFrame = std::max<uint8>(m_walkedPixels, totalPixelsWalkedInNextFrame);
+    m_walkedPixelsInNextFrame = walkedPixelsInNextFrame;   // usado por getWalkOffset(true)
 
     // update walk animation and offsets
     updateWalkAnimation(totalPixelsWalked);
@@ -857,13 +860,48 @@ void Creature::updateShield()
         m_showShieldTexture = true;
 }
 
+Point Creature::getIsoWalkOffsetFrom(const Position& ref, bool inNextFrame)
+{
+    if (!m_walking)
+        return Point(0, 0);
+
+    const int S = g_sprites.spriteSize();
+    uint8 walked = inNextFrame ? m_walkedPixelsInNextFrame : m_walkedPixels;
+
+    // Total pixel travel from FromPosition to ToPosition
+    int dx_tiles = m_lastStepToPosition.x - m_lastStepFromPosition.x;
+    int dy_tiles = m_lastStepToPosition.y - m_lastStepFromPosition.y;
+    int totalTravelX = (dx_tiles + dy_tiles) * (S / Otc::ISO_TILE_HALF_W_DIV);
+    int totalTravelY = (dy_tiles - dx_tiles) * (S / Otc::ISO_TILE_HALF_H_DIV);
+
+    // Current continuous pixel travel based on walked pixels
+    int pixelX = (totalTravelX * walked) / S;
+    int pixelY = (totalTravelY * walked) / S;
+
+    // Shift to be relative to 'ref' (e.g. m_walkingTile, which can change mid-walk)
+    int ref_dx = m_lastStepFromPosition.x - ref.x;
+    int ref_dy = m_lastStepFromPosition.y - ref.y;
+    int refPixelX = (ref_dx + ref_dy) * (S / Otc::ISO_TILE_HALF_W_DIV);
+    int refPixelY = (ref_dy - ref_dx) * (S / Otc::ISO_TILE_HALF_H_DIV);
+
+    return Point(pixelX + refPixelX, pixelY + refPixelY);
+}
+
+Point Creature::getWalkOffset(bool inNextFrame)
+{
+    // sprite: relativo ao tile de onde a criatura é desenhada (o walkingTile)
+    if (!m_walking || !m_walkingTile)
+        return Point(0, 0);
+    return getIsoWalkOffsetFrom(m_walkingTile->getPosition(), inNextFrame);
+}
+
 Point Creature::getDrawOffset()
 {
     Point drawOffset;
     if (m_walking) {
         if (m_walkingTile)
             drawOffset -= Point(1, 1) * m_walkingTile->getDrawElevation() * g_sprites.getOffsetFactor();
-        drawOffset += m_walkOffset;
+        drawOffset += getWalkOffset();   // walk offset projetado para o losango (sprite + barra/nome juntos)
     } else {
         const TilePtr& tile = getTile();
         if (tile)

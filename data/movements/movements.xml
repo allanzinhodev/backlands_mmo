@@ -325,14 +325,12 @@
 		<vocation id="3"/>
 		<vocation id="4"/>
 		<vocation id="7" showInDescription="0"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="11114" slot="feet" level="70" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="11234" slot="feet" level="70" event="function" value="onEquipItem">
 		<vocation id="3"/>
 		<vocation id="4"/>
 		<vocation id="7" showInDescription="0"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="11234" slot="feet" level="70" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="11297" slot="feet" event="function" value="onEquipItem"/>
@@ -505,7 +503,6 @@
 		<vocation id="3"/>
 		<vocation id="4"/>
 		<vocation id="7" showInDescription="0"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="11296" slot="head" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="11362" slot="head" level="60" event="function" value="onEquipItem">
@@ -519,35 +516,30 @@
 	<!-- Armors -->
 	<movevent type="Equip" itemid="2472" slot="armor" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2472" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2487" slot="armor" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2487" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2492" slot="armor" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2492" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2466" slot="armor" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2466" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2476" slot="armor" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
@@ -647,50 +639,42 @@
 	<movevent type="DeEquip" itemid="8872" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8877" slot="armor" level="60" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8877" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8878" slot="armor" level="60" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8878" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8879" slot="armor" level="60" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8879" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8880" slot="armor" level="60" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8880" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8881" slot="armor" level="90" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8881" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8882" slot="armor" level="90" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8882" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8883" slot="armor" level="90" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8883" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8884" slot="armor" level="90" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8884" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8885" slot="armor" level="75" event="function" value="onEquipItem">
@@ -715,7 +699,6 @@
 	<movevent type="DeEquip" itemid="8888" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8889" slot="armor" level="100" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="8889" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8890" slot="armor" level="100" event="function" value="onEquipItem">
@@ -737,14 +720,12 @@
 	<movevent type="DeEquip" itemid="8892" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="9776" slot="armor" level="80" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="9776" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="11295" slot="armor" level="50" event="function" value="onEquipItem">
 		<vocation id="3"/>
 		<vocation id="4"/>
 		<vocation id="7" showInDescription="0"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="11295" slot="armor" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="11349" slot="armor" level="60" event="function" value="onEquipItem">
@@ -765,21 +746,18 @@
 	<!-- Legs -->
 	<movevent type="Equip" itemid="2477" slot="legs" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2477" slot="legs" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2488" slot="legs" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" itemid="2488" slot="legs" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="2470" slot="legs" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 		<vocation id="3"/>
 		<vocation id="7" showInDescription="0"/>
 	</movevent>
@@ -825,7 +803,6 @@
 	<!-- Shields -->
 	<movevent type="Equip" fromid="8905" toid="8909" slot="shield" level="100" event="function" value="onEquipItem">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</movevent>
 	<movevent type="DeEquip" fromid="8905" toid="8909" slot="shield" event="function" value="onDeEquipItem"/>
 	<movevent type="Equip" itemid="8900" slot="shield" level="30" event="function" value="onEquipItem">

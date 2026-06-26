@@ -4028,7 +4028,7 @@
     <attribute key="maxHitChance" value="90" />
     <attribute key="weaponType" value="ammunition" />
     <attribute key="ammoType" value="arrow" />
-    <attribute key="shootType" value="arrow" />
+    <attribute key="shootType" value="bolt" />
     <attribute key="ammoAction" value="removecount" />
   </item>
   <item id="2545" article="a" name="poison arrow"
@@ -19620,3 +19620,6 @@
   <item id="20028" name="swamp" />
   <item id="20035" name="tea" />
 </items>
+
+
+

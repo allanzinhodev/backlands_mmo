@@ -1,0 +1,25 @@
+{
+  "_comment": "Manifesto do compilador de sprites (spritec.js). Caminhos relativos a esta pasta (tools/). 'base' = .dat/.spr limpos (fonte). 'out' = arquivos que o cliente carrega. Rode: node spritec.js build",
+  "base": {
+    "dat": "../otclientv8/data/things/854/Tibia.dat.base",
+    "spr": "../otclientv8/data/things/854/Tibia.spr.base"
+  },
+  "out": {
+    "dat": "../otclientv8/data/things/854/Tibia.dat",
+    "spr": "../otclientv8/data/things/854/Tibia.spr"
+  },
+  "defaults": {
+    "cols": 4,
+    "rows": 3,
+    "directions": ["N", "E", "S", "W"],
+    "idleRow": 0,
+    "walkRows": [1, 2],
+    "layers": 1,
+    "walkDuration": 300
+  },
+  "outfits": [
+    { "id": 1, "sheet": "../graphic/char_0.png" },
+    { "id": 2, "sheet": "../graphic/char_1.png" },
+    { "id": 3, "sheet": "../graphic/char_2.png" }
+  ]
+}

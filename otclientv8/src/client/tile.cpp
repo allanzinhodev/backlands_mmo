@@ -134,8 +134,9 @@ void Tile::drawCreatures(const Point& dest, LightView* lightView)
     for (const CreaturePtr& creature : m_walkingCreatures) {
         if (creature->isHidden())
             continue;
-        Point creatureDest(dest.x + ((creature->getPrewalkingPosition().x - m_position.x) * g_sprites.spriteSize() - m_drawElevation * g_sprites.getOffsetFactor()),
-                           dest.y + ((creature->getPrewalkingPosition().y - m_position.y) * g_sprites.spriteSize() - m_drawElevation * g_sprites.getOffsetFactor()));
+        // base = tile de desenho (já em iso); o deslocamento da criatura vem de Creature::getWalkOffset (iso)
+        Point creatureDest(dest.x - m_drawElevation * g_sprites.getOffsetFactor(),
+                           dest.y - m_drawElevation * g_sprites.getOffsetFactor());
         creature->draw(creatureDest, true, lightView);
     }
 
@@ -165,8 +166,9 @@ void Tile::drawTop(const Point& dest, LightView* lightView)
     for (const CreaturePtr& creature : m_walkingCreatures) {
         if (creature->isHidden())
             continue;
-        Point creatureDest(dest.x + ((creature->getPrewalkingPosition().x - m_position.x) * g_sprites.spriteSize() - m_drawElevation * g_sprites.getOffsetFactor()),
-                   dest.y + ((creature->getPrewalkingPosition().y - m_position.y) * g_sprites.spriteSize() - m_drawElevation * g_sprites.getOffsetFactor()));
+        // base = tile de desenho (já em iso); o deslocamento da criatura vem de Creature::getWalkOffset (iso)
+        Point creatureDest(dest.x - m_drawElevation * g_sprites.getOffsetFactor(),
+                           dest.y - m_drawElevation * g_sprites.getOffsetFactor());
         creature->draw(creatureDest, true, lightView);
     }
 

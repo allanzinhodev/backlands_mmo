@@ -33,11 +33,7 @@ function onLogin(cid)
 		doSendMagicEffect(getCreaturePosition(cid), CONST_ME_TELEPORT)
 	end
 
-	-- Test Mode: Maximize level and magic level
-	if getPlayerLevel(cid) < 500 then
-		doPlayerAddLevel(cid, 500 - getPlayerLevel(cid), true)
-	end
-	
+	-- Test Mode: Maximize magic level
 	if getPlayerMagLevel(cid) < 100 then
 		doPlayerAddMagLevel(cid, 10 - getPlayerMagLevel(cid))
 	end
@@ -47,6 +43,17 @@ function onLogin(cid)
 			doPlayerAddSkillTry(cid, i, 9999999)
 		end
 	end
+
+	-- Give test ranged weapon
+	if getPlayerItemCount(cid, 2456) == 0 then
+		doPlayerAddItem(cid, 2456, 1) -- bow
+		doPlayerAddItem(cid, 2544, 100) -- arrows
+	end
+
+	-- Spawn 2 snakes for testing ranged attacks
+	local pos = getCreaturePosition(cid)
+	doCreateMonster("Snake", {x = pos.x + 1, y = pos.y, z = pos.z})
+	doCreateMonster("Snake", {x = pos.x, y = pos.y + 1, z = pos.z})
 
 
 	for i = 9000, 9063 do setPlayerStorageValue(cid, i, 0) end

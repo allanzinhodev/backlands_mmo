@@ -22,6 +22,8 @@
 
 #include "mapview.h"
 
+#include <cmath>
+
 #include "creature.h"
 #include "map.h"
 #include "tile.h"
@@ -196,50 +198,34 @@ void MapView::drawFloor(short floor, const Position& cameraPosition, const TileP
         }
     }
 
-    if (g_game.getFeature(Otc::GameMapDrawGroundFirst)) {
-        // ground
-        for (auto& tile : tiles) {
-            Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
-            tile->drawGround(tileDrawPos, m_lightView.get());
-        }
-        // bottom, creatures, top
-        for (auto& tile : tiles) {
-            Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
-
-            tile->drawBottom(tileDrawPos, m_lightView.get());
-
-            if (m_crosshair && tile == crosshairTile) {
-                g_drawQueue->addTexturedRect(Rect(tileDrawPos, tileDrawPos + g_sprites.spriteSize() - 1),
-                                             m_crosshair, Rect(0, 0, m_crosshair->getSize()));
+    // Draw Ground and Bottom for ALL tiles first
+    for (auto& tile : tiles) {
+        Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
+        if (m_lightView) {
+            ItemPtr ground = tile->getGround();
+            if (ground && ground->isGround() && !ground->isTranslucent()) {
+                m_lightView->setFieldBrightness(tileDrawPos, lightFloorStart, 0);
             }
-
-            tile->drawCreatures(tileDrawPos, m_lightView.get());
-            tile->drawTop(tileDrawPos, m_lightView.get());
         }
-    } else {
-        // ground, bottom, creatures, top
-        for (auto& tile : tiles) {
-            Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
+        tile->drawGround(tileDrawPos, m_lightView.get());
+    }
 
-            if (m_lightView) {
-                ItemPtr ground = tile->getGround();
-                if (ground && ground->isGround() && !ground->isTranslucent()) {
-                    m_lightView->setFieldBrightness(tileDrawPos, lightFloorStart, 0);
-                }
-            }
+    for (auto& tile : tiles) {
+        Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
+        tile->drawBottom(tileDrawPos, m_lightView.get());
+    }
 
-            tile->drawGround(tileDrawPos, m_lightView.get());
+    // Then draw Creatures and Top for ALL tiles
+    for (auto& tile : tiles) {
+        Point tileDrawPos = transformPositionTo2D(tile->getPosition(), cameraPosition);
 
-            tile->drawBottom(tileDrawPos, m_lightView.get());
-
-            if (m_crosshair && tile == crosshairTile) {
-                g_drawQueue->addTexturedRect(Rect(tileDrawPos, tileDrawPos + g_sprites.spriteSize() - 1),
-                                             m_crosshair, Rect(0, 0, m_crosshair->getSize()));
-            }
-
-            tile->drawCreatures(tileDrawPos, m_lightView.get());
-            tile->drawTop(tileDrawPos, m_lightView.get());
+        if (m_crosshair && tile == crosshairTile) {
+            g_drawQueue->addTexturedRect(Rect(tileDrawPos, tileDrawPos + g_sprites.spriteSize() - 1),
+                                         m_crosshair, Rect(0, 0, m_crosshair->getSize()));
         }
+
+        tile->drawCreatures(tileDrawPos, m_lightView.get());
+        tile->drawTop(tileDrawPos, m_lightView.get());
     }
 
     for (const MissilePtr& missile : g_map.getFloorMissiles(floor)) {
@@ -267,10 +253,16 @@ void MapView::drawMapForeground(const Rect& rect)
             continue;
 
         PointF jumpOffset = creature->getJumpOffset();
-        Point creatureOffset = Point(16 * g_sprites.getOffsetFactor() - creature->getDisplacementX(), -creature->getDisplacementY() - 2 * g_sprites.getOffsetFactor());
+        Point creatureOffset = Point(24 * g_sprites.getOffsetFactor() - creature->getDisplacementX(), -creature->getDisplacementY() - 2 * g_sprites.getOffsetFactor());
         Position pos = creature->getPrewalkingPosition();
         Point p = transformPositionTo2D(pos, cameraPosition) - drawOffset;
-        p += (creature->getDrawOffset() + creatureOffset) - Point(jumpOffset.x, jumpOffset.y);
+        // During walking, compute walk offset relative to prewalkPos (info bar base),
+        // not walkingTile (sprite base), to keep the bar aligned with the sprite.
+        Point drawOff = creature->getDrawOffset();
+        if (creature->isWalking()) {
+            drawOff = drawOff - creature->getWalkOffset() + creature->getIsoWalkOffsetFrom(pos);
+        }
+        p += (drawOff + creatureOffset) - Point(jumpOffset.x, jumpOffset.y);
         p.x = p.x * horizontalStretchFactor;
         p.y = p.y * verticalStretchFactor;
         p += rect.topLeft();
@@ -396,13 +388,17 @@ void MapView::updateVisibleTilesCache()
     }
 
     // draw from last floor (the lower) to first floor (the higher)
+    const int W = m_drawDimension.width();
+    const int H = m_drawDimension.height();
     for(int iz = m_cachedLastVisibleFloor; iz >= (m_floorFading ? m_cachedFirstFadingFloor : m_cachedFirstVisibleFloor); --iz) {
-        for (int diagonal = 0; diagonal < numDiagonals; ++diagonal) {
-            // loop current diagonal tiles
-            int advance = std::max<int>(diagonal - m_drawDimension.height(), 0);
-            for (int iy = diagonal - advance, ix = advance; iy >= 0 && ix < m_drawDimension.width(); --iy, ++ix) {
-                // position on current floor
-                //TODO: check position limits
+        // Iterate diagonals where (iy - ix) = const, from smallest to largest.
+        // This ensures back-to-front drawing order for ISO projection: screenY ∝ (row - col).
+        for (int d = 0; d < numDiagonals; ++d) {
+            int diag = d - (W - 1);  // iy - ix = diag
+            int ixStart = std::max(0, -diag);
+            int ixEnd = std::min(W, H - diag);
+            for (int ix = ixStart; ix < ixEnd; ++ix) {
+                int iy = ix + diag;
                 Position tilePos = cameraPosition.translated(ix - m_virtualCenterOffset.x, iy - m_virtualCenterOffset.y);
                 // adjust tilePos to the wanted floor
                 tilePos.coveredUp(cameraPosition.z - iz);
@@ -501,9 +497,13 @@ Position MapView::getPosition(const Point& point, const Size& mapSize)
 
     Point framebufferPos = Point(point.x * sh, point.y * sv);
     Point realPos = (framebufferPos + srcRect.topLeft());
-    Point centerOffset = realPos / g_sprites.spriteSize();
 
-    Point tilePos2D = getVisibleCenterOffset() - m_drawDimension.toPoint() + centerOffset + Point(2,2);
+    // Inverso exato de transformPositionTo2D (projeção isométrica 2:1, dz=0 = andar da câmera).
+    // Mesma origem usada na projeção direta, senão o clique não bate no tile correto.
+    const int S = g_sprites.spriteSize();
+    const float ax = (realPos.x - m_virtualCenterOffset.x * S) / (float)(S / Otc::ISO_TILE_HALF_W_DIV); // col + row
+    const float ay = (realPos.y - m_virtualCenterOffset.y * S) / (float)(S / Otc::ISO_TILE_HALF_H_DIV); // row - col
+    Point tilePos2D((int)std::floor((ax - ay) / 2.0f), (int)std::floor((ax + ay) / 2.0f));
     if(tilePos2D.x + cameraPosition.x < 0 && tilePos2D.y + cameraPosition.y < 0)
         return Position();
 
@@ -561,7 +561,8 @@ Rect MapView::calcFramebufferSource(const Size& destSize, bool inNextFrame)
     float scaleFactor = g_sprites.spriteSize()/(float)g_sprites.spriteSize();
     Point drawOffset = ((m_drawDimension - m_visibleDimension - Size(1,1)).toPoint()/2) * g_sprites.spriteSize();
     if(isFollowingCreature())
-        drawOffset += m_followingCreature->getWalkOffset(inNextFrame) * scaleFactor;
+        // scroll relativo à posição da câmera (prewalk) para o player ficar centralizado durante o passo iso
+        drawOffset += m_followingCreature->getIsoWalkOffsetFrom(m_followingCreature->getPrewalkingPosition(), inNextFrame) * scaleFactor;
 
     Size srcSize = destSize;
     Size srcVisible = m_visibleDimension * g_sprites.spriteSize();
@@ -658,8 +659,22 @@ int MapView::calcLastVisibleFloor()
 }
 
 Point MapView::transformPositionTo2D(const Position& position, const Position& relativePosition) {
-    return Point((m_virtualCenterOffset.x + (position.x - relativePosition.x) - (relativePosition.z - position.z)) * g_sprites.spriteSize(),
-        (m_virtualCenterOffset.y + (position.y - relativePosition.y) - (relativePosition.z - position.z)) * g_sprites.spriteSize());
+    // Projeção isométrica 2:1 (orientação Tibia clássica).
+    // N=cima-esquerda, E=cima-direita, S=baixo-direita, W=baixo-esquerda.
+    // col/row = deslocamento do tile em relação à câmera; dz = andares acima da câmera.
+    const int S = g_sprites.spriteSize();
+    const int col = position.x - relativePosition.x;
+    const int row = position.y - relativePosition.y;
+    const int dz  = relativePosition.z - position.z;
+
+    // Origem: mantém a câmera (col=row=dz=0) no mesmo ponto central do framebuffer
+    // em que ela ficava na projeção ortogonal, para não quebrar o resto do pipeline.
+    const int originX = m_virtualCenterOffset.x * S;
+    const int originY = m_virtualCenterOffset.y * S;
+
+    return Point(
+        originX + (col + row) * (S / Otc::ISO_TILE_HALF_W_DIV),
+        originY + (row - col) * (S / Otc::ISO_TILE_HALF_H_DIV) - dz * (S / Otc::ISO_FLOOR_STEP_DIV));
 }
 
 

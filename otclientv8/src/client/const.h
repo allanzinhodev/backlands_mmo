@@ -30,6 +30,18 @@ namespace Otc
     enum : int {
         MAX_ELEVATION = 24,
 
+        // --- Projeção isométrica (estilo Final Fantasy Tactics Advance) ---
+        // O mundo é renderizado em isométrico dimétrico 2:1, derivado de spriteSize (S):
+        //   largura do tile na tela  = S        -> passo horizontal = S/2
+        //   altura  do tile na tela  = S/2      -> passo vertical   = S/4
+        //   cada andar (Z) sobe na tela          = S/2  (ISO_FLOOR_STEP)
+        // O sistema de andares continua o do Tibia (sobe escada p/ mudar de andar,
+        // entra em interiores); só a PROJEÇÃO muda. Ver skill isometric-view.
+        // Estes são divisores aplicados a spriteSize em MapView::transformPositionTo2D.
+        ISO_TILE_HALF_W_DIV = 2,   // S / 2  -> meia largura do losango
+        ISO_TILE_HALF_H_DIV = 4,   // S / 4  -> meia altura do losango
+        ISO_FLOOR_STEP_DIV  = 2,   // S / 2  -> subida na tela por andar
+
         SEA_FLOOR = 7,
         MAX_Z = 15,
         UNDERGROUND_FLOOR = SEA_FLOOR+1,

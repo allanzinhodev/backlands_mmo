@@ -93,11 +93,9 @@
 	</melee>
 	<melee id="7417" level="65" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="7403" level="65" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="7418" level="70" unproperly="1" event="function" value="default"/>
 	<melee id="7405" level="70" unproperly="1" event="function" value="default"/>
@@ -114,7 +112,6 @@
 	<melee id="8931" level="140" unproperly="1" event="function" value="default"/>
 	<melee id="2390" level="140" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 		<!-- Fire -->
 	<melee id="7745" level="50" unproperly="1" event="function" value="default"/>
@@ -270,21 +267,17 @@
 	<melee id="7427" level="45" unproperly="1" event="function" value="default"/>
 	<melee id="2391" level="50" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="7410" level="55" unproperly="1" event="function" value="default"/>
 	<melee id="7428" level="55" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="11302" level="55" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="7415" level="60" unproperly="1" event="function" value="default"/>
 	<melee id="7414" level="60" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="7421" level="65" unproperly="1" event="function" value="default"/>
 	<melee id="2444" level="65" unproperly="1" event="function" value="default"/>
@@ -297,12 +290,10 @@
 	<melee id="2421" level="85" unproperly="1" event="function" value="default"/>
 	<melee id="7423" level="85" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="8928" level="100" unproperly="1" event="function" value="default"/>
 	<melee id="8929" level="100" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 	<melee id="8927" level="120" unproperly="1" event="function" value="default"/>
 		<!-- Fire -->
@@ -312,7 +303,6 @@
 	<melee id="7757" level="35" unproperly="1" event="function" value="default"/>
 	<melee id="7758" level="50" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 		<!-- Ice -->
 	<melee id="7773" level="20" unproperly="1" event="function" value="default"/>
@@ -321,7 +311,6 @@
 	<melee id="7776" level="35" unproperly="1" event="function" value="default"/>
 	<melee id="7777" level="50" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 		<!-- Earth -->
 	<melee id="7864" level="20" unproperly="1" event="function" value="default"/>
@@ -330,7 +319,6 @@
 	<melee id="7867" level="35" unproperly="1" event="function" value="default"/>
 	<melee id="7868" level="50" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 		<!-- Energy -->
 	<melee id="7879" level="20" unproperly="1" event="function" value="default"/>
@@ -339,7 +327,6 @@
 	<melee id="7882" level="35" unproperly="1" event="function" value="default"/>
 	<melee id="7883" level="50" unproperly="1" event="function" value="default">
 		<vocation id="4"/>
-		<vocation id="8" showInDescription="0"/>
 	</melee>
 
 	<!-- Bows and Crossbows -->
