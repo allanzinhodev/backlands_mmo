@@ -186,6 +186,21 @@ struct DrawQueueConditionMark : public DrawQueueCondition {
     Color m_color;
 };
 
+// Desenha a silhueta dos itens do intervalo numa cor sólida, deslocada em 8 direções, ANTES
+// dos itens reais (no start) — formando um contorno atrás do sprite. Usado como indicador de
+// alvo/ataque no lugar do quadrado clássico (ver Creature::draw).
+struct DrawQueueConditionOutline : public DrawQueueCondition {
+    DrawQueueConditionOutline(size_t start, size_t end, const Color& color, int thickness) :
+        DrawQueueCondition(start, end), m_color(color), m_thickness(thickness)
+    {}
+
+    void start(DrawQueue* queue) override;
+    void end(DrawQueue* queue) override;
+
+    Color m_color;
+    int m_thickness;
+};
+
 class DrawQueue {
 public:
     DrawQueue() = default;
@@ -311,6 +326,12 @@ public:
         m_conditions.push_back(new DrawQueueConditionMark(start, m_queue.size(), color));
     }
 
+    void setOutline(size_t start, const Color& color, int thickness = 1)
+    {
+        if (start == m_queue.size() || thickness <= 0) return;
+        m_conditions.push_back(new DrawQueueConditionOutline(start, m_queue.size(), color, thickness));
+    }
+
     void markMapPosition()
     {
         mapPosition = m_queue.size();
@@ -349,6 +370,7 @@ private:
     PointF m_walkOffset;
 
     friend struct DrawQueueConditionMark;
+    friend struct DrawQueueConditionOutline;
 };
 
 extern std::shared_ptr<DrawQueue> g_drawQueue;

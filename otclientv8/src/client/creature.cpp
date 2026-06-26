@@ -93,23 +93,27 @@ void Creature::draw(const Point& dest, bool animate, LightView* lightView)
 
     Point animationOffset = animate ? isoWalkOffset : Point(0, 0);
 
-    if (m_showTimedSquare && animate) {
-        g_drawQueue->addBoundingRect(Rect(dest - jumpOffset + (animationOffset - getDisplacement() + 2 * g_sprites.getOffsetFactor()), Size(sprSize - 4 * g_sprites.getOffsetFactor(), sprSize - 4 * g_sprites.getOffsetFactor())), 2 * g_sprites.getOffsetFactor(), m_timedSquareColor);
-    }
-
-    if (m_showStaticSquare && animate) {
-        g_drawQueue->addBoundingRect(Rect(dest - jumpOffset + (animationOffset - getDisplacement()), Size(sprSize, sprSize)), 2 * g_sprites.getOffsetFactor(), m_staticSquareColor);
-    }
-
     if (m_outfit.getCategory() != ThingCategoryCreature)
         animationOffset -= getDisplacement();
 
-    size_t drawQueueSize = g_drawQueue->size();
-        int customActionGroup = 0;
+    int customActionGroup = 0;
     if (m_customActionGroup > 0 && g_clock.millis() < m_customActionTicks) {
         customActionGroup = m_customActionGroup;
     }
-    m_outfit.draw(dest - jumpOffset + animationOffset, m_walking ? m_walkDirection : m_direction, m_walkAnimationPhase, true, lightView, false, customActionGroup);
+
+    const Point outfitDest = dest - jumpOffset + animationOffset;
+    const Otc::Direction outfitDir = m_walking ? m_walkDirection : m_direction;
+
+    size_t drawQueueSize = g_drawQueue->size();
+    m_outfit.draw(outfitDest, outfitDir, m_walkAnimationPhase, true, lightView, false, customActionGroup);
+
+    // Indicador de alvo: em vez do quadrado clássico, desenha um contorno colorido na silhueta
+    // da criatura (vermelho = ataque, verde = follow, branco = hover), atrás do sprite. A cor
+    // vem do próprio square para preservar a semântica já usada pelos módulos (battle.lua).
+    if (animate && (m_showTimedSquare || m_showStaticSquare)) {
+        const Color outlineColor = m_showTimedSquare ? m_timedSquareColor : m_staticSquareColor;
+        g_drawQueue->setOutline(drawQueueSize, outlineColor, std::max<int>(1, (int)g_sprites.getOffsetFactor()));
+    }
     if (m_marked) {
         g_drawQueue->setMark(drawQueueSize, updatedMarkedColor());
     }

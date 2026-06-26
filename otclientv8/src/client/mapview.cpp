@@ -501,8 +501,12 @@ Position MapView::getPosition(const Point& point, const Size& mapSize)
     // Inverso exato de transformPositionTo2D (projeção isométrica 2:1, dz=0 = andar da câmera).
     // Mesma origem usada na projeção direta, senão o clique não bate no tile correto.
     const int S = g_sprites.spriteSize();
+    // Centragem do losango: transformPositionTo2D ancora o tile no canto superior-esquerdo
+    // do sprite (S x S), mas o centro visual do losango fica meio sprite abaixo. Deslocamos o
+    // ponto do clique em S/2 no eixo Y para que clicar no CENTRO visual do tile selecione o
+    // tile certo (par projeção+picking — ver skill isometric-view).
     const float ax = (realPos.x - m_virtualCenterOffset.x * S) / (float)(S / Otc::ISO_TILE_HALF_W_DIV); // col + row
-    const float ay = (realPos.y - m_virtualCenterOffset.y * S) / (float)(S / Otc::ISO_TILE_HALF_H_DIV); // row - col
+    const float ay = (realPos.y - m_virtualCenterOffset.y * S - S / 2) / (float)(S / Otc::ISO_TILE_HALF_H_DIV); // row - col
     Point tilePos2D((int)std::floor((ax - ay) / 2.0f), (int)std::floor((ax + ay) / 2.0f));
     if(tilePos2D.x + cameraPosition.x < 0 && tilePos2D.y + cameraPosition.y < 0)
         return Position();

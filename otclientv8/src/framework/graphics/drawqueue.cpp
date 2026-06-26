@@ -195,6 +195,33 @@ void DrawQueueConditionMark::end(DrawQueue* queue)
     g_painter->resetShaderProgram();
 }
 
+void DrawQueueConditionOutline::start(DrawQueue* queue)
+{
+    // Desenha a silhueta sólida na cor do alvo, deslocada em 8 direções. Roda no start()
+    // (antes dos sprites reais do intervalo), então o contorno fica ATRÁS do personagem.
+    static const Point offsets[8] = {
+        Point(1, 0), Point(-1, 0), Point(0, 1), Point(0, -1),
+        Point(1, 1), Point(1, -1), Point(-1, 1), Point(-1, -1)
+    };
+    g_painter->setDrawColorOnTextureShaderProgram();
+    g_painter->setColor(m_color);
+    for (size_t i = m_start; i < m_end; ++i) {
+        DrawQueueItemTexturedRect* texture = dynamic_cast<DrawQueueItemTexturedRect*>(queue->m_queue[i]);
+        if (!texture || !texture->m_texture)
+            continue;
+        texture->m_texture->update(); // os itens ainda não foram cacheados neste ponto
+        for (const Point& off : offsets)
+            g_painter->drawTexturedRect(Rect(texture->m_dest.topLeft() + off * m_thickness, texture->m_dest.size()),
+                                        texture->m_texture, texture->m_src);
+    }
+    g_painter->resetShaderProgram();
+}
+
+void DrawQueueConditionOutline::end(DrawQueue*)
+{
+    // nada — o contorno é desenhado inteiramente no start(), atrás dos sprites.
+}
+
 void DrawQueue::setFrameBuffer(const Rect& dest, const Size& size, const Rect& src)
 {
     m_useFrameBuffer = true;
