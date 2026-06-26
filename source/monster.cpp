@@ -672,7 +672,16 @@ void Monster::doAttacking(uint32_t interval)
 				minCombatValue = (int32_t)(it->minCombatValue * multiplier);
 				maxCombatValue = (int32_t)(it->maxCombatValue * multiplier);
 
-				it->spell->castSpell(this, attackedCreature);
+				if(mType->attackAnimation && it->isMelee)
+				{
+					// windup: vira para o alvo, anima o frame group de ataque e atrasa o dano.
+					// Não dispara outro enquanto a animação corrente ainda está rodando.
+					if(attackAnimationEnd <= OTSYS_TIME())
+						triggerAttackWindup(attackedCreature);
+				}
+				else
+					it->spell->castSpell(this, attackedCreature);
+
 				if(it->isMelee)
 					extraMeleeAttack = false;
 #ifdef __DEBUG__
@@ -695,6 +704,23 @@ void Monster::doAttacking(uint32_t interval)
 
 	if(resetTicks)
 		attackTicks = 0;
+}
+
+void Monster::onDelayedAttack(Creature* target)
+{
+	// Aplica o golpe melee ao fim da animação de ataque (windup). Recalcula os valores de
+	// combate do ataque básico melee e o lança contra o alvo já revalidado.
+	for(SpellList::iterator it = mType->spellAttackList.begin(); it != mType->spellAttackList.end(); ++it)
+	{
+		if(!it->isMelee)
+			continue;
+
+		double multiplier = g_config.getDouble(ConfigManager::RATE_MONSTER_ATTACK);
+		minCombatValue = (int32_t)(it->minCombatValue * multiplier);
+		maxCombatValue = (int32_t)(it->maxCombatValue * multiplier);
+		it->spell->castSpell(this, target);
+		break;
+	}
 }
 
 bool Monster::canUseAttack(const Position& pos, const Creature* target) const

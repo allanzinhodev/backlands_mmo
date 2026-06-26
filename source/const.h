@@ -19,6 +19,11 @@
 #define __CONST__
 #include "definitions.h"
 
+// Animação de ataque (windup): índice do frame group do ataque básico e sua duração (ms).
+// O cliente toca esse frame group por ATTACK_ANIM_MS; o dano é aplicado só ao fim.
+static const uint8_t ATTACK_ANIM_GROUP = 2;
+static const uint16_t ATTACK_ANIM_MS = 300;
+
 enum MagicEffect_t
 {
 	MAGIC_EFFECT_DRAW_BLOOD	= 0x00,

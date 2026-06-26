@@ -434,6 +434,12 @@ class Game
 			*/
 		bool internalCreatureTurn(Creature* creature, Direction dir);
 
+		/** Anima um frame group temporário do outfit (ex.: ataque) em todos os espectadores. */
+		void addCreatureAction(const Creature* creature, uint8_t actionId, uint16_t duration);
+
+		/** Executa o golpe (dano) ao fim da animação de ataque, revalidando atacante e alvo por ID. */
+		void executeDelayedAttack(uint32_t attackerId, uint32_t targetId);
+
 		/**
 		  * Creature wants to say something.
 		  * \param creature Creature pointer

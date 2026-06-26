@@ -79,6 +79,11 @@ bool LocalPlayer::canWalk(Otc::Direction direction, bool ignoreLock)
     if (m_speed == 0)
         return false;
 
+    // congelado durante a animação de ataque (windup): não inicia novo passo/prewalk.
+    // Mesmo gate usado no render do outfit (frame group temporário). Ver setCustomAction.
+    if (m_customActionGroup > 0 && g_clock.millis() < m_customActionTicks)
+        return false;
+
     // last walk is not done yet
     if (m_walking && (m_walkTimer.ticksElapsed() < getStepDuration()) && !isAutoWalking() && !isServerWalking())
         return false;

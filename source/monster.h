@@ -104,6 +104,7 @@ class Monster : public Creature
 		virtual bool getCombatValues(int32_t& min, int32_t& max);
 
 		virtual void doAttacking(uint32_t interval);
+		virtual void onDelayedAttack(Creature* target);
 		virtual bool hasExtraSwing() {return extraMeleeAttack;}
 
 		bool searchTarget(TargetSearchType_t searchType = TARGETSEARCH_DEFAULT);

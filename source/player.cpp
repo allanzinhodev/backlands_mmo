@@ -3378,6 +3378,17 @@ void Player::doAttacking(uint32_t)
 		return;
 	}
 
+	if(!attackedCreature)
+		return;
+
+	// Windup universal: a cadência conta a partir daqui; o golpe (dano) é aplicado em
+	// onDelayedAttack, ao fim da animação de ataque (ver Creature::triggerAttackWindup).
+	lastAttack = OTSYS_TIME();
+	triggerAttackWindup(attackedCreature);
+}
+
+void Player::onDelayedAttack(Creature* target)
+{
 	Item* item = getWeapon(false);
 	if(const Weapon* _weapon = g_weapons->getWeapon(item))
 	{
@@ -3389,14 +3400,14 @@ void Player::doAttacking(uint32_t)
 		}
 		else
 		{
-			if((!_weapon->hasExhaustion() || !hasCondition(CONDITION_EXHAUST, EXHAUST_COMBAT)) && _weapon->useWeapon(this, item, attackedCreature))
-				lastAttack = OTSYS_TIME();
+			if(!_weapon->hasExhaustion() || !hasCondition(CONDITION_EXHAUST, EXHAUST_COMBAT))
+				_weapon->useWeapon(this, item, target);
 
 			updateWeapon();
 		}
 	}
-	else if(Weapon::useFist(this, attackedCreature))
-		lastAttack = OTSYS_TIME();
+	else
+		Weapon::useFist(this, target);
 }
 
 double Player::getGainedExperience(Creature* attacker) const

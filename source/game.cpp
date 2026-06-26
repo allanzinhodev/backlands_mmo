@@ -4021,6 +4021,37 @@ bool Game::internalCreatureTurn(Creature* creature, Direction dir)
 	return true;
 }
 
+void Game::addCreatureAction(const Creature* creature, uint8_t actionId, uint16_t duration)
+{
+	const SpectatorVec& list = getSpectators(creature->getPosition());
+	Player* tmpPlayer = NULL;
+	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
+	{
+		if((tmpPlayer = (*it)->getPlayer()))
+			tmpPlayer->sendCreatureAction(creature, actionId, duration);
+	}
+}
+
+void Game::executeDelayedAttack(uint32_t attackerId, uint32_t targetId)
+{
+	Creature* attacker = getCreatureByID(attackerId);
+	if(!attacker || attacker->isRemoved())
+		return;
+
+	Creature* target = getCreatureByID(targetId);
+	if(!target || target->isRemoved())
+		return;
+
+	// alvo pode ter mudado/saído de vista durante a animação
+	if(attacker->getAttackedCreature() != target)
+		return;
+
+	if(!isSightClear(attacker->getPosition(), target->getPosition(), true))
+		return;
+
+	attacker->onDelayedAttack(target);
+}
+
 bool Game::internalCreatureSay(Creature* creature, SpeakClasses type, const std::string& text,
 	bool ghostMode, SpectatorVec* spectators/* = NULL*/, Position* pos/* = NULL*/)
 {

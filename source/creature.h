@@ -490,6 +490,7 @@ class Creature : public AutoId, virtual public Thing
 		Position lastPosition;
 		int32_t masterRadius;
 		uint64_t lastStep;
+		int64_t attackAnimationEnd; // enquanto > now, o passo fica congelado (animação de ataque)
 		uint32_t lastStepCost;
 		uint32_t baseSpeed;
 		int32_t varSpeed;
@@ -564,6 +565,12 @@ class Creature : public AutoId, virtual public Thing
 		virtual void dropCorpse(DeathList deathList);
 
 		virtual void doAttacking(uint32_t) {}
+
+		// Dispara a animação de ataque (windup): vira para o alvo, anima o frame group de ataque
+		// em todos os espectadores, congela o passo por ATTACK_ANIM_MS e agenda o dano para o fim.
+		void triggerAttackWindup(Creature* target);
+		// Aplica o golpe real (dano) ao fim da animação. Sobrescrito por Player/Monster.
+		virtual void onDelayedAttack(Creature* /*target*/) {}
 
 		friend class Game;
 		friend class Map;

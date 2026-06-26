@@ -60,6 +60,7 @@ Creature::Creature()
 	manaMax = 0;
 
 	lastStep = 0;
+	attackAnimationEnd = 0;
 	lastStepCost = 1;
 	baseSpeed = 220;
 	varSpeed = 0;
@@ -162,18 +163,27 @@ int64_t Creature::getTimeSinceLastMove() const
 
 int32_t Creature::getWalkDelay(Direction dir) const
 {
+	int32_t delay = 0;
 	if(lastStep)
-		return getStepDuration(dir) - (OTSYS_TIME() - lastStep);
+		delay = getStepDuration(dir) - (OTSYS_TIME() - lastStep);
 
-	return 0;
+	// congela o passo enquanto a animação de ataque roda (sem limpar a fila de caminhada)
+	if(attackAnimationEnd > OTSYS_TIME())
+		delay = std::max(delay, (int32_t)(attackAnimationEnd - OTSYS_TIME()));
+
+	return delay;
 }
 
 int32_t Creature::getWalkDelay() const
 {
+	int32_t delay = 0;
 	if(lastStep)
-		return getStepDuration() - (OTSYS_TIME() - lastStep);
+		delay = getStepDuration() - (OTSYS_TIME() - lastStep);
 
-	return 0;
+	if(attackAnimationEnd > OTSYS_TIME())
+		delay = std::max(delay, (int32_t)(attackAnimationEnd - OTSYS_TIME()));
+
+	return delay;
 }
 
 void Creature::onThink(uint32_t interval)
@@ -241,6 +251,25 @@ void Creature::onAttacking(uint32_t interval)
 	attackedCreature->onAttacked();
 	if(g_game.isSightClear(getPosition(), attackedCreature->getPosition(), true))
 		doAttacking(interval);
+}
+
+void Creature::triggerAttackWindup(Creature* target)
+{
+	if(!target)
+		return;
+
+	// vira para o alvo (direção lógica; o cliente mapeia para o losango isométrico)
+	g_game.internalCreatureTurn(this, getDirectionTo(getPosition(), target->getPosition(), false));
+
+	// anima o frame group de ataque em todos os espectadores (cliente só exibe se existir)
+	g_game.addCreatureAction(this, ATTACK_ANIM_GROUP, ATTACK_ANIM_MS);
+
+	// congela o passo durante a animação (getWalkDelay observa attackAnimationEnd)
+	attackAnimationEnd = OTSYS_TIME() + ATTACK_ANIM_MS;
+
+	// o dano sai só ao fim da animação, revalidando atacante e alvo por ID
+	Scheduler::getInstance().addEvent(createSchedulerTask(ATTACK_ANIM_MS,
+		boost::bind(&Game::executeDelayedAttack, &g_game, getID(), target->getID())));
 }
 
 void Creature::onWalk()

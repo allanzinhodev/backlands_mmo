@@ -451,6 +451,7 @@ class Player : public Creature, public Cylinder
 		virtual BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 			bool checkDefense = false, bool checkArmor = false, bool reflect = true);
 		virtual void doAttacking(uint32_t interval);
+		virtual void onDelayedAttack(Creature* target);
 		virtual bool hasExtraSwing() {return lastAttack > 0 && ((OTSYS_TIME() - lastAttack) >= getAttackSpeed());}
 		int32_t getShootRange() const {return shootRange;}
 

@@ -92,6 +92,7 @@ class MonsterType
 
 		bool isSummonable, isIllusionable, isConvinceable, isAttackable, isHostile, isLureable,
 			isWalkable, canPushItems, canPushCreatures, pushable, hideName, hideHealth;
+		bool attackAnimation; // se true, usa o windup de animação de ataque (vira+anima+atrasa dano)
 
 		Outfit_t outfit;
 		RaceType_t race;
